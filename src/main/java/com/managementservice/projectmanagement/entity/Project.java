@@ -9,7 +9,7 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
 
     private String name;
 
@@ -28,7 +28,7 @@ public class Project {
         this.users = users;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

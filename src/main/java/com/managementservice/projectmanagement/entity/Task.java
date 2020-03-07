@@ -7,13 +7,13 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
 
     private String name;
 
     private String description;
 
-    @OneToOne
+    @ManyToOne
     private Sprint sprint;
 
     private int taskValidity;
@@ -30,7 +30,7 @@ public class Task {
 
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

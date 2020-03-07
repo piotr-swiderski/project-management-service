@@ -1,23 +1,24 @@
 package com.managementservice.projectmanagement.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Sprint {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int Id;
+    private long Id;
 
     private Date dateTo;
 
     private Date dateFrom;
 
     private int storyPoints;
+
+    @OneToMany
+    private Set<Task> task;
 
     public Sprint(Date dateTo, Date dateFrom, int storyPoints) {
         this.dateTo = dateTo;
@@ -28,7 +29,7 @@ public class Sprint {
     public Sprint() {
     }
 
-    public int getId() {
+    public long getId() {
         return Id;
     }
 

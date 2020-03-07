@@ -7,7 +7,7 @@ public class ParticipationInTheProject {
 
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
 
     @OneToOne
     private Project project;
@@ -24,7 +24,7 @@ public class ParticipationInTheProject {
         this.user = user;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

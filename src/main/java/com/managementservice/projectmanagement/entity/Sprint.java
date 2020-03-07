@@ -1,7 +1,7 @@
 package com.managementservice.projectmanagement.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -11,16 +11,16 @@ public class Sprint {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long Id;
 
-    private Date dateTo;
+    private LocalDate dateTo;
 
-    private Date dateFrom;
+    private LocalDate dateFrom;
 
     private int storyPoints;
 
     @OneToMany
     private Set<Task> task;
 
-    public Sprint(Date dateTo, Date dateFrom, int storyPoints) {
+    public Sprint(LocalDate dateTo, LocalDate dateFrom, int storyPoints) {
         this.dateTo = dateTo;
         this.dateFrom = dateFrom;
         this.storyPoints = storyPoints;
@@ -37,19 +37,20 @@ public class Sprint {
         Id = id;
     }
 
-    public Date getDateTo() {
+    public LocalDate getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(Date dateTo) {
+    public void setDateTo(LocalDate
+                                  dateTo) {
         this.dateTo = dateTo;
     }
 
-    public Date getDateFrom() {
+    public LocalDate getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(Date dateFrom) {
+    public void setDateFrom(LocalDate dateFrom) {
         this.dateFrom = dateFrom;
     }
 

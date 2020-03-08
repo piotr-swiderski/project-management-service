@@ -1,11 +1,18 @@
 package com.managementservice.projectmanagement.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,14 +27,14 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private int active;
+    private boolean active;
 
     private String roles = "";
 
     private String permissions = "";
 
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "User_Project",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -39,12 +46,40 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.active = 1;
+        this.active = true;
         this.roles = roles;
         this.permissions = permissions;
     }
 
     public User() {
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        String[] arrayPermissions = permissions.split(", ");
+        Set<SimpleGrantedAuthority> grantedAuthorities = Arrays.stream(arrayPermissions).map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + roles));
+        return grantedAuthorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public long getId() {
@@ -59,9 +94,11 @@ public class User {
         return username;
     }
 
+
     public void setUsername(String username) {
         this.username = username;
     }
+
 
     public String getPassword() {
         return password;
@@ -79,11 +116,11 @@ public class User {
         this.email = email;
     }
 
-    public int getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(int active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
@@ -101,5 +138,77 @@ public class User {
 
     public void setPermissions(String permissions) {
         this.permissions = permissions;
+    }
+
+
+    public static final class UserBuilder {
+        private long id;
+        private String username;
+        private String password;
+        private String email;
+        private boolean active;
+        private String roles = "";
+        private String permissions = "";
+        private Set<Project> projects = new HashSet<>();
+
+        private UserBuilder() {
+        }
+
+        public static UserBuilder anUser() {
+            return new UserBuilder();
+        }
+
+        public UserBuilder withId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public UserBuilder withUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public UserBuilder withPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public UserBuilder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public UserBuilder withActive(boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public UserBuilder withRoles(String roles) {
+            this.roles = roles;
+            return this;
+        }
+
+        public UserBuilder withPermissions(String permissions) {
+            this.permissions = permissions;
+            return this;
+        }
+
+        public UserBuilder withProjects(Set<Project> projects) {
+            this.projects = projects;
+            return this;
+        }
+
+        public User build() {
+            User user = new User();
+            user.setId(id);
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setEmail(email);
+            user.setActive(active);
+            user.setRoles(roles);
+            user.setPermissions(permissions);
+            user.projects = this.projects;
+            return user;
+        }
     }
 }

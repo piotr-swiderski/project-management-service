@@ -11,7 +11,7 @@ import java.util.Collections;
 
 @Service
 @Primary
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class  UserDetailsServiceImpl implements UserDetailsService {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 

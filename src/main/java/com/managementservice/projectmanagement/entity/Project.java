@@ -16,16 +16,39 @@ public class Project {
     private String description;
 
 
+    @OneToOne
+    private User admin;
+
+
     @ManyToMany(mappedBy = "projects")
     private Set<User> users = new HashSet<>();
 
     public Project() {
     }
 
-    public Project(String name, String description, Set<User> users) {
+    public Project(String name, String description, User admin) {
         this.name = name;
         this.description = description;
+        this.admin = admin;
+    }
+
+    public Project(String name, String description, User admin,  Set<User> users) {
+        this.name = name;
+        this.description = description;
+        this.admin = admin;
         this.users = users;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
     }
 
     public long getId() {

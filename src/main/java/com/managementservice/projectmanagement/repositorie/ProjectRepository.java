@@ -7,8 +7,7 @@ import java.util.Set;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-    Set<Project> findAllByUsers (String Username);
-
+    Set<Project> findAllByAdmin_Username(String string);
 
 
 }

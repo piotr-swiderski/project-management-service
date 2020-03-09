@@ -1,11 +1,12 @@
 package com.managementservice.projectmanagement.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Project {
+public class Project implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,7 +33,7 @@ public class Project {
         this.admin = admin;
     }
 
-    public Project(String name, String description, User admin,  Set<User> users) {
+    public Project(String name, String description, User admin, Set<User> users) {
         this.name = name;
         this.description = description;
         this.admin = admin;

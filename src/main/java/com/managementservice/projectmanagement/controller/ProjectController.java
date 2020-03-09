@@ -6,9 +6,7 @@ import com.managementservice.projectmanagement.repositorie.ProjectRepository;
 import com.managementservice.projectmanagement.repositorie.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +21,10 @@ public class ProjectController {
     @Autowired
     UserRepository userRepository;
 
-    String NEW_PROJECT_PAGES = "newProject";
-    String LIST_PROJECT_PAGES = "myProjectList";
 
     @GetMapping("/newProject")
     public String newProject() {
-        return NEW_PROJECT_PAGES;
+        return "newProject";
     }
 
     @PostMapping("/newProject")
@@ -36,23 +32,21 @@ public class ProjectController {
         Project project = new Project(name, description, getUserAuthentication());
         projectRepository.save(project);
 
-     return "index";
+        return "index";
     }
 
-    @GetMapping ("/myProject")
-    public String myProjectList (@RequestParam String username, Model model) {
-        model.addAttribute("projects", projectRepository.findAllByUsers(getUserAuthentication().getUsername()) );
-        return LIST_PROJECT_PAGES;
+    @GetMapping("/myProjectList")
+    public String myProjectList(Model model) {
+        model.addAttribute("projects", projectRepository.findAllByAdmin_Username(getUserAuthentication().getUsername()));
+        return "myProjectList";
     }
 
 
-    public User getUserAuthentication () {
+    public User getUserAuthentication() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
-        return  userRepository.findByUsername(userName);
+        return userRepository.findByUsername(userName);
     }
-
-
 
 
 }

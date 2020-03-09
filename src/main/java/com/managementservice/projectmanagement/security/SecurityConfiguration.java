@@ -18,7 +18,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityConfiguration(BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailsService userDetailsService){
+    public SecurityConfiguration(BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailsService userDetailsService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userDetailsService = userDetailsService;
     }
@@ -28,10 +28,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/").authenticated()
+                .antMatchers("/index").authenticated()
+                .antMatchers("/newProject").authenticated()
+                .antMatchers("/myProjectList").authenticated()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").hasRole("USER")
                 .and()
-        .formLogin()
+                .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/appLogin")
                 .usernameParameter("username")
@@ -48,7 +51,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth
                 .userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
-
 
 
 }

@@ -13,22 +13,23 @@
             <div th:replace="/fragments/sideBar :: side_bar"></div>
                 </main>
 
-            <div sec:authorize="isAuthenticated()">
-                <span sec:authentication="name">Username</span>
-            </div>
 
 
+            <h1> <span sec:authentication="name"></span> </h1>
 
-            <div id="logreg-forms">
+
+            <div style="text-align: center">
+
             <form class="form-text" method="post" th:action="@{/newProject}">
                 <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">New Project</h1>
                 <input type="text"  name="name" class="form-control" placeholder="project name" required="" autofocus="">
                 <input type="text"  name="description" class="form-control" placeholder="project description" >
-                <sec:authentication property="principal.username" name="userName" />
-
-
-                <button class="btn-dark" type="submit"><i class="fas fa-sign-in-alt"></i>Create</button>
+                <button class="button" type="submit">Create</button>
             </form>
+            </div>
+
+
+
             </div>
 
                 <div th:replace="/fragments/footer :: footer"> </div>

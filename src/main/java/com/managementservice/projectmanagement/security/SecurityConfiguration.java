@@ -31,6 +31,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/index").authenticated()
                 .antMatchers("/newProject").authenticated()
                 .antMatchers("/myProjectList").authenticated()
+                .antMatchers("/projectPage").authenticated()
+                .antMatchers("/projectPage/createSprint").authenticated()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").hasRole("USER")
                 .and()

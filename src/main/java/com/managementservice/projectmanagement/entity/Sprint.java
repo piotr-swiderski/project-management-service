@@ -20,6 +20,9 @@ public class Sprint {
     @OneToMany
     private Set<Task> task;
 
+    @ManyToOne
+    private Project project;
+
     public Sprint(LocalDate dateTo, LocalDate dateFrom, int storyPoints) {
         this.dateTo = dateTo;
         this.dateFrom = dateFrom;

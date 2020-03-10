@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 
+import static com.managementservice.projectmanagement.utils.ControllerUtil.*;
+
 @Controller
 public class ProjectController {
 
@@ -58,12 +60,12 @@ public class ProjectController {
     @GetMapping("/projectPage")
     public String getProjectPanel(Model model, @RequestParam(required = false) String projectId) {
         if (projectId != null) {
-            model.addAttribute("project", projectService.getProject(Long.parseLong(projectId)));
+            model.addAttribute(PROJECT_HANDLER, projectService.getProject(Long.parseLong(projectId)));
         }
         return "projectPage";
     }
 
-    @PostMapping("/projectPage/createSprint")
+    @PostMapping("/projectPage")
     public String addSprint(Model model,
                             @RequestParam String projectId,
                             @RequestParam String dateFrom,
@@ -75,11 +77,11 @@ public class ProjectController {
         long projectIdParse = Long.parseLong(projectId);
         int storyPointsParse = Integer.parseInt(storyPoints);
 
-        projectService.addSprintToProject(projectIdParse, dateFromParse, dateToParse, storyPointsParse);
-        model.addAttribute("project", projectService.getProject(Long.parseLong(projectId)));
+        if(!projectService.addSprintToProject(projectIdParse, dateFromParse, dateToParse, storyPointsParse)){
+            model.addAttribute(ERROR_ADDING_SPRINT_HANDLER, ERROR_ADDING_SPRINT_MESSAGE);
+        }
+        model.addAttribute(PROJECT_HANDLER, projectService.getProject(Long.parseLong(projectId)));
 
         return "projectPage";
     }
-
-
 }

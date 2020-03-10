@@ -48,13 +48,23 @@
                     <div class="card-header"><i class="fas fa-table mr-1"></i>Stworz sprint</div>
                     <div class="card-body">
 
-                        <form method="post" th:action="@{/projectPage/createSprint}">
-                            <input type="date" value="" name="dateFrom" placeholder="Date from">
-                            <input type="date" name="dateTo" placeholder="Date to">
-                            <input type="number" name="storyPoints" placeholder="Story points">
-                            <input type="hidden" name="projectId" , th:value="${project.id}">
-                            <button class="btn btn-primary" type="submit">Dodaj </button>
+                        <form id="myForm" name="myForm" method="post" th:action="@{/projectPage}">
+                            <label for="dateFrom">Date From:</label><br>
+                            <input id="dateFrom" type="date" value="" name="dateFrom" placeholder="Date from"><br>
+                            <label for="dateTo">Date To:</label><br>
+                            <input id="dateTo" type="date" name="dateTo" placeholder="Date to"><br>
+                            <label for="storyPoints">Story points:</label><br>
+                            <input id="storyPoints" type="number" name="storyPoints" placeholder="Story points"><br>
+                            <input type="hidden" name="projectId" th:value="${project.id}"><br>
                         </form>
+                        <button class="btn btn-primary" type="submit" form="myForm" id="button">
+                            Dodaj
+                        </button>
+                        <br>
+                        <div th:if="${error != null}" class="alert alert-danger" onsubmit="button">
+                            <strong>Failure!</strong> <a th:text="${error}"></a>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -65,6 +75,8 @@
 
     </div>
 </div>
+
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>

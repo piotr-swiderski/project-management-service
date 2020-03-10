@@ -48,7 +48,8 @@
                                 <th:block th:each="project : ${projects}">
                                     <tr>
                                         <form method="get" th:action="@{/projectPage}">
-                                            <td><input th:text="${project.name}" th:value="${project.id}" name="projectId" type="submit"></input></td>
+                                            <input type="hidden" th:value="${project.id}" name="projectId">
+                                            <td><button type="submit" th:text="${project.name}"></button></td>
                                         </form>
                                         <td th:text="${project.description}">Descrpition</td>
                                         <td th:tetxt="${project.admin}">Admin</td>

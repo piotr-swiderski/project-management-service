@@ -16,10 +16,11 @@ public class Project implements Serializable {
 
     private String description;
 
-
     @OneToOne
     private User admin;
 
+    @OneToMany
+    private Set<Sprint> sprints = new HashSet<>();
 
     @ManyToMany(mappedBy = "projects")
     private Set<User> users = new HashSet<>();
@@ -76,12 +77,19 @@ public class Project implements Serializable {
         this.description = description;
     }
 
-
     public Set<User> getUsers() {
         return users;
     }
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public Set<Sprint> getSprints() {
+        return sprints;
+    }
+
+    public void addSprints(Sprint sprint) {
+        sprints.add(sprint);
     }
 }

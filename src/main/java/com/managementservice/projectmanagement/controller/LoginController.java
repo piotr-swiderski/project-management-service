@@ -1,6 +1,7 @@
 package com.managementservice.projectmanagement.controller;
 
 import com.managementservice.projectmanagement.service.UserService;
+import com.managementservice.projectmanagement.utils.AccountTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class LoginController {
                          @RequestParam(value = "email") String email,
                          @RequestParam(value = "password") String password) {
 
-        userService.registerUser(username, password, email);
+        userService.registerUser(username, password, email, AccountTypeEnum.NONE);
         return LOGIN_PAGE;
     }
 

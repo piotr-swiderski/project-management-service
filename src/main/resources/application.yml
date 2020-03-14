@@ -10,3 +10,10 @@ spring:
               - openid
               - email
               - profile
+          facebook:
+            clientId: 298539834471115
+            clientSecret: a388174d78514ba7cb9114d8a8319bb4
+            scope:
+              - email
+              - public_profile
+              - password

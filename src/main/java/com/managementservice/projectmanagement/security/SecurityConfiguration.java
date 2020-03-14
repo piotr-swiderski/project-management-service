@@ -16,11 +16,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private UserDetailsService userDetailsService;
+    private CustomOidcUserService customOidcUserService;
 
     @Autowired
-    public SecurityConfiguration(BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailsService userDetailsService) {
+    public SecurityConfiguration(BCryptPasswordEncoder bCryptPasswordEncoder,
+                                 UserDetailsService userDetailsService,
+                                 CustomOidcUserService customOidcUserService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userDetailsService = userDetailsService;
+        this.customOidcUserService = customOidcUserService;
     }
 
     @Override
@@ -41,7 +45,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/appLogin")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/", true);
+                .defaultSuccessUrl("/", true)
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .oidcUserService(customOidcUserService);
 
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");

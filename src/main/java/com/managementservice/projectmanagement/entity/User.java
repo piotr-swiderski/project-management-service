@@ -1,5 +1,6 @@
 package com.managementservice.projectmanagement.entity;
 
+import com.managementservice.projectmanagement.utils.AccountTypeEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +33,9 @@ public class User implements UserDetails {
     private String roles = "";
 
     private String permissions = "";
+
+    @Enumerated(EnumType.STRING)
+    private AccountTypeEnum accountType;
 
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
@@ -94,11 +98,9 @@ public class User implements UserDetails {
         return username;
     }
 
-
     public void setUsername(String username) {
         this.username = username;
     }
-
 
     public String getPassword() {
         return password;
@@ -140,6 +142,13 @@ public class User implements UserDetails {
         this.permissions = permissions;
     }
 
+    public AccountTypeEnum getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountTypeEnum accountType) {
+        this.accountType = accountType;
+    }
 
     public static final class UserBuilder {
         private long id;
@@ -149,6 +158,7 @@ public class User implements UserDetails {
         private boolean active;
         private String roles = "";
         private String permissions = "";
+        private AccountTypeEnum accountType = AccountTypeEnum.NONE;
         private Set<Project> projects = new HashSet<>();
 
         private UserBuilder() {
@@ -198,6 +208,11 @@ public class User implements UserDetails {
             return this;
         }
 
+        public UserBuilder withAccountType(AccountTypeEnum accountType) {
+            this.accountType = accountType;
+            return this;
+        }
+
         public User build() {
             User user = new User();
             user.setId(id);
@@ -207,6 +222,7 @@ public class User implements UserDetails {
             user.setActive(active);
             user.setRoles(roles);
             user.setPermissions(permissions);
+            user.setAccountType(accountType);
             user.projects = this.projects;
             return user;
         }

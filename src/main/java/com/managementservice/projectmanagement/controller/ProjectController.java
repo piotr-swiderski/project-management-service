@@ -54,7 +54,7 @@ public class ProjectController {
     public User getUserAuthentication() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
-        return userRepository.findByUsername(userName);
+        return userRepository.findByUsername(userName).get();
     }
 
     @GetMapping("/projectPage")

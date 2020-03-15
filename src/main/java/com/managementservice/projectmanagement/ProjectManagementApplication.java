@@ -1,17 +1,18 @@
 package com.managementservice.projectmanagement;
 
-import org.apache.catalina.Context;
-import org.apache.catalina.connector.Connector;
-import org.apache.tomcat.util.descriptor.web.SecurityCollection;
-import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+import com.managementservice.projectmanagement.repositorie.NotificationRepository;
+import com.managementservice.projectmanagement.repositorie.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
-import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class ProjectManagementApplication {
+
+    @Autowired
+    NotificationRepository notificationRepository;
+    @Autowired
+    UserRepository userRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(ProjectManagementApplication.class, args);

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="notifi.css" rel="stylesheet" />
+</head>
+<body>
+
+<ul id="nav">
+    <li><a href="#">Link1</a></li>
+    <li><a href="#">Link2</a></li>
+    <li><a href="#">Link3</a></li>
+    <li id="notification_li">
+        <a href="#" id="notificationLink">Notifications</a>
+        <span id="notification_count">3</span>
+
+        <div id="notificationContainer">
+            <div id="notificationTitle">Notifications</div>
+            <div id="notificationsBody" class="notifications"></div>
+            <div id="notificationFooter"><a href="#">See All</a></div>
+        </div>
+
+    </li>
+    <li><a href="#">Link4</a></li>
+</ul>
+</body>
+<script>
+
+    function $(document) {
+        
+    }
+
+    $(document).ready(function()
+    {
+        $("#notificationLink").click(function()
+        {
+            $("#notificationContainer").fadeToggle(300);
+            $("#notification_count").fadeOut("slow");
+            return false;
+        });
+
+        //Document Click hiding the popup 
+        $(document).click(function()
+        {
+            $("#notificationContainer").hide();
+        });
+
+        //Popup on click
+        $("#notificationContainer").click(function()
+        {
+            return false;
+        });
+
+    });
+</script>
+</html>

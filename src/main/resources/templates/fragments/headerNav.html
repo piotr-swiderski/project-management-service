@@ -1,11 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <nav th:fragment="nav" class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">PROJECT MANAGMENT </a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button
-><!-- Navbar Search-->
+    <a class="navbar-brand" href="/">PROJECT MANAGMENT </a>
+    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i>
+    </button>
+
+
+        <ul>
+
+            <li id="noti_Container">
+                <div id="noti_Counter"></div>   <!--SHOW NOTIFICATIONS COUNT.-->
+
+                <!--A CIRCLE LIKE BUTTON TO DISPLAY NOTIFICATION DROPDOWN.-->
+                <div id="noti_Button"></div>
+
+                <p>Powiadomienia</p>
+                <!--THE NOTIFICAIONS DROPDOWN BOX.-->
+                <div id="notifications">
+                    <h3>Notifications</h3>
+                    <div style="height:300px;">
+                        <div class="border" th:each="notification : ${@notificationRepository.findAllByUserUsernameAndStatus(#authentication.name, true)}" >
+                            <p th:text="${notification.subject}"></p>
+                            <p th:text="${notification.text}"></p>
+                        </div>
+                    </div>
+                    <div class="seeAll"><a href="#">See All</a></div>
+                </div>
+            </li>
+        </ul>
+
+
+    <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         <div class="input-group">
-            <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
+            <input class="form-control" type="text" placeholder="Search for..." aria-label="Search"
+                   aria-describedby="basic-addon2"/>
             <div class="input-group-append">
                 <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
             </div>
@@ -14,7 +43,8 @@
     <!-- Navbar-->
     <ul class="navbar-nav ml-auto ml-md-0">
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+            <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">Settings</a><a class="dropdown-item" href="#">Activity Log</a>
                 <div class="dropdown-divider"></div>
@@ -22,6 +52,58 @@
             </div>
         </li>
     </ul>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+
+            /*<![CDATA[*/
+            var counter = /*[[${@notificationService.counterNotificationViewed(#authentication.name)}]]*/ 'default';
+            /*]]>*/
+
+            // ANIMATEDLY DISPLAY THE NOTIFICATION COUNTER.
+            $('#noti_Counter')
+                .css({ opacity: 0 })
+                .text(counter)      // ADD DYNAMIC VALUE (YOU CAN EXTRACT DATA FROM DATABASE OR XML).
+                .css({ top: '-10px' })
+                .animate({ top: '-2px', opacity: 1 }, 500);
+
+            $('#noti_Button').click(function () {
+
+                $.ajax({
+                    url:"/notification",
+                    method:"GET",
+                });
+
+                // TOGGLE (SHOW OR HIDE) NOTIFICATION WINDOW.
+                $('#notifications').fadeToggle('fast', 'linear', function () {
+                    if ($('#notifications').is(':hidden')) {
+                        $('#noti_Button').css('background-color', '#2E467C');
+                    }
+                    // CHANGE BACKGROUND COLOR OF THE BUTTON.
+                    else $('#noti_Button').css('background-color', '#FFF');
+                });
+
+                $('#noti_Counter').fadeOut('slow');     // HIDE THE COUNTER.
+
+                return false;
+            });
+
+            // HIDE NOTIFICATIONS WHEN CLICKED ANYWHERE ON THE PAGE.
+            $(document).click(function () {
+                $('#notifications').hide();
+
+                // CHECK IF NOTIFICATION COUNTER IS HIDDEN.
+                if ($('#noti_Counter').is(':hidden')) {
+                    // CHANGE BACKGROUND COLOR OF THE BUTTON.
+                    $('#noti_Button').css('background-color', '#2E467C');
+                }
+            });
+
+            $('#notifications').click(function () {
+                return false;       // DO NOTHING WHEN CONTAINER IS CLICKED.
+            });
+        });
+    </script>
+
 </nav>
 
 </html>

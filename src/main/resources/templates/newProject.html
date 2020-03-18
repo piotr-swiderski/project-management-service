@@ -1,43 +1,37 @@
-
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.springframework.org/security/tags">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/fragments/head :: headerfiles "></head>
+<link href="/css/form.css" rel="stylesheet"/>
+<body>
 
-    <body>
-
-    <div th:replace="/fragments/headerNav :: nav "> </div>
-
-
-
-        <div id="layoutSidenav">
-            <div th:replace="/fragments/sideBar :: side_bar"></div>
-                </main>
+<div th:replace="/fragments/headerNav :: nav "></div>
 
 
+<div id="layoutSidenav">
+    <div th:replace="/fragments/sideBar :: side_bar"></div>
+    <div id="layoutSidenav_content">
 
-            <h1> <span sec:authentication="name"></span> </h1>
+        <main>
+            <div id="div">
+                <form th:action="@{/newProject}" th:method="post">
+                    <label for="pname">Project Name</label>
+                    <input type="text" id="pname" name="name" placeholder="Your project name..">
 
+                    <label for="ptext">Project Description</label>
+                    <input type="text" id="ptext" name="description" placeholder="Your project description">
 
-            <div style="text-align: center">
-
-            <form class="form-text" method="post" th:action="@{/newProject}">
-                <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">New Project</h1>
-                <input type="text"  name="name" class="form-control" placeholder="project name" required="" autofocus="">
-                <input type="text"  name="description" class="form-control" placeholder="project description" >
-                <button class="button" type="submit">Create</button>
-            </form>
+                    <input type="submit" value="Submit">
+                </form>
             </div>
+        </main>
 
+        <div th:replace="/fragments/footer :: footer"></div>
+    </div>
+</div>
 
-
-            </div>
-
-                <div th:replace="/fragments/footer :: footer"> </div>
-
-            </div>
-        </div>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-    </body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="js/scripts.js"></script>
+</body>
 </html>

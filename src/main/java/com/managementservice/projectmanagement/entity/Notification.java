@@ -12,6 +12,7 @@ public class Notification {
 
     private String subject;
     private String text;
+    private Long projectId;
     private boolean status = true;
     private boolean viewed = false;
 
@@ -21,10 +22,21 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(String subject, String text, User user) {
+
+    public Notification(String subject, String text, User user, Long projectId) {
         this.subject = subject;
         this.text = text;
         this.user = user;
+        this.projectId = projectId;
+    }
+
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
     public boolean isStatus() {

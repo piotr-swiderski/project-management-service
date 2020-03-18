@@ -18,12 +18,17 @@
             <div id="notifications">
                 <div><h3>Notifications</h3></div>
                 <div id="scrool">
-                    <div  class="border"
-                         th:each="notification : ${@notificationRepository.findAllByUserUsernameAndStatus(#authentication.name, true)}">
-                        <p> <strong th:text="${notification.subject}" ></strong></p>
+                    <div class="border"
+                         th:each="notification : ${@notificationRepository.findAllByUserUsernameAndStatus(#authentication.name, true)}"
+                         th:id="${notification.id}">
+                        <p><strong th:text="${notification.subject}"></strong></p>
                         <p th:text="${notification.text}"></p>
-                        <button class="btn accept" type="button" th:href="@{/accept}">accept</button>
-                        <button class="btn delete" type="button" th:href="@{/delete}">delete</button>
+                        <button th:name="${notification.id}" onclick="buttonAccept(name)" class="btn accept"
+                                type="submit">accept
+                        </button>
+                        <button th:name="${notification.id}" onclick="buttonDelete(name)" class="btn delete"
+                                type="submit">delete
+                        </button>
                     </div>
                 </div>
                 <div class="seeAll"><a href="/accept">See All</a></div>
@@ -55,11 +60,41 @@
         </li>
     </ul>
     <script th:inline="javascript">
+
+        function buttonAccept(id) {
+            $.ajax({
+                url: "/accept?id=" + id,
+                method: "GET",
+            });
+            const element = document.getElementById(id);
+            element.remove();
+
+        }
+
+        function buttonDelete(id) {
+            $.ajax({
+                url: "/delete?id=" + id,
+                method: "GET",
+            })
+            const element = document.getElementById(id);
+            element.remove();
+        }
+
+
         $(document).ready(function () {
 
             /*<![CDATA[*/
             var counter = /*[[${@notificationService.counterNotificationViewed(#authentication.name)}]]*/ 'default';
             /*]]>*/
+
+
+            $('#buttonDelete').click(function () {
+                $.ajax({
+                    url: "/delete",
+                    method: "GET",
+                })
+            });
+
 
             // ANIMATEDLY DISPLAY THE NOTIFICATION COUNTER.
             $('#noti_Counter')

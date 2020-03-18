@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NotificationService {
@@ -51,5 +52,17 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
+    public Notification getNotificationById(Long id) {
+        Optional<Notification> optionalNotification = notificationRepository.findById(id);
+        if (optionalNotification.isPresent()) {
+            return notificationRepository.findById(id).get();
+        }
+        throw new IllegalArgumentException("Inncorect Notification ID");
+    }
+
+    public void setStatusToFalseByNotifiaction(Notification notifiaction) {
+        notifiaction.setStatus(false);
+        notificationRepository.save(notifiaction);
+    }
 
 }

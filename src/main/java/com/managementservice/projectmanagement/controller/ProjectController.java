@@ -28,7 +28,7 @@ public class ProjectController {
 
 
     @Autowired
-    public ProjectController(ProjectService projectService, NotificationService notificationService,UserService userService) {
+    public ProjectController(ProjectService projectService, NotificationService notificationService, UserService userService) {
         this.projectService = projectService;
         this.notificationService = notificationService;
         this.userService = userService;
@@ -55,7 +55,8 @@ public class ProjectController {
     @PostMapping("/addUsersToProject")
     public String addUserToProjectPost(Model model,
                                        @RequestParam String projectId,
-                                       @RequestParam String email) {
+                                       @RequestParam String email
+    ) {
 
         model.addAttribute(PROJECT_HANDLER, projectService.getProject(Long.parseLong(projectId)));
 
@@ -70,8 +71,8 @@ public class ProjectController {
                 Notification notification = new Notification("Project invitation", "User "
                         + userService.getUserAuthentication().getEmail()
                         + " I want to add you to the project "
-                        + project.getName(), user);
-                        notificationService.save(notification);
+                        + project.getName(), user, project.getId());
+                notificationService.save(notification);
                 model.addAttribute(SUCCSES_ADDING_NOTIFICATION, SUCCSES_ADDING_NOTIFICATION_MESSAGE);
                 return "addUsersToProject";
             }

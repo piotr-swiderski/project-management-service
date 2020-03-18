@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/fragments/head :: headerfiles "></head>
 
 <body>
@@ -12,7 +12,38 @@
 
         <main>
 
+                <div class="container-fluid">
+                    <h1 class="mt-4" th:text="${project.name}"></h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/">myProject</a></li>
+                        <li class="breadcrumb-item active">addUsers</li>
+                    </ol>
+                    <div class="card mb-4">
+                        <div class="card-body">Tutaj dodasz użytkowników do swojego projektu
+                        </div>
+                    </div>
 
+                    <div class="card mb-4">
+                       <div>Wpisz adres email</div>
+                        <form id="myForm" name="myForm" method="post" th:action="@{/addUsersToProject}">
+                            <input type="hidden" name="projectId" th:value="${project.id}"><br>
+                            <label>
+                                <input type="email" name="email" placeholder="email">
+                            </label>
+                            <button class="btn-dark" type="submit" form="myForm" id="button">
+                                Dodaj
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            <div th:if="${error != null}" class="alert alert-danger" onsubmit="button">
+                <strong>Failure!</strong> <a th:text="${error}"></a>
+            </div>
+            <div th:if="${succes != null}" class="alert-success" onsubmit="button">
+                <strong>Succes!</strong> <a th:text="${succes}"></a>
+            </div>
 
         </main>
 

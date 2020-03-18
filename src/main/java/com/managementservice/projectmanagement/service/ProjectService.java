@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -51,7 +52,7 @@ public class ProjectService {
     }
 
     private boolean isSprintDateValid(Project project, LocalDate dateFrom, LocalDate dateTo) {
-        if(dateFrom.isAfter(dateTo)){
+        if (dateFrom.isAfter(dateTo)) {
             return false;
         }
 
@@ -62,5 +63,17 @@ public class ProjectService {
         }
         return true;
 
+    }
+
+    public void saveProject(Project project) {
+        projectRepository.save(project);
+    }
+
+    public Set<Project> getAListOfAllUserNameProjects(String userName) {
+        return projectRepository.findAllByAdmin_Username(userName);
+    }
+
+    public Optional<Project> getProjectById(Long id) {
+        return projectRepository.findById(id);
     }
 }

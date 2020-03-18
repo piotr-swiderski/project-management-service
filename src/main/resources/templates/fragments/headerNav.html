@@ -1,33 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <nav th:fragment="nav" class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <a class="navbar-brand" href="/">PROJECT MANAGMENT </a>
+
     <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i>
     </button>
 
 
-        <ul>
+    <ul>
+        <li id="noti_Container">
+            <div id="noti_Counter"></div>   <!--SHOW NOTIFICATIONS COUNT.-->
 
-            <li id="noti_Container">
-                <div id="noti_Counter"></div>   <!--SHOW NOTIFICATIONS COUNT.-->
+            <!--A CIRCLE LIKE BUTTON TO DISPLAY NOTIFICATION DROPDOWN.-->
+            <div id="noti_Button"></div>
 
-                <!--A CIRCLE LIKE BUTTON TO DISPLAY NOTIFICATION DROPDOWN.-->
-                <div id="noti_Button"></div>
-
-                <p>Powiadomienia</p>
-                <!--THE NOTIFICAIONS DROPDOWN BOX.-->
-                <div id="notifications">
-                    <h3>Notifications</h3>
-                    <div style="height:300px;">
-                        <div class="border" th:each="notification : ${@notificationRepository.findAllByUserUsernameAndStatus(#authentication.name, true)}" >
-                            <p th:text="${notification.subject}"></p>
-                            <p th:text="${notification.text}"></p>
-                        </div>
+            <!--THE NOTIFICAIONS DROPDOWN BOX.-->
+            <div id="notifications">
+                <div><h3>Notifications</h3></div>
+                <div id="scrool">
+                    <div  class="border"
+                         th:each="notification : ${@notificationRepository.findAllByUserUsernameAndStatus(#authentication.name, true)}">
+                        <p> <strong th:text="${notification.subject}" ></strong></p>
+                        <p th:text="${notification.text}"></p>
+                        <button class="btn accept" type="button" th:href="@{/accept}">accept</button>
+                        <button class="btn delete" type="button" th:href="@{/delete}">delete</button>
                     </div>
-                    <div class="seeAll"><a href="#">See All</a></div>
                 </div>
-            </li>
-        </ul>
+                <div class="seeAll"><a href="/accept">See All</a></div>
+            </div>
+        </li>
+    </ul>
 
 
     <!-- Navbar Search-->
@@ -61,16 +63,16 @@
 
             // ANIMATEDLY DISPLAY THE NOTIFICATION COUNTER.
             $('#noti_Counter')
-                .css({ opacity: 0 })
+                .css({opacity: 0})
                 .text(counter)      // ADD DYNAMIC VALUE (YOU CAN EXTRACT DATA FROM DATABASE OR XML).
-                .css({ top: '-10px' })
-                .animate({ top: '-2px', opacity: 1 }, 500);
+                .css({top: '-10px'})
+                .animate({top: '-2px', opacity: 1}, 500);
 
             $('#noti_Button').click(function () {
 
                 $.ajax({
-                    url:"/notification",
-                    method:"GET",
+                    url: "/notification",
+                    method: "GET",
                 });
 
                 // TOGGLE (SHOW OR HIDE) NOTIFICATION WINDOW.

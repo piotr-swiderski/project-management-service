@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/head :: headerfiles "></head>
+<link rel="stylesheet" href="sprint.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<body>
+
+<div th:replace="/fragments/headerNav :: nav "></div>
+
+<div id="layoutSidenav">
+    <div th:replace="/fragments/sideBar :: side_bar"></div>
+    <div id="layoutSidenav_content">
+        <main>
+
+            <div class="container-fluid">
+                <h1 class="mt-4">PROJEKT</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/myProjectList">myProjects</a></li>
+                    <li class="breadcrumb-item">COS TAM</li>
+                    <li class="breadcrumb-item active">SPIRNT1</li>
+                </ol>
+
+
+                <div class="wrapper">
+
+                    <div class="table">
+                        <div class="table_box">
+                            <div class="table_name" id="tableToDo">
+                                TO DO
+                            </div>
+                            <div th:each="task: ${tasksList}">
+                                <div th:if="${task.getProgres().name().equals('ToDo')}">
+                                    <div th:id="${task.getId()}" class="task" draggable="true">
+                                        <a th:text="${task.getName()}"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="buttonToDo" class="button-create">Add task</button>
+                    </div>
+
+                    <div class="table">
+                        <div class="table_box">
+                            <div class="table_name">
+                                IN PROGRESS
+                            </div>
+                            <div th:each="task: ${tasksList}">
+                                <div th:if="${task.getProgres().name().equals('InProgress')}">
+                                    <div th:id="${task.getId()}" class="task" draggable="true">
+                                        <a th:text="${task.getName()}"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="buttonInProgress" class="button-create">Add task</button>
+                    </div>
+
+                    <div class="table">
+                        <div class="table_box">
+                            <div class="table_name">
+                                DONE
+                            </div>
+                            <div th:each="task: ${tasksList}">
+                                <div th:if="${task.getProgres().name().equals('Done')}">
+                                    <div th:id="${task.getId()}" class="task" draggable="true">
+                                        <a th:text="${task.getName()}"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="buttonDone" class="button-create">Add task</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="newTask" class="window">
+                <div class="window-content">
+                    <div class="window-header">
+                        <span class="close">&times;</span>
+                        <h2>Create task</h2>
+                    </div>
+                    <div class="window-body">
+                        <div class="window-body-task">
+                            <form class="needs-validation" novalidate name="createTaskForm" method="POST"
+                                  th:action="@{/sprint}">
+                                <div class="form-group">
+                                    <div class="mb-3">
+                                        <label for="taskName">Task name</label>
+                                        <input type="text" class="form-control" id="taskName" name="taskName"
+                                               placeholder="Task name" required>
+                                        <div class="invalid-feedback">
+                                            Set a name of task!
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="mb-3">
+                                        <div class="form-group">
+                                            <label for="taskDescription">Task description</label>
+                                            <textarea class="form-control" id="taskDescription"
+                                                      rows="3" name="taskDescription"></textarea>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Set a description of task.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-check">
+                                    <label class="label">Task validity: </label><br>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="customRadio"
+                                               name="taskValidity" value="1" checked>
+                                        <label class="custom-control-label" for="customRadio">Trivial</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="customRadio2"
+                                               name="taskValidity" value="2">
+                                        <label class="custom-control-label" for="customRadio2">Easy</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="customRadio3"
+                                               name="taskValidity" value="3">
+                                        <label class="custom-control-label" for="customRadio3">Medium</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="customRadio4"
+                                               name="taskValidity" value="4">
+                                        <label class="custom-control-label" for="customRadio4">Hard</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="customRadio5"
+                                               name="taskValidity" value="5">
+                                        <label class="custom-control-label" for="customRadio5">Extra hard</label>
+                                    </div>
+
+                                </div>
+                                <input name="taskProgress" id="taskProgress" type="hidden">
+                                <input name="sprintId" id="sprintId" type="hidden" th:value="${sprintId}">
+                                <br>
+                                <button id="createTask" class="btn btn-primary" type="submit">Create</button>
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </main>
+
+
+        <script>
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (function () {
+                'use strict';
+                window.addEventListener('load', function () {
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    var forms = document.getElementsByClassName('needs-validation');
+                    // Loop over them and prevent submission
+                    var validation = Array.prototype.filter.call(forms, function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+        </script>
+
+
+        <script th:inline="javascript">
+
+            var taskEx = document.getElementById("tableToDo");
+
+
+            var dropTarget = document.querySelector(".wrapper");
+            var dropElements = document.querySelectorAll(".task");
+
+            for (let i = 0; i < dropElements.length; i++) {
+                dropElements[i].addEventListener("dragstart", function (ev) {
+                    ev.dataTransfer.setData("srcId", ev.target.id);
+                });
+            }
+            dropTarget.addEventListener("dragover", function (ev) {
+                ev.preventDefault();
+            });
+
+            dropTarget.addEventListener("drop", function (ev) {
+                ev.preventDefault();
+                let target = ev.target;
+                let srcId = ev.dataTransfer.getData("srcId");
+                target.appendChild(document.getElementById(srcId));
+            });
+
+        </script>
+
+        <script>
+
+            var windowToDo = document.getElementById("newTask");
+            var btnToDo = document.getElementById("buttonToDo");
+            var btnInProgress = document.getElementById("buttonInProgress");
+            var btnDone = document.getElementById("buttonDone");
+            var btnCreateTask = document.getElementById("createTask");
+            var btnClick;
+            var close = document.getElementsByClassName("close")[0];
+
+            btnToDo.onclick = function () {
+                windowToDo.style.display = "block";
+                btnClick = "ToDo"
+
+            };
+
+            btnInProgress.onclick = function () {
+                windowToDo.style.display = "block";
+                btnClick = "InProgress"
+            };
+
+            btnDone.onclick = function () {
+                windowToDo.style.display = "block";
+                btnClick = "Done"
+
+            };
+
+            close.onclick = function () {
+                windowToDo.style.display = "none";
+            };
+
+            window.onclick = function (event) {
+                if (event.target === windowToDo) {
+                    windowToDo.style.display = "none";
+                }
+            };
+
+
+            btnCreateTask.onclick = function () {
+
+                var taskProgress = document.getElementById("taskProgress");
+                var sprintId = document.getElementById("sprintId");
+
+                if (btnClick === "ToDo") {
+                    taskProgress.value = "ToDo";
+                }
+                if (btnClick === "InProgress") {
+                    taskProgress.value = "InProgress";
+                }
+                if (btnClick === "Done") {
+                    taskProgress.value = "Done";
+                }
+
+                const urlParams = new URLSearchParams(window.location.search);
+                sprintId.value = urlParams.get('sprintId');
+
+
+            }
+
+        </script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+
+        <div th:replace="/fragments/footer :: footer"></div>
+
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="js/scripts.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script src="assets/demo/datatables-demo.js"></script>
+</body>
+</html>

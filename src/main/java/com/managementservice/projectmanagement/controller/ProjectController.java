@@ -102,6 +102,7 @@ public class ProjectController {
     @PostMapping("/projectPage")
     public String addSprint(Model model,
                             @RequestParam String projectId,
+                            @RequestParam String name,
                             @RequestParam String dateFrom,
                             @RequestParam String dateTo,
                             @RequestParam String storyPoints) {
@@ -111,7 +112,7 @@ public class ProjectController {
         long projectIdParse = Long.parseLong(projectId);
         int storyPointsParse = Integer.parseInt(storyPoints);
 
-        if (!projectService.addSprintToProject(projectIdParse, dateFromParse, dateToParse, storyPointsParse)) {
+        if (!projectService.addSprintToProject(projectIdParse, name, dateFromParse, dateToParse, storyPointsParse)) {
             model.addAttribute(ERROR_ADDING_SPRINT_HANDLER, ERROR_ADDING_SPRINT_MESSAGE);
         }
         model.addAttribute(PROJECT_HANDLER, projectService.getProject(Long.parseLong(projectId)));

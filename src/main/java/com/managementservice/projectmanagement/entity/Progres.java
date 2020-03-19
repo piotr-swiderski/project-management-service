@@ -1,5 +1,20 @@
 package com.managementservice.projectmanagement.entity;
 
 public enum Progres {
-    Backlog, Todo, InProgress, QA, Done
+
+    Backlog("BackLog"),
+    ToDo("ToDo"),
+    InProgress("InProgress"),
+    QA("QA"),
+    Done("Done");
+
+    private String progress;
+
+    Progres(String progress) {
+        this.progress = progress;
+    }
+
+    public String getProgress() {
+        return progress;
+    }
 }

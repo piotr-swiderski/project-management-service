@@ -48,4 +48,7 @@ public class UserService {
     }
 
 
+    public User getUserById(long id) {
+       return userRepository.findById(id).orElseThrow(NoResultException::new);
+    }
 }

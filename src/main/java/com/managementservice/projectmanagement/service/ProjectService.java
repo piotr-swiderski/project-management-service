@@ -25,17 +25,14 @@ public class ProjectService {
     }
 
     @Transactional
-    public boolean addSprintToProject(long projectId, LocalDate dateFrom, LocalDate dateTo, int storyPoints) {
-        Sprint sprint = new Sprint(dateTo, dateFrom, storyPoints);
+    public boolean addSprintToProject(long projectId, String sprintName, LocalDate dateFrom, LocalDate dateTo, int storyPoints) {
+        Sprint sprint = new Sprint(dateTo, dateFrom, storyPoints,sprintName);
         Project project = projectRepository.findById(projectId).orElseThrow(NoResultException::new);
-
-        System.out.println("date from: " + dateFrom);
 
         if (!isSprintDateValid(project, dateFrom, dateTo)) {
             return false;
         }
         project.addSprints(sprint);
-        System.out.println(sprint.getDateFrom());
         sprintRepository.save(sprint);
         projectRepository.save(project);
         return true;

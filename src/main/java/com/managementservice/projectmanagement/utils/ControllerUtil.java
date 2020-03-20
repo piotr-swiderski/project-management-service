@@ -12,4 +12,9 @@ public class ControllerUtil {
     public static final String TASK_LIST = "tasksList";
 
 
+
+
+    public static final String SUCCSES_ADDING_NOTIFICATION = "succes";
+    public static final String SUCCSES_ADDING_NOTIFICATION_MESSAGE = "notification sent";
+
 }

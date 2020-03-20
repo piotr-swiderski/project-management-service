@@ -5,11 +5,12 @@ ul {
     margin:0;
     padding:12px 10px;
     height:21px;
+    text-align: center
 }
 ul li {
     float:left;
-    font:13px helvetica;
-    font-weight:bold;
+    font:12px helvetica;
+    font-weight:bolder;
     margin:3px 0;
 }
 ul li a {
@@ -24,8 +25,23 @@ ul li a:hover {
     cursor:pointer;
 }
 
+.btn {
+    border: none;
+    background-color: inherit;
+    padding: 5px 40px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center
+}
+.btn:hover {background: #eee;}
+.accept {color: green;}
+.delete {color: red;}
+
+
 #noti_Container {
     position:relative;
+    line-height: 20px;
 }
 
 /* A CIRCLE LIKE BUTTON IN THE TOP MENU. */
@@ -76,7 +92,6 @@ ul li a:hover {
     width:0;
     height:0;
     color:transparent;
-    border:10px solid #CCC;
     border-color:transparent transparent #FFF;
     margin-top:-20px;
     margin-left:10px;
@@ -113,4 +128,10 @@ h3 {
 #border {
     border: 6px solid blue;
 
+
+}
+
+#scrool {
+    height: 350px; overflow: scroll;
+    color: #3b5998;
 }

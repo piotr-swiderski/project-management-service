@@ -4,6 +4,8 @@ import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.repositorie.UserRepository;
 import com.managementservice.projectmanagement.utils.AccountTypeEnum;
 import com.managementservice.projectmanagement.utils.RoleEnum;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,3 +54,18 @@ public class UserService {
        return userRepository.findById(id).orElseThrow(NoResultException::new);
     }
 }
+    public User getUserAuthentication() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+        return userRepository.findByUsername(userName).get();
+    }
+
+    public String getUserAuthenticationUserName() {
+        return getUserAuthentication().getUsername();
+    }
+
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+}
+

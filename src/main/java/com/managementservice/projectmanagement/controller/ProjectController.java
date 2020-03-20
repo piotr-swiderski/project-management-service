@@ -3,23 +3,18 @@ package com.managementservice.projectmanagement.controller;
 import com.managementservice.projectmanagement.entity.Notification;
 import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.User;
-import com.managementservice.projectmanagement.repositorie.NotificationRepository;
-import com.managementservice.projectmanagement.repositorie.ProjectRepository;
-import com.managementservice.projectmanagement.repositorie.UserRepository;
+import com.managementservice.projectmanagement.service.NotificationService;
 import com.managementservice.projectmanagement.service.ProjectService;
+import com.managementservice.projectmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Optional;
 
 import static com.managementservice.projectmanagement.utils.ControllerUtil.*;
 
@@ -27,69 +22,72 @@ import static com.managementservice.projectmanagement.utils.ControllerUtil.*;
 public class ProjectController {
 
 
-    private ProjectRepository projectRepository;
-    private UserRepository userRepository;
     private ProjectService projectService;
-    private NotificationRepository notificationRepository;
+    private NotificationService notificationService;
+    private UserService userService;
 
 
     @Autowired
-    public ProjectController(ProjectRepository projectRepository, UserRepository userRepository, ProjectService projectService , NotificationRepository notificationRepository) {
-        this.projectRepository = projectRepository;
-        this.userRepository = userRepository;
+    public ProjectController(ProjectService projectService, NotificationService notificationService, UserService userService) {
         this.projectService = projectService;
-        this.notificationRepository = notificationRepository;
+        this.notificationService = notificationService;
+        this.userService = userService;
     }
 
-    @GetMapping("/newProject")
-    public String newProject() {
-        return "newProject";
-    }
-
-    @PostMapping("/newProject")
-    public String newProjectForm(@RequestParam String name, @RequestParam String description) {
-        Project project = new Project(name, description, getUserAuthentication());
-        projectRepository.save(project);
-
-        return "index";
-    }
 
     @GetMapping("/myProjectList")
     public String myProjectList(Model model) {
-        model.addAttribute("projects", projectRepository.findAllByAdmin_Username(getUserAuthentication().getUsername()));
+        model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(userService.getUserAuthentication().getUsername()));
         return "myProjectList";
     }
 
-    @GetMapping("/notification")
-    public HttpStatus httpStatus() {
-        List<Notification> notificationList = notificationRepository.findAllByUserUsernameAndViewed(getUserAuthentication().getUsername(), false);
-        for (Notification notification : notificationList) {
-            notification.setViewed(true);
-        }
-        notificationRepository.saveAll(notificationList);
-        return HttpStatus.NO_CONTENT;
-    }
 
-    @GetMapping("/addUsersToProject/{id}")
-    public String addUserToProject(@PathVariable int id, Model model) {
-        model.addAttribute("id", id);
+    @GetMapping("/addUsersToProject")
+    public String addUserToProject(Model model,
+                                   @RequestParam String projectId) {
+        if (projectId != null) {
+            model.addAttribute(PROJECT_HANDLER, projectService.getProject(Long.parseLong(projectId)));
+        }
         return "addUsersToProject";
 
     }
 
-    @GetMapping("/viewUsersToProject/{id}")
+    @PostMapping("/addUsersToProject")
+    public String addUserToProjectPost(Model model,
+                                       @RequestParam String projectId,
+                                       @RequestParam String email
+    ) {
 
-    public String viewUsersToProject(@PathVariable int id, Model model) {
-        model.addAttribute(" id", id);
+        model.addAttribute(PROJECT_HANDLER, projectService.getProject(Long.parseLong(projectId)));
+
+
+        Optional<User> userOptional = userService.getUserByEmail(email);
+        Optional<Project> projectOptional = projectService.getProjectById(Long.parseLong(projectId));
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (projectOptional.isPresent()) {
+                Project project = projectOptional.get();
+                Notification notification = new Notification("Project invitation", "User "
+                        + userService.getUserAuthentication().getEmail()
+                        + " I want to add you to the project "
+                        + project.getName(), user, project.getId());
+                notificationService.save(notification);
+                model.addAttribute(SUCCSES_ADDING_NOTIFICATION, SUCCSES_ADDING_NOTIFICATION_MESSAGE);
+                return "addUsersToProject";
+            }
+            model.addAttribute(ERROR_ADDING_NOTIFICATION, ERROR_ADDING_NOTIFICATION_MESSAGE);
+        }
+        model.addAttribute(ERROR_ADDING_NOTIFICATION_USERS, ERROR_ADDING_NOTIFICATION_USERS_MESSAGE);
+        return "addUsersToProject";
+    }
+
+
+    @GetMapping("/viewUsersToProject")
+    public String viewUsersToProject(Model model) {
         return "viewUsersToProject";
     }
 
-
-    public User getUserAuthentication() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userName = auth.getName();
-        return userRepository.findByUsername(userName).get();
-    }
 
     @GetMapping("/projectPage")
     public String getProjectPanel(Model model, @RequestParam(required = false) String projectId) {

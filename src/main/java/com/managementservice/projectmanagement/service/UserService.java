@@ -53,7 +53,7 @@ public class UserService {
     public User getUserById(long id) {
        return userRepository.findById(id).orElseThrow(NoResultException::new);
     }
-}
+    
     public User getUserAuthentication() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();

@@ -37,8 +37,8 @@
                                 <th:block th:each="sprint : ${project.getSprints()}">
 
                                     <tr>
-                                        <form id="getSprint" method="get" th:action="@{/sprint}">
-                                            <input type="hidden" th:value="${sprint.getId()}" name="sprintId">
+                                        <form id="getSprint" method="get" th:action="@{'/sprint/' + ${sprint.getId()}}">
+<!--                                            <input type="hidden" th:value="${sprint.getId()}" name="sprintId">-->
                                             <td><button type="submit" form="getSprint" th:text="${sprint.getName()}"></button></td>
                                         </form>
                                         <td th:text="${sprint.getDateFrom()}"></td>

@@ -24,10 +24,11 @@ public class TaskService {
         this.userService = userService;
     }
 
-    public void createTask(String name, String description, Long sprintId, int taskValidation, String progress, User user){
+    public void createTask(String name, String description, Long sprintId, int taskValidation, String progress, String username){
 
         Sprint sprint = sprintService.getSprintById(sprintId);
         Progres progres = Progres.valueOf(progress);
+        User user = userService.getUserByUsernameOrEmail(username);
 
         Task task = Task.TaskBuilder.aTask()
                 .withName(name)

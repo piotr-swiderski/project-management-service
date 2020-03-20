@@ -19,6 +19,7 @@
                     <li class="breadcrumb-item active" th:text="${project.name}"></li>
                 </ol>
 
+
                 <div class="card mb-4">
                     <div class="card-header"><i class="fas fa-table mr-1"></i>Sprints</div>
                     <div class="card-body">
@@ -26,6 +27,7 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
+                                    <th>Sprint name</th>
                                     <th>Date from</th>
                                     <th>Date to</th>
                                     <th>Story points</th>
@@ -33,7 +35,12 @@
                                 </thead>
                                 <tbody>
                                 <th:block th:each="sprint : ${project.getSprints()}">
+
                                     <tr>
+                                        <form id="getSprint" method="get" th:action="@{'/sprint/' + ${sprint.getId()}}">
+<!--                                            <input type="hidden" th:value="${sprint.getId()}" name="sprintId">-->
+                                            <td><button type="submit" form="getSprint" th:text="${sprint.getName()}"></button></td>
+                                        </form>
                                         <td th:text="${sprint.getDateFrom()}"></td>
                                         <td th:text="${sprint.getDateTo()}"></td>
                                         <td th:text="${sprint.getStoryPoints()}"></td>
@@ -49,6 +56,8 @@
                     <div class="card-body">
 
                         <form id="myForm" name="myForm" method="post" th:action="@{/projectPage}">
+                            <label for="name">Date From:</label><br>
+                            <input id="name" type="text" value="" name="name" placeholder="Sprint name"><br>
                             <label for="dateFrom">Date From:</label><br>
                             <input id="dateFrom" type="date" value="" name="dateFrom" placeholder="Date from"><br>
                             <label for="dateTo">Date To:</label><br>

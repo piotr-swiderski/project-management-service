@@ -37,8 +37,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Optional<User> getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username).get();
     }
 
     public User getUserByUsernameOrEmail(String value) {
@@ -50,6 +50,10 @@ public class UserService {
     }
 
 
+    public User getUserById(long id) {
+       return userRepository.findById(id).orElseThrow(NoResultException::new);
+    }
+    
     public User getUserAuthentication() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();

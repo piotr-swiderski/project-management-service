@@ -8,35 +8,56 @@
 }
 
 .table_box {
-  background-color: gray;
+  background-color: #ebecf0;
   color: #fff;
   border-radius: 5px;
-  padding: 20px;
+  padding: 10px 8px;
   font-size: 150%;
   padding-bottom: 100px;
   /*height: 90vh;*/
 }
 
+.task-name {
+  display: block;
+  text-align: left;
+  text-size-adjust: 15px;
+  size: 10px;
+  color: #007bff;
+  font-size: 18px;
+}
+
+.task-creator {
+  font-size: 15px;
+  text-align: left;
+  color: gray;
+}
+
 
 .table {
   margin-bottom: -37px;
-  text-align: center;
+  /*text-align: center;*/
 }
 
 .table_name {
-  background-color: darkslategray;
-  color: white;
-  text-align: center;
-  padding: 10px;
-  margin: 5px;
+  /*background-color: darkslategray;*/
+  color: black;
+  /*text-align: center;*/
+  /*padding: 10px;*/
+  /*margin: 5px;*/
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 
 }
 
 .task {
-  background-color: darkgreen;
-  text-align: center;
-  padding: 5px;
+  background-color: white;
+  /*text-align: center;*/
+  padding: 5px 8px;
   margin: 4px;
+  border-radius: 10px;
+
 }
 
 .window {
@@ -102,7 +123,7 @@
 }
 
 .window-body {
-  height: 40vh;
+  /*height: 40vh;*/
 }
 
 .window-body-task {
@@ -110,11 +131,11 @@
   padding: 10px;
   grid-template-columns: 1fr;
   display: block;
-  height: 100px;
 }
 
 .button-create {
   margin-top: 10px;
+  margin-left: 34%;
 }
 
 .close {

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/fragments/head :: headerfiles "></head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/sprintStyle.css">
 
 <body>
@@ -27,14 +27,15 @@ integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6J
                 <div class="wrapper">
 
                     <div class="table">
-                        <div class="table_box">
+                        <div class="table_box" id="ToDo">
                             <div class="table_name" id="tableToDo">
                                 TO DO
                             </div>
                             <div th:each="task: ${tasksList}">
                                 <div th:if="${task.getProgres().name().equals('ToDo')}">
                                     <div th:id="${task.getId()}" class="task" draggable="true">
-                                        <a th:text="${task.getName()}"></a>
+                                        <span class="task-name" th:text="${task.getName()}"></span>
+                                        <span class="task-creator" th:text="'Created by Piotr'"></span>
                                     </div>
                                 </div>
                             </div>
@@ -43,14 +44,15 @@ integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6J
                     </div>
 
                     <div class="table">
-                        <div class="table_box">
+                        <div class="table_box" id="InProgress">
                             <div class="table_name">
                                 IN PROGRESS
                             </div>
                             <div th:each="task: ${tasksList}">
                                 <div th:if="${task.getProgres().name().equals('InProgress')}">
                                     <div th:id="${task.getId()}" class="task" draggable="true">
-                                        <a th:text="${task.getName()}"></a>
+                                        <span class="task-name" th:text="${task.getName()}"></span>
+                                        <span class="task-creator" th:text="'Created by Piotr'"></span>
                                     </div>
                                 </div>
                             </div>
@@ -59,18 +61,16 @@ integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6J
                     </div>
 
                     <div class="table">
-                        <div class="table_box">
+                        <div class="table_box" id="Done">
                             <div class="table_name">
                                 DONE
                             </div>
                             <div th:each="task: ${tasksList}">
                                 <div th:if="${task.getProgres().name().equals('Done')}">
                                     <div th:id="${task.getId()}" class="task" draggable="true">
-                                        <a th:text="${task.getName()}"></a>
-                                        <a th:text="${task.getDescription()}"></a>
-                                        <a th:text="${task.getTaskValidity()}"></a>
+                                        <span class="task-name" th:text="${task.getName()}"></span>
+                                        <span class="task-creator" th:text="'Created by Piotr'"></span>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -143,7 +143,7 @@ integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6J
 
                                 </div>
                                 <input name="taskProgress" id="taskProgress" type="hidden">
-<!--                                <input name="sprintId" id="sprintId" type="hidden" th:value="${sprintId}">-->
+                                <!--                                <input name="sprintId" id="sprintId" type="hidden" th:value="${sprintId}">-->
                                 <br>
                                 <button id="createTask" class="btn btn-primary" type="submit">Create</button>
                             </form>
@@ -181,10 +181,6 @@ integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6J
 
 
         <script th:inline="javascript">
-
-            var taskEx = document.getElementById("tableToDo");
-
-
             var dropTarget = document.querySelector(".wrapper");
             var dropElements = document.querySelectorAll(".task");
 
@@ -200,10 +196,33 @@ integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6J
             dropTarget.addEventListener("drop", function (ev) {
                 ev.preventDefault();
                 let target = ev.target;
+                if (target.className !== 'table_box') {
+                    if (target.className !== 'task') {
+                        return;
+                    }
+                    target = target.parentElement.parentNode.parentNode;
+                }
                 let srcId = ev.dataTransfer.getData("srcId");
+
+                postTask(target.id, ev.dataTransfer.getData("srcId"));
+
                 target.appendChild(document.getElementById(srcId));
             });
 
+
+            function postTask(tableName, taskId) {
+                var data = {};
+                data["taskId"] = taskId;
+                data["tableName"] = tableName;
+
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json",
+                    url: "pageChange",
+                    data: data,
+                    dataType: 'json'
+                });
+            }
         </script>
 
         <script>
@@ -285,9 +304,9 @@ integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6J
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
-<script src="js/scripts.js"></script>
+<!--<script src="js/scripts.js"></script>-->
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-<script src="assets/demo/datatables-demo.js"></script>
+<!--<script src="assets/demo/datatables-demo.js"></script>-->
 </body>
 </html>

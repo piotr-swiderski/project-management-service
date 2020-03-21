@@ -8,6 +8,7 @@ import com.managementservice.projectmanagement.repositorie.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Service
@@ -24,7 +25,7 @@ public class TaskService {
         this.userService = userService;
     }
 
-    public void createTask(String name, String description, Long sprintId, int taskValidation, String progress, String username){
+    public void createTask(String name, String description, Long sprintId, int taskValidation, String progress, String username) {
 
         Sprint sprint = sprintService.getSprintById(sprintId);
         Progres progres = Progres.valueOf(progress);
@@ -44,10 +45,20 @@ public class TaskService {
         sprintService.saveSprint(sprint);
     }
 
-    public List<Task> findAllTaskBySprintId(Long sprintId){
+    public List<Task> findAllTaskBySprintId(Long sprintId) {
         return taskRepository.findAllBySprint(sprintId);
     }
 
 
+    public void changeTaskProgress(String taskId, String tableName) {
 
+        long parseTaskId = Long.parseLong(taskId);
+        Progres progress = Progres.valueOf(tableName);
+
+        Task task = taskRepository.findById(parseTaskId).orElseThrow(NoResultException::new);
+        task.setProgres(progress);
+        taskRepository.save(task);
+
+
+    }
 }

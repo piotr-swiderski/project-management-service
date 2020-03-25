@@ -1,162 +1,358 @@
 .wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 10px;
-  background-color: #fff;
-  padding: 20px;
-  color: #444;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    background-color: #fff;
+    padding: 50px 10px;
+    color: #444;
 }
 
 .table_box {
-  background-color: #ebecf0;
-  color: #fff;
-  border-radius: 5px;
-  padding: 10px 8px;
-  font-size: 150%;
-  padding-bottom: 100px;
-  /*height: 90vh;*/
+    background-color: #ebecf0;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 8px;
+    font-size: 150%;
+    padding-bottom: 100px;
+    /*height: 90vh;*/
 }
 
 .task-name {
-  display: block;
-  text-align: left;
-  text-size-adjust: 15px;
-  size: 10px;
-  color: #007bff;
-  font-size: 18px;
+    display: block;
+    text-align: left;
+    text-size-adjust: 15px;
+    size: 10px;
+    color: #007bff;
+    font-size: 18px;
 }
 
 .task-creator {
-  font-size: 15px;
-  text-align: left;
-  color: gray;
+    font-size: 15px;
+    text-align: left;
+    color: gray;
 }
 
 
 .table {
-  margin-bottom: -37px;
-  /*text-align: center;*/
+    margin-bottom: -37px;
+    /*text-align: center;*/
 }
 
 .table_name {
-  /*background-color: darkslategray;*/
-  color: black;
-  /*text-align: center;*/
-  /*padding: 10px;*/
-  /*margin: 5px;*/
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+    /*background-color: darkslategray;*/
+    color: black;
+    /*text-align: center;*/
+    /*padding: 10px;*/
+    /*margin: 5px;*/
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
 }
 
 .task {
-  background-color: white;
-  /*text-align: center;*/
-  padding: 5px 8px;
-  margin: 4px;
-  border-radius: 10px;
+    background-color: white;
+    /*text-align: center;*/
+    padding: 5px 8px;
+    margin: 4px;
+    border-radius: 10px;
 
 }
 
 .window {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  margin: 40px;
-  border-radius: 40px;
-  padding-top: 300px; /* Location of the box */
-  padding-right: 100px;
-  padding-left: 100px;
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    margin: 40px;
+    border-radius: 40px;
+    padding-top: 10%; /* Location of the box */
+    padding-right: 100px;
+    padding-left: 100px;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 .window-content {
-  position: relative;
-  background-color: #fefefe;
-  margin: auto;
-  padding: 0;
-  border: 1px solid #888;
-  width: fit-content;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  -webkit-animation-name: animatetop;
-  -webkit-animation-duration: 0.4s;
-  animation-name: animatetop;
-  animation-duration: 0.4s
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: fit-content;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
 }
 
 
 .window-header {
-  padding: 2px 16px;
-  background-color: #5cb85c;
-  color: white;
+    /*//margin: 12px 40px 8px 56px;*/
+    margin:11px 40px 3px 56px;
+    background-color: #ffffff;
+    color: #525252;
 }
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
-  from {
-    top: -300px;
-    opacity: 0
-  }
-  to {
-    top: 0;
-    opacity: 1
-  }
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
 }
 
 @keyframes animatetop {
-  from {
-    top: -300px;
-    opacity: 0
-  }
-  to {
-    top: 0;
-    opacity: 1
-  }
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
 }
 
 .window-body {
-  /*height: 40vh;*/
+    /*height: 40vh;*/
 }
 
 .window-body-task {
-  margin: 5px;
-  padding: 10px;
-  grid-template-columns: 1fr;
-  display: block;
+    margin: 5px;
+    padding: 10px;
+    grid-template-columns: 1fr;
+    display: block;
 }
 
 .button-create {
-  margin-top: 10px;
-  margin-left: 34%;
+    margin-top: 10px;
+    margin-left: 34%;
 }
 
 .close {
-  color: white;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+    color: #353030;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 2px 10px;
 }
 
 
 .close:hover,
 .close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .custom-control-label {
-  position: relative;
-  margin-bottom: 0;
-  vertical-align: top;
-  padding-left: 20px;
+    position: relative;
+    margin-bottom: 0;
+    vertical-align: top;
+    padding-left: 20px;
+}
+
+/*sprint task property*/
+
+.window-title {
+    margin: 4px 0 0;
+    padding: 8px 0 0;
+}
+
+.card-detail-title-assist {
+    display: none;
+}
+
+textarea.mod-card-back-title {
+    background: transparent;
+    border-color: transparent;
+    border-radius: 3px;
+    box-shadow: none;
+    font-size: 20px;
+    font-weight: 600;
+    height: 32px;
+    line-height: 24px;
+    margin: -4px -8px;
+    min-height: 24px;
+    padding: 4px 8px 0px 8px;
+    resize: none;
+    width: 100%;
+}
+
+.window-title h2 {
+    margin-right: 4px;
+}
+
+.window-header-inline-content {
+    cursor: default;
+    display: inline-block;
+    margin: 4px 8px 4px 2px;
+}
+
+.window-module {
+    clear: both;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.window-module-title.description-title {
+    display: flex;
+    align-items: center;
+    min-height: 32px;
+}
+
+.window-module-title-no-divider {
+    border-bottom: none;
+}
+
+.window-module-title {
+    border-bottom: 1px solid rgba(9, 30, 66, .13);
+    padding: 16px 0px 0px 0px;
+    position: relative;
+    margin: 0 0 4px 40px;
+}
+
+.u-gutter {
+    margin-left: 40px;
+    margin-right: 9px;
+}
+
+.u-inline-block {
+    border: none;
+    font-size: 14px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 15px;
+    padding-top: 0px;
+}
+
+.u-inline-block-description {
+    font-size: 19px;
+    padding: 2px 2px 2px 2px;
+    border-color: transparent;
+    margin-bottom: 0.1rem;
+}
+
+.window-main-col {
+    float: left;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 24px;
+    padding: 0 8px 8px 16px;
+    position: relative;
+    width: 552px;
+    z-index: 0;
+    background-color: #fff;
+}
+
+.task-description {
+    background: #f5f6f8;
+    border-color: transparent;
+    width: 100%;
+    margin: 2px 0px -11px 7px;
+    resize: none;
+
+}
+
+.check-list {
+    padding-left: 21px;
+
+
+}
+
+.div-padding-content{
+
+}
+
+.check-list-task {
+
+}
+
+.check-list-styling{
+    position: relative;
+    margin-bottom: 0px;
+    vertical-align: top;
+    padding-left: 20px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+
+.window-sidebar {
+    float: right;
+    padding: 0 16px 8px 8px;
+    width: 168px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.button-link:hover {
+    background-color: rgba(9,30,66,.08);
+    box-shadow: none;
+    border: none;
+}
+a:hover {
+    color: #091e42;
+}
+a:active, a:hover {
+    outline: 0;
+}
+.button-link {
+    background-color: rgba(9,30,66,.04);
+    box-shadow: none;
+    border: none;
+    border-radius: 3px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    height: 32px;
+    margin-top: 8px;
+    max-width: 300px;
+    overflow: hidden;
+    padding: 6px 12px;
+    position: relative;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+    transition-property: background-color,border-color,box-shadow;
+    transition-duration: 85ms;
+    transition-timing-function: ease;
+}
+
+.card-detail-window {
+    min-height: 600px;
+}
+
+.u-clearfix:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.w3-white, .w3-hover-white:hover {
+    color: #000!important;
+    background-color: #f5f5f5!important;
+}
+
+.h3-styling h3 {
+    font-size: 19px;
+}
+
+.btn-in-content {
+    max-width: 152px;
 }
 

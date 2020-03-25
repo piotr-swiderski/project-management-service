@@ -1,5 +1,7 @@
 package com.managementservice.projectmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -15,6 +17,7 @@ public class Task implements Serializable {
     private String description;
 
     @ManyToOne
+    @JsonIgnore
     private Sprint sprint;
 
     private int taskValidity;

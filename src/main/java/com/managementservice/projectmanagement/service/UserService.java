@@ -51,9 +51,9 @@ public class UserService {
 
 
     public User getUserById(long id) {
-       return userRepository.findById(id).orElseThrow(NoResultException::new);
+        return userRepository.findById(id).orElseThrow(NoResultException::new);
     }
-    
+
     public User getUserAuthentication() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
@@ -64,8 +64,12 @@ public class UserService {
         return getUserAuthentication().getUsername();
     }
 
-    public Optional<User> getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(NoResultException::new);
+    }
+
+    public void save(User user) {
+        userRepository.save(user);
     }
 }
 

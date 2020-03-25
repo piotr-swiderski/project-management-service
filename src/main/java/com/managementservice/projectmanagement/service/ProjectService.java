@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -27,7 +26,7 @@ public class ProjectService {
 
     @Transactional
     public boolean addSprintToProject(long projectId, String sprintName, LocalDate dateFrom, LocalDate dateTo, int storyPoints) {
-        Sprint sprint = new Sprint(dateTo, dateFrom, storyPoints,sprintName);
+        Sprint sprint = new Sprint(dateTo, dateFrom, storyPoints, sprintName);
         Project project = projectRepository.findById(projectId).orElseThrow(NoResultException::new);
 
         if (!isSprintDateValid(project, dateFrom, dateTo)) {
@@ -70,7 +69,8 @@ public class ProjectService {
         return projectRepository.findAllByAdmin_Username(userName);
     }
 
-    public Optional<Project> getProjectById(Long id) {
-        return projectRepository.findById(id);
+    public Project getProjectById(Long id) {
+        return projectRepository.findById(id).orElseThrow(NoResultException::new);
     }
+
 }

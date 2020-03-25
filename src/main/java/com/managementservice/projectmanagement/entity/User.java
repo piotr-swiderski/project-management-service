@@ -39,11 +39,7 @@ public class User implements UserDetails, Serializable {
     private AccountTypeEnum accountType;
 
 
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "User_Project",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "project_id")})
+    @ManyToMany(mappedBy = "users")
     private Set<Project> projects = new HashSet<>();
 
 
@@ -149,6 +145,21 @@ public class User implements UserDetails, Serializable {
 
     public void setAccountType(AccountTypeEnum accountType) {
         this.accountType = accountType;
+    }
+
+    public Set<Project> getProjects() {
+        return projects;
+    }
+
+
+    public void addProject(Project project) {
+        this.projects.add(project);
+        project.getUsers().add(this);
+    }
+
+    public void removeProject(Project project) {
+        this.projects.remove(project);
+        project.getUsers().remove(this);
     }
 
     public static final class UserBuilder {

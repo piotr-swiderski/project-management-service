@@ -2,11 +2,9 @@ package com.managementservice.projectmanagement.controller;
 
 
 import com.managementservice.projectmanagement.entity.Notification;
-import com.managementservice.projectmanagement.entity.ParticipationInTheProject;
 import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.service.NotificationService;
-import com.managementservice.projectmanagement.service.ParticipationInTheProjectService;
 import com.managementservice.projectmanagement.service.ProjectService;
 import com.managementservice.projectmanagement.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -21,14 +19,13 @@ public class NotificationController {
     private NotificationService notificationService;
     private UserService userService;
     private ProjectService projectService;
-    private ParticipationInTheProjectService participationService;
 
 
-    public NotificationController(NotificationService notificationService, UserService userService, ProjectService projectService1, ParticipationInTheProjectService participationService) {
+    public NotificationController(NotificationService notificationService, UserService userService, ProjectService projectService1) {
         this.notificationService = notificationService;
         this.userService = userService;
         this.projectService = projectService1;
-        this.participationService = participationService;
+
     }
 
     @GetMapping("/notification")
@@ -48,17 +45,19 @@ public class NotificationController {
         Project project = projectService.getProject(notification.getProjectId());
         User user = userService.getUserAuthentication();
 
-        ParticipationInTheProject participation = new ParticipationInTheProject(project, user);
-        participationService.save(participation);
+        project.addUser(user);
+        projectService.saveProject(project);
+
+
         notificationService.setStatusToFalseByNotifiaction(notification);
-
-
     }
 
 
     @GetMapping("/delete")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void delete(@RequestParam String id) {
+        Notification notification = notificationService.getNotificationById(Long.parseLong(id));
+        notificationService.setStatusToFalseByNotifiaction(notification);
     }
 
 }

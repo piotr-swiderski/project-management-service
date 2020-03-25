@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.persistence.NoResultException;
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.List;
 
 import static com.managementservice.projectmanagement.utils.ControllerUtil.*;
 
@@ -57,35 +58,80 @@ public class ProjectController {
                                        @RequestParam String projectId,
                                        @RequestParam String email
     ) {
-
         model.addAttribute(PROJECT_HANDLER, projectService.getProject(Long.parseLong(projectId)));
 
+        User user;
+        Project project;
 
-        Optional<User> userOptional = userService.getUserByEmail(email);
-        Optional<Project> projectOptional = projectService.getProjectById(Long.parseLong(projectId));
-
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            if (projectOptional.isPresent()) {
-                Project project = projectOptional.get();
-                Notification notification = new Notification("Project invitation", "User "
-                        + userService.getUserAuthentication().getEmail()
-                        + " I want to add you to the project "
-                        + project.getName(), user, project.getId());
-                notificationService.save(notification);
-                model.addAttribute(SUCCSES_ADDING_NOTIFICATION, SUCCSES_ADDING_NOTIFICATION_MESSAGE);
-                return "addUsersToProject";
-            }
-            model.addAttribute(ERROR_ADDING_NOTIFICATION, ERROR_ADDING_NOTIFICATION_MESSAGE);
+        try {
+            user = userService.getUserByEmail(email);
+        } catch (NoResultException e) {
+            model.addAttribute(ERROR_ADDING_NOTIFICATION_USERS, ERROR_ADDING_NOTIFICATION_USERS_MESSAGE);
+            return "addUsersToProject";
         }
-        model.addAttribute(ERROR_ADDING_NOTIFICATION_USERS, ERROR_ADDING_NOTIFICATION_USERS_MESSAGE);
+
+        try {
+            project = projectService.getProjectById(Long.parseLong(projectId));
+        } catch (NoResultException e) {
+            model.addAttribute(SUCCSES_ADDING_NOTIFICATION, SUCCSES_ADDING_NOTIFICATION_MESSAGE);
+            return "addUsersToProject";
+        }
+
+        Notification notification = new Notification("Project invitation", "User "
+                + userService.getUserAuthentication().getEmail()
+                + " I want to add you to the project "
+                + project.getName(), user, project.getId());
+        notificationService.save(notification);
+        model.addAttribute(SUCCSES_ADDING_NOTIFICATION, SUCCSES_ADDING_NOTIFICATION_MESSAGE);
         return "addUsersToProject";
+
     }
 
 
     @GetMapping("/viewUsersToProject")
-    public String viewUsersToProject(Model model) {
+    public String viewUsersToProject(@RequestParam String projectId, Model model) {
+        Project project = projectService.getProject(Long.parseLong(projectId));
+        List<User> userList = project.getUsers();
+        model.addAttribute("users", userList);
+        model.addAttribute("project", project);
         return "viewUsersToProject";
+
+    }
+
+
+    @GetMapping("/deleteUser")
+    public String deleteUSer(@RequestParam String projectId, @RequestParam String userId, Model model) {
+        User user;
+        Project project;
+
+
+        try {
+            user = userService.getUserById(Long.parseLong(userId));
+        } catch (NoResultException e) {
+            System.out.println(e.getMessage());
+            //TODO
+            return "viewUsersToProject";
+        }
+
+        try {
+            project = projectService.getProjectById(Long.parseLong(projectId));
+        } catch (NoResultException e) {
+            System.out.println(e.getMessage());
+            //TODO
+            return "viewUsersToProject";
+        }
+
+
+        if (user == project.getAdmin()) {
+            model.addAttribute(ERROR_DELETE_USERS_TO_PROJECT, ERROR_DELETE_USERS_TO_PROJECT_MESSAGE);
+            return viewUsersToProject(projectId, model);
+        }
+
+        project.getUsers().remove(user);
+        projectService.saveProject(project);
+        model.addAttribute(SUCCSES_DELETE_USER, SUCCSES_DELETE_USER_MESSAGE);
+
+        return viewUsersToProject(projectId, model);
     }
 
 

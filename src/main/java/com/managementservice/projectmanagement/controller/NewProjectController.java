@@ -1,8 +1,7 @@
 package com.managementservice.projectmanagement.controller;
 
-import com.managementservice.projectmanagement.entity.ParticipationInTheProject;
 import com.managementservice.projectmanagement.entity.Project;
-import com.managementservice.projectmanagement.service.ParticipationInTheProjectService;
+import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.service.ProjectService;
 import com.managementservice.projectmanagement.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -16,12 +15,11 @@ public class NewProjectController {
 
     private ProjectService projectService;
     private UserService userService;
-    private ParticipationInTheProjectService participationService;
 
-    public NewProjectController(ProjectService projectService, UserService userService, ParticipationInTheProjectService participationService) {
+
+    public NewProjectController(ProjectService projectService, UserService userService) {
         this.projectService = projectService;
         this.userService = userService;
-        this.participationService = participationService;
     }
 
     @GetMapping("/newProject")
@@ -32,10 +30,12 @@ public class NewProjectController {
 
     @PostMapping("/newProject")
     public String newProjectForm(Model model, @RequestParam String name, @RequestParam String description) {
-        Project project = new Project(name, description, userService.getUserAuthentication());
+        User user = userService.getUserAuthentication();
+        Project project = new Project(name, description, user);
+
         projectService.saveProject(project);
-        ParticipationInTheProject participation = new ParticipationInTheProject(project, userService.getUserAuthentication());
-        participationService.save(participation);
+        user.addProject(project);
+        userService.save(user);
 
         model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(userService.getUserAuthentication().getUsername()));
         return "/myProjectList";

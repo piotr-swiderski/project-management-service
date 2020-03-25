@@ -3,6 +3,8 @@ package com.managementservice.projectmanagement.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,8 +24,13 @@ public class Project implements Serializable {
     @OneToMany
     private Set<Sprint> sprints = new HashSet<>();
 
-    @ManyToMany(mappedBy = "projects")
-    private Set<User> users = new HashSet<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST,
+            CascadeType.MERGE})
+    @JoinTable(
+            name = "User_Project",
+            joinColumns = {@JoinColumn(name = "project_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private List<User> users = new LinkedList<>();
 
     public Project() {
     }
@@ -34,7 +41,7 @@ public class Project implements Serializable {
         this.admin = admin;
     }
 
-    public Project(String name, String description, User admin, Set<User> users) {
+    public Project(String name, String description, User admin, List<User> users) {
         this.name = name;
         this.description = description;
         this.admin = admin;
@@ -77,11 +84,11 @@ public class Project implements Serializable {
         this.description = description;
     }
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 
@@ -91,5 +98,15 @@ public class Project implements Serializable {
 
     public void addSprints(Sprint sprint) {
         sprints.add(sprint);
+    }
+
+    public void addUser(User user) {
+        this.users.add(user);
+        user.getProjects().add(this);
+    }
+
+    public void removeUser(User user) {
+        this.users.remove(user);
+        user.getProjects().remove(this);
     }
 }

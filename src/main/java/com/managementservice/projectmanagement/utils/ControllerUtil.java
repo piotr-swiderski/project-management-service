@@ -8,17 +8,18 @@ public class ControllerUtil {
     public static final String ERROR_ADDING_NOTIFICATION_MESSAGE = "Failed to add user";
     public static final String ERROR_ADDING_NOTIFICATION_USERS = "error";
     public static final String ERROR_ADDING_NOTIFICATION_USERS_MESSAGE = "User not found";
+    public static final String ERROR_DELETE_USERS_TO_PROJECT = "error";
+    public static final String ERROR_DELETE_USERS_TO_PROJECT_MESSAGE = "Unable to delete project admin";
+
 
     public static final String PROJECT_HANDLER = "project";
-
-
-
     public static final String TASK_LIST = "tasksList";
 
 
-
-
     public static final String SUCCSES_ADDING_NOTIFICATION = "succes";
-    public static final String SUCCSES_ADDING_NOTIFICATION_MESSAGE = "notification sent";
+    public static final String SUCCSES_ADDING_NOTIFICATION_MESSAGE = "Notification sent";
+
+    public static final String SUCCSES_DELETE_USER = "succes";
+    public static final String SUCCSES_DELETE_USER_MESSAGE = "User removed from project";
 
 }

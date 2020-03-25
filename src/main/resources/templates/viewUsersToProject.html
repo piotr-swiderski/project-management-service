@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/fragments/head :: headerfiles ">
 
 </head>
+
 <body>
 <div th:replace="/fragments/headerNav :: nav "></div>
 
@@ -12,8 +13,57 @@
     <div id="layoutSidenav_content">
 
         <main>
+            <div class="container-fluid">
+                <h1 class="mt-4" th:text="${project.name}"></h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/myProjectList">myProject</a></li>
+                    <li class="breadcrumb-item active">Users</li>
+                </ol>
 
 
+                <div class="card mb-4">
+                    <div class="card-header"><i class="fas fa-table mr-1"></i>DataTable Example</div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <th:block th:each="user : ${users}">
+                                    <tr>
+                                        <td th:text="${user.getEmail()}">Descrpition</td>
+                                        <form method="get" th:action="@{/deleteUser}">
+                                            <input type="hidden" th:value="${project.id}" name="projectId">
+                                            <input type="hidden" th:value="${user.id}" name="userId">
+                                            <td>
+                                                <button type="submit" th:text="delete"></button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:if="${error != null}" class="alert alert-danger" onsubmit="button">
+                    <strong>Failure!</strong> <a th:text="${error}"></a>
+                </div>
+                <div th:if="${succes != null}" class="alert-success" onsubmit="button">
+                    <strong>Succes!</strong> <a th:text="${succes}"></a>
+                </div>
 
         </main>
 
@@ -21,7 +71,13 @@
         <div th:replace="/fragments/footer :: footer"></div>
     </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="js/scripts.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script src="assets/demo/datatables-demo.js"></script>
 
 </body>
 </html>

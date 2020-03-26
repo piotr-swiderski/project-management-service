@@ -124,12 +124,34 @@ let propTaskName = document.getElementById("propTaskName");
 let propTaskDescription = document.getElementById("propTaskDescription");
 let propTaskColumnName = document.getElementById("propTaskColumnName");
 
+let errandItem = document.getElementById("propErrandItem");
+let checkList = document.getElementById("check-list");
+console.log(errandItem);
+
+let item = document.createElement("div");
+item.id = "errandItem" + "23";
+item.className = "custom-control custom-checkbox check-list-styling";
+
+let errandInput = document.createElement('input');
+errandInput.type = 'checkbox';
+errandInput.className = "custom-control-input";
+errandInput.id = "input" + "23";
+errandInput.name = "23";
+let errandLabel = document.createElement('label');
+errandLabel.className = "custom-control-label";
+errandLabel.id = "label" + "23";
+errandLabel.htmlFor = "input" + "23";
+errandLabel.textContent = "TEKST 23"
+
+item.appendChild(errandInput);
+item.appendChild(errandLabel);
+checkList.appendChild(item);
 
 //let tasksList = [[${tasksList}]];
 //let tasksList = tasksList;
 
 function getTaskById(id) {
-   return tasksList.find(x => x.id.toString() == id);
+    return tasksList.find(x => x.id.toString() == id);
 }
 
 for (let i = 0; i < tasks.length; i++) {

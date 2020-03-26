@@ -290,8 +290,8 @@ textarea.mod-card-back-title {
 
 .window-sidebar {
     float: right;
-    padding: 0 16px 8px 8px;
-    width: 168px;
+    padding: 0px 10px 8px 5px;
+    width: 179px;
     overflow: hidden;
     z-index: 10;
 }

@@ -121,21 +121,25 @@
                                                name="taskValidity" value="1" checked>
                                         <label class="custom-control-label" for="customRadio">Trivial</label>
                                     </div>
+
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" class="custom-control-input" id="customRadio2"
                                                name="taskValidity" value="2">
                                         <label class="custom-control-label" for="customRadio2">Easy</label>
                                     </div>
+
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" class="custom-control-input" id="customRadio3"
                                                name="taskValidity" value="3">
                                         <label class="custom-control-label" for="customRadio3">Medium</label>
                                     </div>
+
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" class="custom-control-input" id="customRadio4"
                                                name="taskValidity" value="4">
                                         <label class="custom-control-label" for="customRadio4">Hard</label>
                                     </div>
+
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" class="custom-control-input" id="customRadio5"
                                                name="taskValidity" value="5">
@@ -152,7 +156,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div id="task-property" class="window">
                 <div class="card-detail-window u-clearfix">
@@ -177,7 +180,7 @@
                             <div class="w3-container w3-white w3-cell w3-mobile">
                                 <div class="window-body">
                                     <div>
-                                        <div class="window-main-col">
+                                        <div class="window-main-col"> <!--Opis-->
                                             <div class="div-padding-content">
                                                 <div class="window-module-title window-module-title-no-divider description-title">
                                                     <span class="icon-description icon-lg window-module-title-icon"></span>
@@ -193,7 +196,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="div-padding-content">
+                                            <div class="div-padding-content"> <!--Lista zadan-->
                                                 <div class="window-module-title window-module-title-no-divider description-title"><span
                                                         class="icon-description icon-lg window-module-title-icon"></span>
                                                     <h3 class="u-inline-block-description">Lista zadań</h3>
@@ -202,36 +205,8 @@
                                                     <div class="description-content js-desc-content">
                                                         <div class="current markeddown hide-on-edit js-desc js-show-with-desc hide"
                                                              dir="auto">
-                                                            <div class="check-list">
-                                                                <!--                                                    <form>-->
-                                                                <div class="custom-control custom-checkbox check-list-styling">
-                                                                    <input type="checkbox" class="custom-control-input"
-                                                                           id="customCheck1" name="example1">
-                                                                    <label class="custom-control-label "
-                                                                           for="customCheck1">Check
-                                                                        this custom checkbox</label>
-                                                                </div>
-                                                                <div class="custom-control custom-checkbox check-list-styling">
-                                                                    <input type="checkbox" class="custom-control-input"
-                                                                           id="customCheck2" name="example1">
-                                                                    <label class="custom-control-label check-list-styling"
-                                                                           for="customCheck2">Check
-                                                                        this custom checkbox</label>
-                                                                </div>
-                                                                <div class="custom-control custom-checkbox check-list-styling">
-                                                                    <input type="checkbox" class="custom-control-input"
-                                                                           id="customCheck3" name="example1">
-                                                                    <label class="custom-control-label check-list-styling"
-                                                                           for="customCheck3">Check
-                                                                        this custom checkbox</label>
-                                                                </div>
-                                                                <div class="custom-control custom-checkbox check-list-styling">
-                                                                    <input type="checkbox" class="custom-control-input"
-                                                                           id="customCheck4" name="example1">
-                                                                    <label class="custom-control-label check-list-styling"
-                                                                           for="customCheck4">Check
-                                                                        this custom checkbox</label>
-                                                                </div>
+                                                            <div id="check-list" class="check-list">
+
                                                             </div>
                                                             <a class="button-link js-get-pups get-pups btn-in-content" href="#" title="Dodaj zadanie">Dodaj zadanie</a>
                                                         </div>
@@ -275,7 +250,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="window-module u-clearfix">
                                         <h3 class="mod-no-top-margin">Działania</h3>
                                         <div class="u-clearfix">
@@ -300,13 +274,9 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
-
                 </div>
             </div>
-
 
         </main>
         <div th:replace="/fragments/footer :: footer"></div>
@@ -314,15 +284,7 @@
     </div>
 </div>
 
-
-<!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">-->
-<!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">-->
-<!--<link rel="stylesheet" href="node_modules/mdbootstrap/css/bootstrap.min.css">-->
-<!--<link rel="stylesheet" href="node_modules/mdbootstrap/css/mdb.min.css">-->
-<!--<link rel="stylesheet" href="node_modules/mdbootstrap/css/style.css">-->
-
 <script th:inline="javascript">
-    /* variable used by index.js */
     var tasksList = [[${tasksList}]];
 </script>
 <script type="text/javascript" th:src="@{/js/sprint.js}">

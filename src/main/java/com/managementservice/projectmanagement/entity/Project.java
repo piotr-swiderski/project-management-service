@@ -1,5 +1,7 @@
 package com.managementservice.projectmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -19,6 +21,7 @@ public class Project implements Serializable {
     private String description;
 
     @OneToOne
+    @JsonIgnore
     private User admin;
 
     @OneToMany
@@ -30,6 +33,8 @@ public class Project implements Serializable {
             name = "User_Project",
             joinColumns = {@JoinColumn(name = "project_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
+
+    @JsonIgnore
     private List<User> users = new LinkedList<>();
 
     public Project() {

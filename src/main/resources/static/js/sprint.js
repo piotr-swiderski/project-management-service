@@ -1,5 +1,3 @@
-
-// Example starter JavaScript for disabling form submissions if there are invalid fields
 (function () {
     'use strict';
     window.addEventListener('load', function () {
@@ -18,6 +16,7 @@
     }, false);
 })();
 
+
 var dropTarget = document.querySelector(".wrapper");
 var dropElements = document.querySelectorAll(".task");
 
@@ -33,9 +32,33 @@ dropTarget.addEventListener("dragover", function (ev) {
 dropTarget.addEventListener("drop", function (ev) {
     ev.preventDefault();
     let target = ev.target;
+    if (target.className !== 'table_box') {
+        if (target.className !== 'task') {
+            return;
+        }
+        target = target.parentElement.parentNode.parentNode;
+    }
     let srcId = ev.dataTransfer.getData("srcId");
+
+    postTask(target.id, ev.dataTransfer.getData("srcId"));
+
     target.appendChild(document.getElementById(srcId));
 });
+
+
+function postTask(tableName, taskId) {
+    var data = {};
+    data["taskId"] = taskId;
+    data["tableName"] = tableName;
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "pageChange",
+        data: data,
+        dataType: 'json'
+    });
+}
 
 
 var windowToDo = document.getElementById("newTask");
@@ -44,7 +67,7 @@ var btnInProgress = document.getElementById("buttonInProgress");
 var btnDone = document.getElementById("buttonDone");
 var btnCreateTask = document.getElementById("createTask");
 var btnClick;
-var close = document.getElementsByClassName("close")[0];
+var close = document.getElementById("newTaskCloseBtn");
 
 btnToDo.onclick = function () {
     windowToDo.style.display = "block";
@@ -75,22 +98,74 @@ window.onclick = function (event) {
 
 
 btnCreateTask.onclick = function () {
+    var taskProgress = document.getElementById("taskProgress");
+    // var sprintId = document.getElementById("sprintId");
 
-        var taskProgress = document.getElementById("taskProgress");
-        var sprintId = document.getElementById("sprintId");
-
-        if (btnClick === "ToDo") {
-            taskProgress.value = "ToDo";
-        }
-        if (btnClick === "InProgress") {
-            taskProgress.value = "InProgress";
-        }
-        if (btnClick === "Done") {
-            taskProgress.value = "Done";
-        }
-
-        const urlParams = new URLSearchParams(window.location.search);
-        sprintId.value = urlParams.get('sprintId');
-
-
+    if (btnClick === "ToDo") {
+        taskProgress.value = "ToDo";
     }
+    if (btnClick === "InProgress") {
+        taskProgress.value = "InProgress";
+    }
+    if (btnClick === "Done") {
+        taskProgress.value = "Done";
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    //sprintId.value = urlParams.get('sprintId');
+}
+
+
+let tasks = document.getElementsByClassName("task");
+let taskProperty = document.getElementById("task-property");
+let nameOfTask = document.getElementById("propNameOfTask");
+let closeButtonTaskDesc = document.getElementById("propCloseBtn");
+let propTaskName = document.getElementById("propTaskName");
+let propTaskDescription = document.getElementById("propTaskDescription");
+let propTaskColumnName = document.getElementById("propTaskColumnName");
+
+let errandItem = document.getElementById("propErrandItem");
+let checkList = document.getElementById("check-list");
+console.log(errandItem);
+
+let item = document.createElement("div");
+item.id = "errandItem" + "23";
+item.className = "custom-control custom-checkbox check-list-styling";
+
+let errandInput = document.createElement('input');
+errandInput.type = 'checkbox';
+errandInput.className = "custom-control-input";
+errandInput.id = "input" + "23";
+errandInput.name = "23";
+let errandLabel = document.createElement('label');
+errandLabel.className = "custom-control-label";
+errandLabel.id = "label" + "23";
+errandLabel.htmlFor = "input" + "23";
+errandLabel.textContent = "TEKST 23"
+
+item.appendChild(errandInput);
+item.appendChild(errandLabel);
+checkList.appendChild(item);
+
+//let tasksList = [[${tasksList}]];
+//let tasksList = tasksList;
+
+function getTaskById(id) {
+    return tasksList.find(x => x.id.toString() == id);
+}
+
+for (let i = 0; i < tasks.length; i++) {
+    tasks[i].onclick = function () {
+        taskProperty.style.display = "block";
+        let taskById = getTaskById(tasks[i].id);
+        propTaskName.value = taskById.name;
+        propTaskDescription.value = taskById.description;
+        propTaskColumnName.text = taskById.progres;
+    }
+}
+
+closeButtonTaskDesc.onclick = function () {
+    taskProperty.style.display = "none";
+}
+
+

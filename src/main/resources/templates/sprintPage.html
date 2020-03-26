@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/sprintStyle.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 <body>
 
@@ -33,7 +34,7 @@
                             </div>
                             <div th:each="task: ${tasksList}">
                                 <div th:if="${task.getProgres().name().equals('ToDo')}">
-                                    <div th:id="${task.getId()}" class="task" draggable="true">
+                                    <div th:id="${task.getId()}" th:object="${task}" class="task" draggable="true">
                                         <span class="task-name" th:text="${task.getName()}"></span>
                                         <span class="task-creator" th:text="'Created by Piotr'"></span>
                                     </div>
@@ -83,7 +84,7 @@
             <div id="newTask" class="window">
                 <div class="window-content">
                     <div class="window-header">
-                        <span class="close">&times;</span>
+                        <span id="newTaskCloseBtn" class="close">&times;</span>
                         <h2>Create task</h2>
                     </div>
                     <div class="window-body">
@@ -120,21 +121,25 @@
                                                name="taskValidity" value="1" checked>
                                         <label class="custom-control-label" for="customRadio">Trivial</label>
                                     </div>
+
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" class="custom-control-input" id="customRadio2"
                                                name="taskValidity" value="2">
                                         <label class="custom-control-label" for="customRadio2">Easy</label>
                                     </div>
+
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" class="custom-control-input" id="customRadio3"
                                                name="taskValidity" value="3">
                                         <label class="custom-control-label" for="customRadio3">Medium</label>
                                     </div>
+
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" class="custom-control-input" id="customRadio4"
                                                name="taskValidity" value="4">
                                         <label class="custom-control-label" for="customRadio4">Hard</label>
                                     </div>
+
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" class="custom-control-input" id="customRadio5"
                                                name="taskValidity" value="5">
@@ -147,166 +152,143 @@
                                 <br>
                                 <button id="createTask" class="btn btn-primary" type="submit">Create</button>
                             </form>
-
-
                         </div>
                     </div>
                 </div>
             </div>
 
+            <div id="task-property" class="window">
+                <div class="card-detail-window u-clearfix">
+                    <div class="window-content">
+                        <span id="propCloseBtn" class="close">&times;</span>
+
+                        <div class="window-header">
+                            <span class="window-header-icon icon-lg icon-card js-card-header-icon"></span>
+                            <div class="window-title">
+                                <h2 class="card-detail-title-assist js-title-helper" dir="auto"></h2>
+                                <textarea id="propTaskName" class="mod-card-back-title js-card-detail-title-input"
+                                          dir="auto"
+                                          style="overflow: hidden; overflow-wrap: break-word; height: 33px;"></textarea>
+                            </div>
+                            <div class="window-header-inline-content quiet js-current-list">
+                                <p class="u-inline-block u-bottom">na liście
+                                    <a id="propTaskColumnName" href="#" class="js-open-move-from-header"></a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="w3-cell-row">
+                            <div class="w3-container w3-white w3-cell w3-mobile">
+                                <div class="window-body">
+                                    <div>
+                                        <div class="window-main-col"> <!--Opis-->
+                                            <div class="div-padding-content">
+                                                <div class="window-module-title window-module-title-no-divider description-title">
+                                                    <span class="icon-description icon-lg window-module-title-icon"></span>
+                                                    <h3 class="u-inline-block-description">Opis</h3>
+                                                </div>
+                                                <div class="u-gutter">
+                                                    <div class="description-content js-desc-content">
+                                                        <div class="current markeddown hide-on-edit js-desc js-show-with-desc hide"
+                                                             dir="auto">
+                                                <textarea id="propTaskDescription" class="task-description js-get-pups get-pups"
+                                                          placeholder="Dodaj bardziej szczegółowy opis…"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="div-padding-content"> <!--Lista zadan-->
+                                                <div class="window-module-title window-module-title-no-divider description-title"><span
+                                                        class="icon-description icon-lg window-module-title-icon"></span>
+                                                    <h3 class="u-inline-block-description">Lista zadań</h3>
+                                                </div>
+                                                <div class="u-gutter">
+                                                    <div class="description-content js-desc-content">
+                                                        <div class="current markeddown hide-on-edit js-desc js-show-with-desc hide"
+                                                             dir="auto">
+                                                            <div id="check-list" class="check-list">
+
+                                                            </div>
+                                                            <a class="button-link js-get-pups get-pups btn-in-content" href="#" title="Dodaj zadanie">Dodaj zadanie</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w3-container w3-white w3-cell w3-mobile">
+                                <div class="window-sidebar h3-styling">
+                                    <div class="window-module suggested-actions-module js-suggested-actions">
+                                        <div class="suggested-actions-settings js-suggested-actions-settings"><span
+                                                class="icon-sm icon-gear"></span></div>
+                                        <h3 class="mod-no-top-margin">Sugerowane</h3>
+                                        <div class="u-clearfix">
+                                            <a class="button-link js-join" href="#" title="Dołącz">
+                                                <span class="icon-sm icon-member"></span>
+                                                <span class="js-sidebar-action-text">Dołącz</span></a>
+                                        </div>
+                                    </div>
+                                    <div class="window-module u-clearfix">
+                                        <h3 class="mod-no-top-margin js-sidebar-add-heading">Dodaj do karty</h3>
+                                        <div class="u-clearfix">
+                                            <a class="button-link js-change-card-members" href="#" title="Członkowie">
+                                                <span class="icon-sm icon-member"></span>
+                                                <span class="js-sidebar-action-text">Członkowie</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="js-plugin-buttons">
+                                        <div class="window-module u-clearfix">
+                                            <h3>Dodatki</h3>
+                                            <div class="u-clearfix js-button-list"></div>
+                                            <div>
+                                                <a class="button-link js-get-pups get-pups" href="#"
+                                                   title="Cos tam">Cos tam</a>
+                                                <div class="js-card-back-pup-prompt"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="window-module u-clearfix">
+                                        <h3 class="mod-no-top-margin">Działania</h3>
+                                        <div class="u-clearfix">
+
+                                            <a class="button-link js-move-card" href="#" title="Przenieś">
+                                                <span class="icon-sm icon-move"></span>
+                                                <span class="js-sidebar-action-text">Przenieś</span>
+                                            </a>
+
+                                            <a class="button-link js-copy-card" href="#" title="Kopiuj">
+                                                <span class="icon-sm icon-copy"></span>
+                                                <span class="js-sidebar-action-text">Kopiuj</span>
+                                            </a>
+                                        </div>
+
+                                        <a class="button-link js-more-menu" href="#" title="Udostępnij">
+                                            <span class="icon-sm icon-share"></span>
+                                            <span class="js-sidebar-action-text">Udostępnij</span>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </main>
-
-
-        <script>
-            // Example starter JavaScript for disabling form submissions if there are invalid fields
-            (function () {
-                'use strict';
-                window.addEventListener('load', function () {
-                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                    var forms = document.getElementsByClassName('needs-validation');
-                    // Loop over them and prevent submission
-                    var validation = Array.prototype.filter.call(forms, function (form) {
-                        form.addEventListener('submit', function (event) {
-                            if (form.checkValidity() === false) {
-                                event.preventDefault();
-                                event.stopPropagation();
-                            }
-                            form.classList.add('was-validated');
-                        }, false);
-                    });
-                }, false);
-            })();
-        </script>
-
-
-        <script th:inline="javascript">
-            var dropTarget = document.querySelector(".wrapper");
-            var dropElements = document.querySelectorAll(".task");
-
-            for (let i = 0; i < dropElements.length; i++) {
-                dropElements[i].addEventListener("dragstart", function (ev) {
-                    ev.dataTransfer.setData("srcId", ev.target.id);
-                });
-            }
-            dropTarget.addEventListener("dragover", function (ev) {
-                ev.preventDefault();
-            });
-
-            dropTarget.addEventListener("drop", function (ev) {
-                ev.preventDefault();
-                let target = ev.target;
-                if (target.className !== 'table_box') {
-                    if (target.className !== 'task') {
-                        return;
-                    }
-                    target = target.parentElement.parentNode.parentNode;
-                }
-                let srcId = ev.dataTransfer.getData("srcId");
-
-                postTask(target.id, ev.dataTransfer.getData("srcId"));
-
-                target.appendChild(document.getElementById(srcId));
-            });
-
-
-            function postTask(tableName, taskId) {
-                var data = {};
-                data["taskId"] = taskId;
-                data["tableName"] = tableName;
-
-                $.ajax({
-                    type: "GET",
-                    contentType: "application/json",
-                    url: "pageChange",
-                    data: data,
-                    dataType: 'json'
-                });
-            }
-        </script>
-
-        <script>
-
-            var windowToDo = document.getElementById("newTask");
-            var btnToDo = document.getElementById("buttonToDo");
-            var btnInProgress = document.getElementById("buttonInProgress");
-            var btnDone = document.getElementById("buttonDone");
-            var btnCreateTask = document.getElementById("createTask");
-            var btnClick;
-            var close = document.getElementsByClassName("close")[0];
-
-            btnToDo.onclick = function () {
-                windowToDo.style.display = "block";
-                btnClick = "ToDo"
-
-            };
-
-            btnInProgress.onclick = function () {
-                windowToDo.style.display = "block";
-                btnClick = "InProgress"
-            };
-
-            btnDone.onclick = function () {
-                windowToDo.style.display = "block";
-                btnClick = "Done"
-
-            };
-
-            close.onclick = function () {
-                windowToDo.style.display = "none";
-            };
-
-            window.onclick = function (event) {
-                if (event.target === windowToDo) {
-                    windowToDo.style.display = "none";
-                }
-            };
-
-
-            btnCreateTask.onclick = function () {
-
-                var taskProgress = document.getElementById("taskProgress");
-                var sprintId = document.getElementById("sprintId");
-
-                if (btnClick === "ToDo") {
-                    taskProgress.value = "ToDo";
-                }
-                if (btnClick === "InProgress") {
-                    taskProgress.value = "InProgress";
-                }
-                if (btnClick === "Done") {
-                    taskProgress.value = "Done";
-                }
-
-                const urlParams = new URLSearchParams(window.location.search);
-                sprintId.value = urlParams.get('sprintId');
-
-
-            }
-
-        </script>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-                crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                crossorigin="anonymous"></script>
-
         <div th:replace="/fragments/footer :: footer"></div>
 
     </div>
 </div>
 
-
-<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-<!--<script src="js/scripts.js"></script>-->
-<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-<!--<script src="assets/demo/datatables-demo.js"></script>-->
+<script th:inline="javascript">
+    var tasksList = [[${tasksList}]];
+</script>
+<script type="text/javascript" th:src="@{/js/sprint.js}">
+</script>
 </body>
+
 </html>

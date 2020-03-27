@@ -57,7 +57,7 @@ public class UserService {
     public User getUserAuthentication() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
-        return userRepository.findByUsername(userName).get();
+        return userRepository.findByUsername(userName).orElseThrow(NoResultException::new);
     }
 
     public String getUserAuthenticationUserName() {

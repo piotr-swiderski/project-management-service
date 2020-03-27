@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Task implements Serializable {
@@ -23,6 +25,10 @@ public class Task implements Serializable {
     private int taskValidity;
 
     private Progres progres;
+
+    @OneToMany
+    //@JsonIgnore
+    private Set<TaskErrand> taskErrands = new HashSet<>();
 
     @ManyToOne
     private User user;
@@ -83,10 +89,21 @@ public class Task implements Serializable {
         return user;
     }
 
+    public void  addTaskErrand(TaskErrand taskErrand){
+        taskErrands.add(taskErrand);
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
 
+    public Set<TaskErrand> getTaskErrands() {
+        return taskErrands;
+    }
+
+    public void setTaskErrands(Set<TaskErrand> taskErrands) {
+        this.taskErrands = taskErrands;
+    }
 
     public static final class TaskBuilder {
         private long id;

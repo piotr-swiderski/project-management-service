@@ -5,6 +5,7 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/sprintStyle.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 <body>
 
@@ -26,7 +27,6 @@
 
 
                 <div class="wrapper">
-
                     <div class="table">
                         <div class="table_box" id="ToDo">
                             <div class="table_name" id="tableToDo">
@@ -36,7 +36,7 @@
                                 <div th:if="${task.getProgres().name().equals('ToDo')}">
                                     <div th:id="${task.getId()}" th:object="${task}" class="task" draggable="true">
                                         <span class="task-name" th:text="${task.getName()}"></span>
-                                        <span class="task-creator" th:text="'Created by Piotr'"></span>
+                                        <span class="task-creator" th:text="'Created by ' + ${task.getUser().getUsername()}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                                 <div th:if="${task.getProgres().name().equals('InProgress')}">
                                     <div th:id="${task.getId()}" class="task" draggable="true">
                                         <span class="task-name" th:text="${task.getName()}"></span>
-                                        <span class="task-creator" th:text="'Created by Piotr'"></span>
+                                        <span class="task-creator" th:text="'Created by ' + ${task.getUser().getUsername()}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                                 <div th:if="${task.getProgres().name().equals('Done')}">
                                     <div th:id="${task.getId()}" class="task" draggable="true">
                                         <span class="task-name" th:text="${task.getName()}"></span>
-                                        <span class="task-creator" th:text="'Created by Piotr'"></span>
+                                        <span class="task-creator" th:text="'Created by ' + ${task.getUser().getUsername()}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -190,7 +190,8 @@
                                                     <div class="description-content js-desc-content">
                                                         <div class="current markeddown hide-on-edit js-desc js-show-with-desc hide"
                                                              dir="auto">
-                                                <textarea id="propTaskDescription" class="task-description js-get-pups get-pups"
+                                                <textarea id="propTaskDescription"
+                                                          class="task-description js-get-pups get-pups"
                                                           placeholder="Dodaj bardziej szczegółowy opis…"></textarea>
                                                         </div>
                                                     </div>
@@ -206,9 +207,23 @@
                                                         <div class="current markeddown hide-on-edit js-desc js-show-with-desc hide"
                                                              dir="auto">
                                                             <div id="check-list" class="check-list">
-
                                                             </div>
-                                                            <a class="button-link js-get-pups get-pups btn-in-content" href="#" title="Dodaj zadanie">Dodaj zadanie</a>
+                                                            <div id="taskMakingContent" hidden>
+                                                                <div id="propTaskMaking"
+                                                                     class="current markeddown hide-on-edit js-desc js-show-with-desc hide task-making-style"
+                                                                     dir="auto">
+                                                                        <textarea id="propTaskAddingText"
+                                                                                  class="task-description js-get-pups get-pups"
+                                                                                  placeholder="Wpisz nazwe zadania"></textarea>                                                                        </textarea>
+                                                                </div>
+                                                                <div class="taskMakingButtons">
+                                                                    <a id="propBtnCreateAccept" class="button-link js-get-pups get-pups btn-in-content btn-styling"
+                                                                       href="#" title="Dodaj zadanie">Create</a>
+                                                                    <span id="propTaskMakingCancel" class="material-icons btn-styling btn-icon">cancel</span>
+                                                                </div>
+                                                            </div>
+                                                            <button id="propBtnCreateTask" class="button-link js-get-pups get-pups btn-in-content"
+                                                               title="Dodaj zadanie">Dodaj zadanie</button>
                                                         </div>
                                                     </div>
                                                 </div>

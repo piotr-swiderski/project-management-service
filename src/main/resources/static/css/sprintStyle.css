@@ -64,8 +64,7 @@
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    margin: 40px;
-    border-radius: 40px;
+    border-radius: 0;
     padding-top: 10%; /* Location of the box */
     padding-right: 100px;
     padding-left: 100px;
@@ -76,6 +75,7 @@
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0, 0, 0); /* Fallback color */
     background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    margin-bottom: 20px;
 }
 
 .window-content {
@@ -89,13 +89,15 @@
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
+    padding-bottom: 32px;
+    margin-bottom: 40px;
 }
 
 
 .window-header {
     /*//margin: 12px 40px 8px 56px;*/
-    margin:11px 40px 3px 56px;
+    margin: 11px 40px 3px 56px;
     background-color: #ffffff;
     color: #525252;
 }
@@ -271,7 +273,7 @@ textarea.mod-card-back-title {
 
 }
 
-.div-padding-content{
+.div-padding-content {
 
 }
 
@@ -279,11 +281,11 @@ textarea.mod-card-back-title {
 
 }
 
-.check-list-styling{
+.check-list-styling {
     position: relative;
     margin-bottom: 0px;
     vertical-align: top;
-    padding-left: 20px;
+    padding-left: 5px;
     padding-bottom: 3px;
     padding-top: 3px;
 }
@@ -297,18 +299,21 @@ textarea.mod-card-back-title {
 }
 
 .button-link:hover {
-    background-color: rgba(9,30,66,.08);
+    background-color: rgba(9, 30, 66, .08);
     box-shadow: none;
     border: none;
 }
+
 a:hover {
     color: #091e42;
 }
+
 a:active, a:hover {
     outline: 0;
 }
+
 .button-link {
-    background-color: rgba(9,30,66,.04);
+    background-color: rgba(9, 30, 66, .04);
     box-shadow: none;
     border: none;
     border-radius: 3px;
@@ -328,7 +333,7 @@ a:active, a:hover {
     -ms-user-select: none;
     user-select: none;
     white-space: nowrap;
-    transition-property: background-color,border-color,box-shadow;
+    transition-property: background-color, border-color, box-shadow;
     transition-duration: 85ms;
     transition-timing-function: ease;
 }
@@ -344,8 +349,8 @@ a:active, a:hover {
 }
 
 .w3-white, .w3-hover-white:hover {
-    color: #000!important;
-    background-color: #f5f5f5!important;
+    color: #000 !important;
+    background-color: #f5f5f5 !important;
 }
 
 .h3-styling h3 {
@@ -354,5 +359,26 @@ a:active, a:hover {
 
 .btn-in-content {
     max-width: 152px;
+    margin-left: 7px;
+}
+
+.task-making-style {
+    padding: 15px 0 9px 0;
+}
+
+.taskMakingButtons {
+    display: inline-flex;
+}
+
+.btn-styling {
+    margin-right: 10px;
+    padding-right: 32px;
+}
+
+.btn-icon {
+    font-size: 36px !important;
+    margin-top: 5px;
+    color: #545b62;
+    cursor: pointer;
 }
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/fragments/head :: headerfiles "></head>
+<link rel="stylesheet" href="/css/pageStyle.css">
 
 <body>
 
@@ -35,12 +36,8 @@
                                 </thead>
                                 <tbody>
                                 <th:block th:each="sprint : ${project.getSprints()}">
-
                                     <tr>
-                                        <form id="getSprint" method="get" th:action="@{'/sprint/' + ${sprint.getId()}}">
-<!--                                            <input type="hidden" th:value="${sprint.getId()}" name="sprintId">-->
-                                            <td><button type="submit" form="getSprint" th:text="${sprint.getName()}"></button></td>
-                                        </form>
+                                        <td><a class="link-style" th:href="@{'/sprint/' + ${sprint.getId()}}" th:text="${sprint.getName()}"></a></td>
                                         <td th:text="${sprint.getDateFrom()}"></td>
                                         <td th:text="${sprint.getDateTo()}"></td>
                                         <td th:text="${sprint.getStoryPoints()}"></td>
@@ -53,27 +50,32 @@
                 </div>
                 <div class="card mb-4">
                     <div class="card-header"><i class="fas fa-table mr-1"></i>Stworz sprint</div>
-                    <div class="card-body">
-
-                        <form id="myForm" name="myForm" method="post" th:action="@{/projectPage}">
-                            <label for="name">Date From:</label><br>
-                            <input id="name" type="text" value="" name="name" placeholder="Sprint name"><br>
-                            <label for="dateFrom">Date From:</label><br>
-                            <input id="dateFrom" type="date" value="" name="dateFrom" placeholder="Date from"><br>
-                            <label for="dateTo">Date To:</label><br>
-                            <input id="dateTo" type="date" name="dateTo" placeholder="Date to"><br>
-                            <label for="storyPoints">Story points:</label><br>
-                            <input id="storyPoints" type="number" name="storyPoints" placeholder="Story points"><br>
-                            <input type="hidden" name="projectId" th:value="${project.id}"><br>
-                        </form>
-                        <button class="btn-dark" type="submit" form="myForm" id="button">
-                            Dodaj
-                        </button>
-                        <br>
-                        <div th:if="${error != null}" class="alert alert-danger" onsubmit="button">
-                            <strong>Failure!</strong> <a th:text="${error}"></a>
+                    <div class="card-body form-style">
+                        <div class="component-style">
+                            <form class="form-style" id="myForm" name="myForm" method="post"
+                                  th:action="@{/projectPage}">
+                                <label class="form-control-label" for="name">Sprint name:</label><br>
+                                <input class="form-control-input" id="name" type="text" value="" name="name"
+                                       placeholder="Sprint name"><br>
+                                <label class="form-control-label" for="dateFrom">Date From:</label><br>
+                                <input class="form-control-input" id="dateFrom" type="date" value="" name="dateFrom"
+                                       placeholder="Date from"><br>
+                                <label class="form-control-label" for="dateTo">Date To:</label><br>
+                                <input class="form-control-input" id="dateTo" type="date" name="dateTo"
+                                       placeholder="Date to"><br>
+                                <label class="form-control-label" for="storyPoints">Story points:</label><br>
+                                <input class="form-control-input" id="storyPoints" type="number" name="storyPoints"
+                                       placeholder="Story points"><br>
+                                <input type="hidden" name="projectId" th:value="${project.id}"><br>
+                            </form>
+                            <button class="btn-dark" type="submit" form="myForm" id="button">
+                                Dodaj
+                            </button>
+                            <br>
+                            <div th:if="${error != null}" class="alert alert-danger" onsubmit="button">
+                                <strong>Failure!</strong> <a th:text="${error}"></a>
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -81,6 +83,7 @@
         </main>
 
         <div th:replace="/fragments/footer :: footer"></div>
+
 
     </div>
 </div>

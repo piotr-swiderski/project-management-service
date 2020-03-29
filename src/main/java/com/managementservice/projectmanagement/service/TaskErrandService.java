@@ -6,6 +6,7 @@ import com.managementservice.projectmanagement.repositorie.TaskErrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Service
@@ -33,5 +34,13 @@ public class TaskErrandService {
         long parseTaskId = Long.parseLong(taskId);
         Task taskById = taskService.findTaskById(parseTaskId);
         return taskErrandRepository.findAllByTask(taskById);
+    }
+
+    public List<TaskErrand> setErrandFinished(String errandId, boolean checked) {
+        long parseErrandId = Long.parseLong(errandId);
+        TaskErrand taskErrand = taskErrandRepository.findById(parseErrandId).orElseThrow(NoResultException::new);
+        taskErrand.setFinished(checked);
+        taskErrandRepository.save(taskErrand);
+        return getTaskErrandsByTaskId((String.valueOf(taskErrand.getTask().getId())));
     }
 }

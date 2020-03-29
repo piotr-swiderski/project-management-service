@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/fragments/head :: headerfiles "></head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
 <link rel="stylesheet" href="/css/sprintStyle.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -17,12 +16,16 @@
         <main>
 
             <div class="container-fluid">
-                <h1 class="mt-4">PROJEKT</h1>
+                <h1 class="mt-4" th:text="${tasksList.iterator().next().getSprint().getName()}"></h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="/myProjectList">myProjects</a></li>
-                    <li class="breadcrumb-item">COS TAM</li>
-                    <li class="breadcrumb-item active">SPIRNT1</li>
+                    <li class="breadcrumb-item"><a
+                            th:href="@{'/projectPage?projectId=' + ${tasksList.iterator().next().getSprint().getProject().getId()}}"
+                            th:text="${tasksList.iterator().next().getSprint().getProject().getName()}"></a>
+                    </li>
+                    <li class="breadcrumb-item active"><a
+                            th:text="${tasksList.iterator().next().getSprint().getName()}"></a></li>
                 </ol>
 
 
@@ -36,7 +39,8 @@
                                 <div th:if="${task.getProgres().name().equals('ToDo')}">
                                     <div th:id="${task.getId()}" th:object="${task}" class="task" draggable="true">
                                         <span class="task-name" th:text="${task.getName()}"></span>
-                                        <span class="task-creator" th:text="'Created by ' + ${task.getUser().getUsername()}"></span>
+                                        <span class="task-creator"
+                                              th:text="'Created by ' + ${task.getUser().getUsername()}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +57,8 @@
                                 <div th:if="${task.getProgres().name().equals('InProgress')}">
                                     <div th:id="${task.getId()}" class="task" draggable="true">
                                         <span class="task-name" th:text="${task.getName()}"></span>
-                                        <span class="task-creator" th:text="'Created by ' + ${task.getUser().getUsername()}"></span>
+                                        <span class="task-creator"
+                                              th:text="'Created by ' + ${task.getUser().getUsername()}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +75,8 @@
                                 <div th:if="${task.getProgres().name().equals('Done')}">
                                     <div th:id="${task.getId()}" class="task" draggable="true">
                                         <span class="task-name" th:text="${task.getName()}"></span>
-                                        <span class="task-creator" th:text="'Created by ' + ${task.getUser().getUsername()}"></span>
+                                        <span class="task-creator"
+                                              th:text="'Created by ' + ${task.getUser().getEmail()}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +156,7 @@
                                 <input name="taskProgress" id="taskProgress" type="hidden">
                                 <!--                                <input name="sprintId" id="sprintId" type="hidden" th:value="${sprintId}">-->
                                 <br>
-                                <button id="createTask" class="btn btn-primary" type="submit">Create</button>
+                                <button id="createTask" class="btn btn-primary btn-primary-style" type="submit">Create</button>
                             </form>
                         </div>
                     </div>
@@ -202,6 +208,12 @@
                                                         class="icon-description icon-lg window-module-title-icon"></span>
                                                     <h3 class="u-inline-block-description">Lista zadań</h3>
                                                 </div>
+                                                <div id="errandProgressBar" class="task-progress-style" hidden>
+                                                    <div class="progress">
+                                                        <div id="progressBar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="u-gutter">
                                                     <div class="description-content js-desc-content">
                                                         <div class="current markeddown hide-on-edit js-desc js-show-with-desc hide"
@@ -217,13 +229,17 @@
                                                                                   placeholder="Wpisz nazwe zadania"></textarea>                                                                        </textarea>
                                                                 </div>
                                                                 <div class="taskMakingButtons">
-                                                                    <a id="propBtnCreateAccept" class="button-link js-get-pups get-pups btn-in-content btn-styling"
+                                                                    <a id="propBtnCreateAccept"
+                                                                       class="button-link js-get-pups get-pups btn-in-content btn-styling"
                                                                        href="#" title="Dodaj zadanie">Create</a>
-                                                                    <span id="propTaskMakingCancel" class="material-icons btn-styling btn-icon">cancel</span>
+                                                                    <span id="propTaskMakingCancel"
+                                                                          class="material-icons btn-styling btn-icon">cancel</span>
                                                                 </div>
                                                             </div>
-                                                            <button id="propBtnCreateTask" class="button-link js-get-pups get-pups btn-in-content"
-                                                               title="Dodaj zadanie">Dodaj zadanie</button>
+                                                            <button id="propBtnCreateTask"
+                                                                    class="button-link js-get-pups get-pups btn-in-content"
+                                                                    title="Dodaj zadanie">Dodaj zadanie
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -302,8 +318,13 @@
 <script th:inline="javascript">
     var tasksList = [[${tasksList}]];
 </script>
-<script type="text/javascript" th:src="@{/js/sprint.js}">
-</script>
+<script type="text/javascript" th:src="@{/js/sprint.js}"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="/js/scripts.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -22,4 +22,11 @@ public class ControllerUtil {
     public static final String SUCCSES_DELETE_USER = "succes";
     public static final String SUCCSES_DELETE_USER_MESSAGE = "User removed from project";
 
+
+    public static final String ERROR_HANDLER = "ERROR_HANDLER";
+    public static final String ERROR_MSG_ACCESS = "You don't have a access !!!";
+    public static final String ERROR_HELP_HANDLER = "ERROR_HELP";
+    public static final String ERROR_MSG_HELP_ACCESS = "You should contact with administrator !!!";
+
+
 }

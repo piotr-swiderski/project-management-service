@@ -6,10 +6,13 @@ import com.managementservice.projectmanagement.utils.AccountTypeEnum;
 import com.managementservice.projectmanagement.utils.RoleEnum;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -41,8 +44,8 @@ public class UserService {
         return userRepository.findByUsername(username).get();
     }
 
-    public User getUserByUsernameOrEmail(String value) {
-        return userRepository.findByUsernameOrEmail(value, value).orElseThrow(NoResultException::new);
+    public Optional<User> getUserByUsernameOrEmail(String value) {
+        return userRepository.findByUsernameOrEmail(value, value);
     }
 
     public Optional<User> getOptionalUserByUsername(String username) {
@@ -55,8 +58,9 @@ public class UserService {
     }
 
     public User getUserAuthentication() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userName = auth.getName();
+        Authentication principal = SecurityContextHolder.getContext().getAuthentication();
+        String userName = getUserNameFromPrincipal(principal);
+
         return userRepository.findByUsername(userName).orElseThrow(NoResultException::new);
     }
 
@@ -70,6 +74,29 @@ public class UserService {
 
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    public User getUserByAuthentication(Authentication authentication) {
+        String username = getUserNameFromPrincipal(authentication);
+        return getUserByUsernameOrEmail(username).orElseThrow(NoResultException::new);
+    }
+
+    private String getUserNameFromPrincipal(Authentication authentication) {
+
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            User user = (User) principal;
+            return user.getUsername();
+        }
+
+        if (principal instanceof DefaultOidcUser) {
+            DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
+            Map<String, Object> attributes = oidcUser.getAttributes();
+            return (String) attributes.get("email");
+        }
+
+        return "";
     }
 }
 

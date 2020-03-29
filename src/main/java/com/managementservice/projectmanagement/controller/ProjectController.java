@@ -7,6 +7,7 @@ import com.managementservice.projectmanagement.service.NotificationService;
 import com.managementservice.projectmanagement.service.ProjectService;
 import com.managementservice.projectmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,9 +47,10 @@ public class ProjectController {
     @GetMapping("/addUsersToProject")
     public String addUserToProject(Model model,
                                    @RequestParam String projectId) {
-        if (projectId != null) {
-            model.addAttribute(PROJECT_HANDLER, projectService.getProject(Long.parseLong(projectId)));
-        }
+
+        long parseProjectId = Long.parseLong(projectId);
+        model.addAttribute(PROJECT_HANDLER, projectService.getProject(parseProjectId));
+
         return "addUsersToProject";
 
     }
@@ -58,7 +60,9 @@ public class ProjectController {
                                        @RequestParam String projectId,
                                        @RequestParam String email
     ) {
-        model.addAttribute(PROJECT_HANDLER, projectService.getProject(Long.parseLong(projectId)));
+
+        long parseProjectId = Long.parseLong(projectId);
+        model.addAttribute(PROJECT_HANDLER, projectService.getProject(parseProjectId));
 
         User user;
         Project project;
@@ -90,7 +94,9 @@ public class ProjectController {
 
     @GetMapping("/viewUsersToProject")
     public String viewUsersToProject(@RequestParam String projectId, Model model) {
-        Project project = projectService.getProject(Long.parseLong(projectId));
+
+        long parseProjectId = Long.parseLong(projectId);
+        Project project = projectService.getProject(parseProjectId);
         List<User> userList = project.getUsers();
         model.addAttribute("users", userList);
         model.addAttribute("project", project);
@@ -136,10 +142,18 @@ public class ProjectController {
 
 
     @GetMapping("/projectPage")
-    public String getProjectPanel(Model model, @RequestParam(required = false) String projectId) {
-        if (projectId != null) {
-            model.addAttribute(PROJECT_HANDLER, projectService.getProject(Long.parseLong(projectId)));
+    public String getProjectPanel(Authentication authentication, Model model, @RequestParam(required = false) String projectId) {
+
+
+        long parseProjectId = Long.parseLong(projectId);
+
+        if (!projectService.isUserHaveAccess(authentication, projectId)) {
+            model.addAttribute(ERROR_HANDLER, ERROR_MSG_ACCESS);
+            model.addAttribute(ERROR_HELP_HANDLER, ERROR_MSG_HELP_ACCESS);
+            return "errorPage";
         }
+
+        model.addAttribute(PROJECT_HANDLER, projectService.getProject(parseProjectId));
         return "projectPage";
     }
 
@@ -153,14 +167,14 @@ public class ProjectController {
 
         LocalDate dateFromParse = LocalDate.parse(dateFrom);
         LocalDate dateToParse = LocalDate.parse(dateTo);
-        long projectIdParse = Long.parseLong(projectId);
+        long parseProjectId = Long.parseLong(projectId);
         int storyPointsParse = Integer.parseInt(storyPoints);
 
-        if (!projectService.addSprintToProject(projectIdParse, name, dateFromParse, dateToParse, storyPointsParse)) {
+        if (!projectService.addSprintToProject(parseProjectId, name, dateFromParse, dateToParse, storyPointsParse)) {
             model.addAttribute(ERROR_ADDING_SPRINT_HANDLER, ERROR_ADDING_SPRINT_MESSAGE);
         }
-        model.addAttribute(PROJECT_HANDLER, projectService.getProject(Long.parseLong(projectId)));
 
+        model.addAttribute(PROJECT_HANDLER, projectService.getProject(parseProjectId));
         return "projectPage";
     }
 }

@@ -37,4 +37,9 @@ public class SprintRestController {
     public List<TaskErrand> getTaskErrands(@RequestParam String taskId) {
         return taskErrandService.getTaskErrandsByTaskId(taskId);
     }
+
+    @RequestMapping(value = "/sprint/setErrandChecked", method = RequestMethod.GET, produces = "application/json")
+    public List<TaskErrand>  setErrandChecked(@RequestParam String errandId, @RequestParam boolean checked) {
+        return taskErrandService.setErrandFinished(errandId, checked);
+    }
 }

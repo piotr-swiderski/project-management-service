@@ -55,6 +55,7 @@ public class User implements UserDetails, Serializable {
     public User() {
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String[] arrayPermissions = permissions.split(", ");

@@ -6,9 +6,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
+
 @Service
 @Primary
-public class  UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private UserService userService;
 
@@ -18,6 +20,6 @@ public class  UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        return userService.getUserByUsernameOrEmail(username);
+        return userService.getUserByUsernameOrEmail(username).orElseThrow(NoResultException::new);
     }
 }

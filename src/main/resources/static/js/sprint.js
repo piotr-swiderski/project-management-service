@@ -25,6 +25,9 @@ let taskMakingContent = document.getElementById("taskMakingContent");
 let propTaskAddingText = document.getElementById("propTaskAddingText");
 let propTaskMakingCancel = document.getElementById("propTaskMakingCancel");
 let propBtnCreateAccept = document.getElementById("propBtnCreateAccept");
+let errandProgressBar = document.getElementById("errandProgressBar");
+let progressBar = document.getElementById("progressBar");
+
 let taskId;
 let counter = 0;
 
@@ -177,17 +180,60 @@ function generateTask(text) {
 
 
 function addTaskToChecklist(tasks) {
+
+    progressBarState(tasks);
+
     for (let i = 0; i < tasks.length; i++) {
         let task = tasks[i];
         let taskId = task.id;
         let taskText = task.text;
-        let taskClass = new ErrandTask(taskId, taskText, false);
+        let taskChecked = task.finished;
+        let taskClass = new ErrandTask(taskId, taskText, taskChecked);
         let errandTask = taskClass.htmlElement;
 
         checkList.appendChild(errandTask);
     }
 
     let checkboxElements = document.getElementsByClassName("errandCheckbox");
+
+    for (let i = 0; i < checkboxElements.length; i++) {
+        let item = checkboxElements.item(i);
+        item.firstChild.onclick = function (checkbox) {
+            let child = item.lastChild;
+            let element = checkbox.toElement;
+
+            if (element.checked === true) {
+                child.style.textDecoration = "line-through";
+            } else {
+                child.style.textDecoration = "";
+            }
+            setErrandChecked(item.id, element.checked);
+            //progressBarState(tasks);
+        }
+    }
+
+    function progressBarState(tasks) {
+        let sizeOfTask = tasks.length;
+        let taskDone = 0;
+        let percentOfDone = 0;
+
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks[i].finished === true) {
+                taskDone++;
+            }
+        }
+
+        percentOfDone = taskDone / sizeOfTask * 100;
+
+        if (tasks.length > 0) {
+            errandProgressBar.hidden = false
+            progressBar.style.width = percentOfDone + "%";
+            progressBar.ariaValuenow = percentOfDone;
+            progressBar.innerText = percentOfDone + "%";
+        } else {
+            errandProgressBar.hidden = true;
+        }
+    }
 
     function checkedListCheck(checkboxElements) {
         console.log(checkboxElements);
@@ -246,6 +292,23 @@ function getTaskErrands(taskId) {
     });
 }
 
+function setErrandChecked(errandId, checked) {
+    let data = {};
+    data["errandId"] = errandId;
+    data["checked"] = checked;
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "setErrandChecked",
+        data: data,
+        dataType: 'json'
+        // success: function (dataReq, status) {
+        //     addTaskToChecklist(dataReq);
+        // }
+    });
+}
+
 class ErrandTask {
     constructor(id, text, checked) {
         this.id = id;
@@ -262,11 +325,18 @@ class ErrandTask {
         errandInput.type = 'checkbox';
         errandInput.className = "custom-control-input";
         errandInput.id = "input" + this.id;
+        if (this.checked === true) {
+            errandInput.checked = true;
+        }
         let errandLabel = document.createElement('label');
         errandLabel.className = "custom-control-label";
         errandLabel.id = "label" + this.id;
         errandLabel.htmlFor = "input" + this.id;
         errandLabel.textContent = this.text;
+        if (this.checked === true) {
+            errandLabel.style.textDecoration = "line-through";
+        }
+
         item.appendChild(errandInput);
         item.appendChild(errandLabel);
         return item;

@@ -35,7 +35,6 @@ public class NewProjectController {
 
         project.addUser(user);
         projectService.saveProject(project);
-        //user.addProject(project);
         userService.save(user);
 
         model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(userService.getUserAuthentication().getUsername()));

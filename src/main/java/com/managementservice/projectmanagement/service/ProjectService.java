@@ -2,14 +2,17 @@ package com.managementservice.projectmanagement.service;
 
 import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.Sprint;
+import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.repositorie.ProjectRepository;
 import com.managementservice.projectmanagement.repositorie.SprintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -17,17 +20,19 @@ public class ProjectService {
 
     private ProjectRepository projectRepository;
     private SprintRepository sprintRepository;
+    private UserService userService;
 
     @Autowired
-    public ProjectService(SprintRepository sprintRepository, ProjectRepository projectRepository) {
+    public ProjectService(SprintRepository sprintRepository, ProjectRepository projectRepository, UserService userService) {
         this.sprintRepository = sprintRepository;
         this.projectRepository = projectRepository;
+        this.userService = userService;
     }
 
     @Transactional
     public boolean addSprintToProject(long projectId, String sprintName, LocalDate dateFrom, LocalDate dateTo, int storyPoints) {
-        Sprint sprint = new Sprint(dateTo, dateFrom, storyPoints, sprintName);
         Project project = projectRepository.findById(projectId).orElseThrow(NoResultException::new);
+        Sprint sprint = new Sprint(dateTo, dateFrom, storyPoints, sprintName, project);
 
         if (!isSprintDateValid(project, dateFrom, dateTo)) {
             return false;
@@ -71,6 +76,17 @@ public class ProjectService {
 
     public Project getProjectById(Long id) {
         return projectRepository.findById(id).orElseThrow(NoResultException::new);
+    }
+
+    public boolean isUserHaveAccess(Authentication authentication, String projectId) {
+
+        long parseProjectId = Long.parseLong(projectId);
+
+        Project project = getProject(parseProjectId);
+        User user = userService.getUserByAuthentication(authentication);
+        List<User> projectUsers = project.getUsers();
+
+        return projectUsers.stream().anyMatch(u -> u.getId() == user.getId());
     }
 
 }

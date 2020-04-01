@@ -28,13 +28,15 @@ public class Sprint implements Serializable {
     private Set<Task> task = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnore
     private Project project;
 
-    public Sprint(LocalDate dateTo, LocalDate dateFrom, int storyPoints, String stringName) {
+    public Sprint(LocalDate dateTo, LocalDate dateFrom, int storyPoints, String stringName, Project project) {
         this.dateTo = dateTo;
         this.dateFrom = dateFrom;
         this.storyPoints = storyPoints;
         this.name = stringName;
+        this.project = project;
     }
 
     public Sprint() {
@@ -89,7 +91,19 @@ public class Sprint implements Serializable {
         this.task = task;
     }
 
-    public void addTask(Task task){
+    public void addTask(Task task) {
         this.task.add(task);
+    }
+
+    public void setId(long id) {
+        Id = id;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

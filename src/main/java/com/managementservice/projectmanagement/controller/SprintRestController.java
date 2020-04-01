@@ -3,15 +3,14 @@ package com.managementservice.projectmanagement.controller;
 import com.managementservice.projectmanagement.entity.TaskErrand;
 import com.managementservice.projectmanagement.service.TaskErrandService;
 import com.managementservice.projectmanagement.service.TaskService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Slf4j
 public class SprintRestController {
 
     private TaskService taskService;
@@ -23,18 +22,26 @@ public class SprintRestController {
         this.taskErrandService = taskErrandService;
     }
 
-    @RequestMapping(value = "/sprint/pageChange", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/sprint/pageChange", produces = "application/json")
     public void changeTaskTable(@RequestParam String taskId, @RequestParam String tableName) {
         taskService.changeTaskProgress(taskId, tableName);
     }
 
-    @RequestMapping(value = "/sprint/addTaskErrand", method = RequestMethod.GET, produces = "application/json")
-    public void createTaskErrand(@RequestParam String taskErrandText, @RequestParam String taskId) {
-        taskErrandService.createTaskErrand(taskErrandText, taskId);
+    @GetMapping( value = "/sprint/addTaskErrand", produces = "application/json")
+    public List<TaskErrand>  createTaskErrand(@RequestParam String taskErrandText, @RequestParam String taskId) {
+        log.info("Add errand {taskId : " + taskId + ", text : " + taskErrandText + " }");
+        return taskErrandService.createTaskErrand(taskErrandText, taskId);
     }
 
-    @RequestMapping(value = "/sprint/getTaskErrands", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/sprint/getTaskErrands", produces = "application/json")
     public List<TaskErrand> getTaskErrands(@RequestParam String taskId) {
+        log.info("Get errands {taskId : " + taskId + " }");
         return taskErrandService.getTaskErrandsByTaskId(taskId);
+    }
+
+    @GetMapping(value = "/sprint/setErrandChecked", produces = "application/json")
+    public List<TaskErrand>  setErrandChecked(@RequestParam String errandId, @RequestParam boolean checked) {
+        log.info("Set value of progress errands {id : " + errandId + ", checked : " + checked + " }");
+        return taskErrandService.setErrandFinished(errandId, checked);
     }
 }

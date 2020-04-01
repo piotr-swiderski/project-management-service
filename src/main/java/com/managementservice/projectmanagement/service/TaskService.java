@@ -3,7 +3,7 @@ package com.managementservice.projectmanagement.service;
 import com.managementservice.projectmanagement.entity.*;
 import com.managementservice.projectmanagement.repositorie.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
@@ -24,11 +24,11 @@ public class TaskService {
         this.userService = userService;
     }
 
-    public void createTask(String name, String description, Long sprintId, int taskValidation, String progress, String username) {
+    public void createTask(String name, String description, Long sprintId, int taskValidation, String progress, Authentication authentication) {
 
         Sprint sprint = sprintService.getSprintById(sprintId);
         Progres progres = Progres.valueOf(progress);
-        User user = userService.getUserByUsernameOrEmail(username);
+        User user = userService.getUserByAuthentication(authentication);
 
         Task task = Task.TaskBuilder.aTask()
                 .withName(name)
@@ -59,8 +59,12 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-    public Task findTaskById(long id){
+    public Task findTaskById(long id) {
         return taskRepository.findById(id).orElseThrow(NoResultException::new);
+    }
+
+    public Set<Task> findTasksBySprint(Sprint sprint){
+        return taskRepository.findAllBySprint(sprint);
     }
 
 

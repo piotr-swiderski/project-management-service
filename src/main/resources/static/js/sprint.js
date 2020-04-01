@@ -9,27 +9,7 @@ var close = document.getElementById("newTaskCloseBtn");
 var dropTarget = document.querySelector(".wrapper");
 var dropElements = document.querySelectorAll(".task");
 
-let tasks = document.getElementsByClassName("task");
-let taskProperty = document.getElementById("task-property");
-let nameOfTask = document.getElementById("propNameOfTask");
-let closeButtonTaskDesc = document.getElementById("propCloseBtn");
-let propTaskName = document.getElementById("propTaskName");
-let propTaskDescription = document.getElementById("propTaskDescription");
-let propTaskColumnName = document.getElementById("propTaskColumnName");
 
-let errandItem = document.getElementById("propErrandItem");
-let checkList = document.getElementById("check-list");
-
-let propBtnCreateTask = document.getElementById("propBtnCreateTask");
-let taskMakingContent = document.getElementById("taskMakingContent");
-let propTaskAddingText = document.getElementById("propTaskAddingText");
-let propTaskMakingCancel = document.getElementById("propTaskMakingCancel");
-let propBtnCreateAccept = document.getElementById("propBtnCreateAccept");
-let errandProgressBar = document.getElementById("errandProgressBar");
-let progressBar = document.getElementById("progressBar");
-
-let taskId;
-let counter = 0;
 
 
 (function () {
@@ -125,222 +105,105 @@ btnCreateTask.onclick = function () {
     const urlParams = new URLSearchParams(window.location.search);
     //sprintId.value = urlParams.get('sprintId');
 };
+//
+// let tasksProgressBar = document.getElementsByClassName("task-progress-style-inline");
+// for (let i = 0; i < tasksProgressBar.length; i++) {
+//     tasksProgressBar[i].hidden = true;
+// }
 
 
-propBtnCreateTask.onclick = function () {
-    taskMakingContent.hidden = false;
-    propTaskAddingText.focus();
-    propTaskAddingText.select();
-};
+// function progressBarState(tasks) {
+//     let sizeOfTask = tasks.length;
+//     let taskDone = 0;
+//     let percentOfDone = 0;
+//
+//     for (let i = 0; i < tasks.length; i++) {
+//         if (tasks[i].finished === true || tasks[i].checked == true) {
+//             taskDone++;
+//         }
+//     }
+//
+//     percentOfDone = Math.round(taskDone / sizeOfTask * 100);
+//
+//     if (tasks.length > 0) {
+//         errandProgressBar.hidden = false;
+//         progressBar.style.width = percentOfDone + "%";
+//         progressBar.ariaValuenow = percentOfDone;
+//         progressBar.innerText = percentOfDone + "%";
+//     } else {
+//         errandProgressBar.hidden = true;
+//     }
+// }
 
+window.onload = myFunction();
 
-propTaskMakingCancel.onclick = function () {
-    taskMakingContent.hidden = true;
-};
+function myFunction() {
+    for (let i = 0; i < tasksList.length; i++) {
 
+        let taskValidity = document.getElementById('taskValidity' + tasksList[i].id);
+        let taskValidityNumb = document.getElementById('taskValidityNumb' + tasksList[i].id);
 
-propBtnCreateAccept.onclick = function () {
-    taskMakingContent.hidden = true;
-    createTaskErrand(taskId, propTaskAddingText.value);
-    propTaskAddingText.value = "";
-};
+        taskValidityText(taskValidity, taskValidityNumb);
 
-
-function getTaskById(id) {
-    return tasksList.find(x => x.id.toString() == id);
-}
-
-
-for (let i = 0; i < tasks.length; i++) {
-    tasks[i].onclick = function () {
-        taskProperty.style.display = "block";
-        let taskById = getTaskById(tasks[i].id);
-        getTaskErrands(taskById.id);
-        checkList.innerHTML = "";
-        propTaskName.value = taskById.name;
-        propTaskDescription.value = taskById.description;
-        propTaskColumnName.text = taskById.progres;
-        taskId = taskById.id;
-    }
-}
-
-
-closeButtonTaskDesc.onclick = function () {
-    taskProperty.style.display = "none";
-};
-
-
-function generateTask(text) {
-    counter++;
-    let data = {};
-    data["id"] = "id" + counter;
-    data["text"] = text;
-    return new Array(data);
-}
-
-
-function addTaskToChecklist(tasks) {
-
-    progressBarState(tasks);
-
-    for (let i = 0; i < tasks.length; i++) {
-        let task = tasks[i];
-        let taskId = task.id;
-        let taskText = task.text;
-        let taskChecked = task.finished;
-        let taskClass = new ErrandTask(taskId, taskText, taskChecked);
-        let errandTask = taskClass.htmlElement;
-
-        checkList.appendChild(errandTask);
-    }
-
-    let checkboxElements = document.getElementsByClassName("errandCheckbox");
-
-    for (let i = 0; i < checkboxElements.length; i++) {
-        let item = checkboxElements.item(i);
-        item.firstChild.onclick = function (checkbox) {
-            let child = item.lastChild;
-            let element = checkbox.toElement;
-
-            if (element.checked === true) {
-                child.style.textDecoration = "line-through";
-            } else {
-                child.style.textDecoration = "";
-            }
-            setErrandChecked(item.id, element.checked);
-            //progressBarState(tasks);
-        }
-    }
-
-    function progressBarState(tasks) {
-        let sizeOfTask = tasks.length;
+        let taskBar = document.getElementById('taskProgressBar' + tasksList[i].id);
+        let taskProgressBarValue = document.getElementById('taskProgressVal' + tasksList[i].id);
+        let badge = document.getElementById('badge' + tasksList[i].id);
+        let taskErrands = tasksList[i].taskErrands;
+        let taskErrandsSize = taskErrands.length;
         let taskDone = 0;
-        let percentOfDone = 0;
 
-        for (let i = 0; i < tasks.length; i++) {
-            if (tasks[i].finished === true) {
-                taskDone++;
+        if(taskErrandsSize > 0 ) {
+            for (let i = 0; i < taskErrandsSize; i++) {
+                if (taskErrands[i].finished === true || taskErrands[i].checked == true) {
+                    taskDone++;
+                }
             }
+            taskBar.hidden = false;
+            badge.hidden = false;
+            let taskPercentProgress = Math.round(taskDone / taskErrandsSize * 100);
+            taskProgressBarValue.style.width = taskPercentProgress + "%";
+            taskProgressBarValue.ariaValuenow = taskPercentProgress;
+            taskProgressBarValue.innerText = taskPercentProgress + "%";
+            badge.innerText = taskDone + '/' + taskErrandsSize;
+        }else {
+            taskBar.hidden = true;
+            badge.hidden = true;
         }
-
-        percentOfDone = taskDone / sizeOfTask * 100;
-
-        if (tasks.length > 0) {
-            errandProgressBar.hidden = false
-            progressBar.style.width = percentOfDone + "%";
-            progressBar.ariaValuenow = percentOfDone;
-            progressBar.innerText = percentOfDone + "%";
-        } else {
-            errandProgressBar.hidden = true;
-        }
-    }
-
-    function checkedListCheck(checkboxElements) {
-        console.log(checkboxElements);
+        console.log("RUN...");
     }
 }
 
 
-function createTaskErrand(taskId, taskErrandText) {
-    let data = {};
-    data["taskId"] = taskId;
-    data["taskErrandText"] = taskErrandText;
+function taskValidityText(taskValidity, validityValue){
 
-    let taskToAdd = generateTask(taskErrandText)
+    let trivialColor = "#59b92e";
+    let easyColor = "#0da030";
+    let mediumColor = "#d2ad4f";
+    let hardColor = "#da1269";
+    let extraHardColor = "#ff0000";
 
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "addTaskErrand",
-        data: data,
-        dataType: 'json'
-    });
-
-    addTaskToChecklist(taskToAdd);
-}
-
-
-function postTask(tableName, taskId) {
-    var data = {};
-    data["taskId"] = taskId;
-    data["tableName"] = tableName;
-
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "pageChange",
-        data: data,
-        dataType: 'json'
-    });
-}
-
-
-function getTaskErrands(taskId) {
-    let data = {};
-    let taskErrandsData;
-    data["taskId"] = taskId;
-
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "getTaskErrands",
-        data: data,
-        dataType: 'json',
-        success: function (dataReq, status) {
-            addTaskToChecklist(dataReq);
-        }
-    });
-}
-
-function setErrandChecked(errandId, checked) {
-    let data = {};
-    data["errandId"] = errandId;
-    data["checked"] = checked;
-
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "setErrandChecked",
-        data: data,
-        dataType: 'json'
-        // success: function (dataReq, status) {
-        //     addTaskToChecklist(dataReq);
-        // }
-    });
-}
-
-class ErrandTask {
-    constructor(id, text, checked) {
-        this.id = id;
-        this.text = text;
-        this.checked = checked;
+    if(validityValue.innerText === '1'){
+        taskValidity.style.backgroundColor = trivialColor;
+        taskValidity.innerText = "TRIVIAL";
     }
-
-    get htmlElement() {
-        let item = document.createElement("div");
-        item.id = this.id;
-        item.className = "custom-control custom-checkbox check-list-styling errandCheckbox";
-
-        let errandInput = document.createElement('input');
-        errandInput.type = 'checkbox';
-        errandInput.className = "custom-control-input";
-        errandInput.id = "input" + this.id;
-        if (this.checked === true) {
-            errandInput.checked = true;
-        }
-        let errandLabel = document.createElement('label');
-        errandLabel.className = "custom-control-label";
-        errandLabel.id = "label" + this.id;
-        errandLabel.htmlFor = "input" + this.id;
-        errandLabel.textContent = this.text;
-        if (this.checked === true) {
-            errandLabel.style.textDecoration = "line-through";
-        }
-
-        item.appendChild(errandInput);
-        item.appendChild(errandLabel);
-        return item;
+    if(validityValue.innerText === '2'){
+        taskValidity.style.backgroundColor = easyColor;
+        taskValidity.innerText = "EASY";
+    }
+    if(validityValue.innerText === '3'){
+        taskValidity.style.backgroundColor = mediumColor;
+        taskValidity.innerText = "MEDIUM";
+    }
+    if(validityValue.innerText === '4'){
+        taskValidity.style.backgroundColor = hardColor;
+        taskValidity.innerText = "HARD";
+    }
+    if(validityValue.innerText === '5'){
+        taskValidity.style.backgroundColor = extraHardColor;
+        taskValidity.innerText = "EXTRA HARD";
     }
 }
+
+
 
 

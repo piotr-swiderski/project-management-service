@@ -14,6 +14,7 @@ public class ControllerUtil {
 
     public static final String PROJECT_HANDLER = "project";
     public static final String TASK_LIST = "tasksList";
+    public static final String SPRINT_HANDLER = "sprint";
 
 
     public static final String SUCCSES_ADDING_NOTIFICATION = "succes";

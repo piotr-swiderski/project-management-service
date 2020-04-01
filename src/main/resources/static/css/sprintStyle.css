@@ -18,18 +18,20 @@
 }
 
 .task-name {
-    display: block;
+    /*display: block;*/
     text-align: left;
     text-size-adjust: 15px;
     size: 10px;
     color: #007bff;
     font-size: 18px;
+    width: 17.8vw;
 }
 
 .task-creator {
     font-size: 15px;
     text-align: left;
     color: gray;
+    width: 20.3vw;
 }
 
 
@@ -56,6 +58,7 @@
     /*text-align: center;*/
     padding: 5px 8px;
     margin: 4px;
+    margin-bottom: 13px;
     border-radius: 10px;
 
 }
@@ -393,3 +396,58 @@ a:active, a:hover {
     cursor: pointer;
 }
 
+.task-name-checklist {
+    display: inline-flex;
+    padding-bottom: 16px;
+}
+
+.task-progress-style-inline {
+    padding-top: 5px;
+    width: 5vw;
+    margin-right: 0.5vw;
+    margin-left: 0.5vw;
+}
+
+.badge-task {
+    color: white;
+    background-color: limegreen;
+    font-size: 64%;
+    border-radius: 5px;
+    height: 1.2vw;
+    width: fit-content;
+    padding-left: 0.2vw;
+    padding-right: 0.2vw;
+    text-align: center;
+}
+
+.badge-div {
+    padding-left: 0.2vw;
+    padding-right: 0.2vw;
+    display: inline-flex;
+    width: 2.3vw;
+    justify-content: center;
+}
+
+.div-creator-validity {
+    display: inline-flex;
+}
+
+.validity-div {
+    padding-left: 0.2vw;
+    padding-right: 0.2vw;
+    display: inline-flex;
+    width: 5.3vw;
+    justify-content: flex-end;
+}
+
+.span-validity {
+    color: white;
+    /*background-color: #f95d5d;*/
+    font-size: 64%;
+    border-radius: 5px;
+    height: 1.2vw;
+    width: fit-content;
+    padding-left: 0.2vw;
+    padding-right: 0.2vw;
+    text-align: center;
+}

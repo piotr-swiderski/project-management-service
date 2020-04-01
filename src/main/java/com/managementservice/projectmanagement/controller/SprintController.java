@@ -37,7 +37,7 @@ public class SprintController {
 
         Long id = Long.parseLong(sprintId);
         Sprint sprintById = sprintService.getSprintById(id);
-        Set<Task> task = sprintById.getTask();
+        Set<Task> tasks = taskService.findTasksBySprint(sprintById);
 
         boolean userHaveAccess = sprintService.isUserHaveAccess(authentication, id);
 
@@ -48,7 +48,8 @@ public class SprintController {
             return ERROR_PAGE;
         }
 
-        model.addAttribute(TASK_LIST, task);
+        model.addAttribute(TASK_LIST, tasks);
+        model.addAttribute(SPRINT_HANDLER, sprintById);
         return SPRINT_PAGE;
     }
 
@@ -64,11 +65,13 @@ public class SprintController {
 
         long parseSprintId = Long.parseLong(sprintId);
         int parseTaskValidity = Integer.parseInt(taskValidity);
-        Sprint sprint = sprintService.getSprintById(parseSprintId);
+        Sprint sprintById = sprintService.getSprintById(parseSprintId);
+        Set<Task> tasks = taskService.findTasksBySprint(sprintById);
 
         taskService.createTask(taskName, taskDescription, parseSprintId, parseTaskValidity, taskProgress, authentication);
 
-        model.addAttribute(TASK_LIST, sprint.getTask());
+        model.addAttribute(TASK_LIST, tasks);
+        model.addAttribute(SPRINT_HANDLER, sprintById);
 
         return SPRINT_PAGE;
     }

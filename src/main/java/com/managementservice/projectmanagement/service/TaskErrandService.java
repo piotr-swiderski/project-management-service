@@ -21,13 +21,14 @@ public class TaskErrandService {
         this.taskService = taskService;
     }
 
-    public void createTaskErrand(String text, String taskId) {
+    public List<TaskErrand> createTaskErrand(String text, String taskId) {
         long parseTaskId = Long.parseLong(taskId);
         Task taskById = taskService.findTaskById(parseTaskId);
         TaskErrand taskErrand = new TaskErrand(text, taskById);
         taskById.addTaskErrand(taskErrand);
         taskErrandRepository.save(taskErrand);
         taskService.update(taskById);
+        return getTaskErrandsByTaskId(taskId);
     }
 
     public List<TaskErrand> getTaskErrandsByTaskId(String taskId) {

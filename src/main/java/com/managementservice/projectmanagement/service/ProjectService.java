@@ -84,7 +84,6 @@ public class ProjectService {
 
         Project project = getProject(parseProjectId);
         User user = userService.getUserByAuthentication(authentication);
-
         List<User> projectUsers = project.getUsers();
 
         return projectUsers.stream().anyMatch(u -> u.getId() == user.getId());

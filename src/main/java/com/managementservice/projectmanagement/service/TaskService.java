@@ -1,9 +1,6 @@
 package com.managementservice.projectmanagement.service;
 
-import com.managementservice.projectmanagement.entity.Progres;
-import com.managementservice.projectmanagement.entity.Sprint;
-import com.managementservice.projectmanagement.entity.Task;
-import com.managementservice.projectmanagement.entity.User;
+import com.managementservice.projectmanagement.entity.*;
 import com.managementservice.projectmanagement.repositorie.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TaskService {
@@ -63,6 +61,10 @@ public class TaskService {
 
     public Task findTaskById(long id) {
         return taskRepository.findById(id).orElseThrow(NoResultException::new);
+    }
+
+    public Set<Task> findTasksBySprint(Sprint sprint){
+        return taskRepository.findAllBySprint(sprint);
     }
 
 

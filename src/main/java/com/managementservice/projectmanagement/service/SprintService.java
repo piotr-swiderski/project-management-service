@@ -28,13 +28,12 @@ public class SprintService {
         return sprintRepository.findById(id).orElseThrow(NoResultException::new);
     }
 
+
     public boolean isUserHaveAccess(Authentication authentication, Long id) {
 
         Sprint sprint = sprintRepository.findById(id).orElseThrow(NoResultException::new);
         List<User> projectUserList = sprint.getProject().getUsers();
-
         User user = userService.getUserByAuthentication(authentication);
-
         return projectUserList.stream().anyMatch(u -> u.getId() == user.getId());
     }
 }

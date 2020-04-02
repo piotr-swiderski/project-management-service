@@ -33,8 +33,8 @@ public class NewProjectController {
         User user = userService.getUserAuthentication();
         Project project = new Project(name, description, user);
 
+        project.addUser(user);
         projectService.saveProject(project);
-        user.addProject(project);
         userService.save(user);
 
         model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(userService.getUserAuthentication().getUsername()));

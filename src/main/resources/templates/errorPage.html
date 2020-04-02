@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/head :: headerfiles "></head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/errorPage.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<body>
+
+<div th:replace="/fragments/headerNav :: nav "></div>
+
+<div id="layoutSidenav">
+    <div th:replace="/fragments/sideBar :: side_bar"></div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div>
+
+                <div class="error-text">
+                    <p th:text="${ERROR_HANDLER}"></p>
+                </div>
+                <div class="error-help">
+                    <p th:text="${ERROR_HELP}"></p>
+                </div>
+
+            </div>
+
+        </main>
+        <div th:replace="/fragments/footer :: footer"></div>
+
+    </div>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="/js/scripts.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

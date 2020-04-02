@@ -34,8 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").authenticated()
                 .antMatchers("/newProject").authenticated()
                 .antMatchers("/myProjectList").authenticated()
-                .antMatchers("/projectPage").authenticated()
-                .antMatchers("/projectPage/createSprint").authenticated()
+                .antMatchers("/projectPage/**").authenticated()
                 .antMatchers("/sprint/**").authenticated()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").hasRole("USER")
@@ -45,7 +44,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/appLogin")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/", true)
                 .and()
                 .oauth2Login()
                 .loginPage("/login")
@@ -61,6 +59,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         auth
                 .userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+
+        //auth
+        //      .authenticationProvider()
     }
 
 

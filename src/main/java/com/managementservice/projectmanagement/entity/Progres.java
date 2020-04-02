@@ -1,6 +1,8 @@
 package com.managementservice.projectmanagement.entity;
 
-public enum Progres {
+import java.io.Serializable;
+
+public enum Progres implements Serializable {
 
     Backlog("BackLog"),
     ToDo("ToDo"),

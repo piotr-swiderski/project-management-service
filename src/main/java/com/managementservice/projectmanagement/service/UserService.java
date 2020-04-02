@@ -46,8 +46,8 @@ public class UserService {
         return userRepository.findByUsername(username).get();
     }
 
-    public User getUserByUsernameOrEmail(String value) {
-        return userRepository.findByUsernameOrEmail(value, value).orElseThrow(NoResultException::new);
+    public Optional<User> getUserByUsernameOrEmail(String value) {
+        return userRepository.findByUsernameOrEmail(value, value);
     }
 
     public Optional<User> getOptionalUserByUsername(String username) {
@@ -60,9 +60,10 @@ public class UserService {
     }
 
     public User getUserAuthentication() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userName = auth.getName();
-        return userRepository.findByUsername(userName).get();
+        Authentication principal = SecurityContextHolder.getContext().getAuthentication();
+        String userName = getUserNameFromPrincipal(principal);
+
+        return userRepository.findByUsername(userName).orElseThrow(NoResultException::new);
     }
 
     public String getUserAuthenticationUserName() {
@@ -77,33 +78,34 @@ public class UserService {
         userRepository.save(user);
     }
 
+
     public Set<Project> getAllProjectToUser(User user) {
         return user.getProjects();
     }
 
     public User getUserByAuthentication(Authentication authentication) {
         String username = getUserNameFromPrincipal(authentication);
-        return getUserByUsernameOrEmail(username);
+        return getUserByUsernameOrEmail(username).orElseThrow(NoResultException::new);
     }
 
-    private String getUserNameFromPrincipal(Authentication authentication) {
 
-        Object principal = authentication.getPrincipal();
+        private String getUserNameFromPrincipal (Authentication authentication){
 
-        if (principal instanceof UserDetails) {
-            User user = (User) principal;
-            return user.getUsername();
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                User user = (User) principal;
+                return user.getUsername();
+            }
+
+            if (principal instanceof DefaultOidcUser) {
+                DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
+                Map<String, Object> attributes = oidcUser.getAttributes();
+                return (String) attributes.get("email");
+            }
+
+            return "";
         }
-
-        if (principal instanceof DefaultOidcUser) {
-            DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
-            Map<String, Object> attributes = oidcUser.getAttributes();
-            return (String) attributes.get("email");
-        }
-
-        return "";
-
-    }
 
 
 }

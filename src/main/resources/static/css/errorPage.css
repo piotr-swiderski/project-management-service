@@ -1,0 +1,11 @@
+.error-help {
+    font-size: 18px;
+    text-align: center;
+}
+
+.error-text{
+    font-size: 23px;
+    text-align: center;
+    margin-top: 9vh;
+    font-weight: bold;
+}

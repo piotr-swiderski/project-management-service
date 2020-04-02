@@ -17,11 +17,13 @@ public class ProjectService {
 
     private ProjectRepository projectRepository;
     private SprintRepository sprintRepository;
+    private UserService userService;
 
     @Autowired
-    public ProjectService(SprintRepository sprintRepository, ProjectRepository projectRepository) {
+    public ProjectService(SprintRepository sprintRepository, ProjectRepository projectRepository, UserService userService) {
         this.sprintRepository = sprintRepository;
         this.projectRepository = projectRepository;
+        this.userService = userService;
     }
 
     @Transactional
@@ -72,5 +74,6 @@ public class ProjectService {
     public Project getProjectById(Long id) {
         return projectRepository.findById(id).orElseThrow(NoResultException::new);
     }
+
 
 }

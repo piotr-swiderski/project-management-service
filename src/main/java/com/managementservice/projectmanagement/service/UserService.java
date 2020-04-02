@@ -1,5 +1,6 @@
 package com.managementservice.projectmanagement.service;
 
+import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.repositorie.UserRepository;
 import com.managementservice.projectmanagement.utils.AccountTypeEnum;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -70,6 +72,10 @@ public class UserService {
 
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    public Set<Project> getAllProjectToUser(User user) {
+        return user.getProjects();
     }
 }
 

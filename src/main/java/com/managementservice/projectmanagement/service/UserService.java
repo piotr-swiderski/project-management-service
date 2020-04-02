@@ -7,10 +7,13 @@ import com.managementservice.projectmanagement.utils.AccountTypeEnum;
 import com.managementservice.projectmanagement.utils.RoleEnum;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -77,5 +80,31 @@ public class UserService {
     public Set<Project> getAllProjectToUser(User user) {
         return user.getProjects();
     }
+
+    public User getUserByAuthentication(Authentication authentication) {
+        String username = getUserNameFromPrincipal(authentication);
+        return getUserByUsernameOrEmail(username);
+    }
+
+    private String getUserNameFromPrincipal(Authentication authentication) {
+
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            User user = (User) principal;
+            return user.getUsername();
+        }
+
+        if (principal instanceof DefaultOidcUser) {
+            DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
+            Map<String, Object> attributes = oidcUser.getAttributes();
+            return (String) attributes.get("email");
+        }
+
+        return "";
+
+    }
+
+
 }
 

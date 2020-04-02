@@ -2,14 +2,17 @@ package com.managementservice.projectmanagement.service;
 
 import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.Sprint;
-import com.managementservice.projectmanagement.repositorie.ProjectRepository;
+import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.repositorie.SprintRepository;
+import com.managementservice.projectmanagement.repositorie.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -73,6 +76,18 @@ public class ProjectService {
 
     public Project getProjectById(Long id) {
         return projectRepository.findById(id).orElseThrow(NoResultException::new);
+    }
+
+
+    public boolean isUserHaveAccess(Authentication authentication, String projectId) {
+
+        long parseProjectId = Long.parseLong(projectId);
+
+        Project project = getProject(parseProjectId);
+        User user = userService.getUserByAuthentication(authentication);
+        List<User> projectUsers = project.getUsers();
+
+        return projectUsers.stream().anyMatch(u -> u.getId() == user.getId());
     }
 
 

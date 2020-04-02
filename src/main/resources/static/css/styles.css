@@ -589,8 +589,8 @@ pre code {
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -0.75rem;
-  margin-left: -0.75rem;
+  margin-right: 10rem;
+  margin-left: 10rem;
 }
 
 .no-gutters {
@@ -1508,8 +1508,8 @@ pre code {
   }
 
   .col-xl-3 {
-    flex: 0 0 25%;
-    max-width: 25%;
+    flex: 0 0 15%;
+    max-width: 20%;
   }
 
   .col-xl-4 {
@@ -4343,7 +4343,7 @@ input[type=button].btn-block {
 .card-body {
   flex: 1 1 auto;
   min-height: 1px;
-  padding: 1.25rem;
+  padding: 0.5rem;
 }
 
 .card-title {
@@ -10202,3 +10202,5 @@ body {
 .sb-sidenav-light .sb-sidenav-footer {
   background-color: #e9ecef;
 }
+
+

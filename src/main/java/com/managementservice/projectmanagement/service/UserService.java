@@ -1,5 +1,6 @@
 package com.managementservice.projectmanagement.service;
 
+import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.repositorie.UserRepository;
 import com.managementservice.projectmanagement.utils.AccountTypeEnum;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.NoResultException;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -76,27 +78,35 @@ public class UserService {
         userRepository.save(user);
     }
 
+
+    public Set<Project> getAllProjectToUser(User user) {
+        return user.getProjects();
+    }
+
     public User getUserByAuthentication(Authentication authentication) {
         String username = getUserNameFromPrincipal(authentication);
         return getUserByUsernameOrEmail(username).orElseThrow(NoResultException::new);
     }
 
-    private String getUserNameFromPrincipal(Authentication authentication) {
 
-        Object principal = authentication.getPrincipal();
+        private String getUserNameFromPrincipal (Authentication authentication){
 
-        if (principal instanceof UserDetails) {
-            User user = (User) principal;
-            return user.getUsername();
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                User user = (User) principal;
+                return user.getUsername();
+            }
+
+            if (principal instanceof DefaultOidcUser) {
+                DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
+                Map<String, Object> attributes = oidcUser.getAttributes();
+                return (String) attributes.get("email");
+            }
+
+            return "";
         }
 
-        if (principal instanceof DefaultOidcUser) {
-            DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
-            Map<String, Object> attributes = oidcUser.getAttributes();
-            return (String) attributes.get("email");
-        }
 
-        return "";
-    }
 }
 

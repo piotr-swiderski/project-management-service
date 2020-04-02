@@ -32,7 +32,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/").authenticated()
-                .antMatchers("/index").authenticated()
                 .antMatchers("/newProject").authenticated()
                 .antMatchers("/myProjectList").authenticated()
                 .antMatchers("/projectPage/**").authenticated()

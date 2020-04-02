@@ -38,7 +38,7 @@ public class NewProjectController {
         userService.save(user);
 
         model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(userService.getUserAuthentication().getUsername()));
-        return "/myProjectList";
+        return "index";
     }
 
 }

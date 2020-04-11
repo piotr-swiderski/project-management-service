@@ -46,10 +46,9 @@ public class ProjectController {
 
     @GetMapping("/addUsersToProject")
     public String addUserToProject(Model model,
-                                   @RequestParam String projectId) {
+                                   @RequestParam long projectId) {
 
-        long parseProjectId = Long.parseLong(projectId);
-        model.addAttribute(PROJECT_HANDLER, projectService.getProject(parseProjectId));
+        model.addAttribute(PROJECT_HANDLER, projectService.getProject(projectId));
 
         return "addUsersToProject";
 
@@ -57,12 +56,11 @@ public class ProjectController {
 
     @PostMapping("/addUsersToProject")
     public String addUserToProjectPost(Model model,
-                                       @RequestParam String projectId,
+                                       @RequestParam long projectId,
                                        @RequestParam String email
     ) {
 
-        long parseProjectId = Long.parseLong(projectId);
-        model.addAttribute(PROJECT_HANDLER, projectService.getProject(parseProjectId));
+        model.addAttribute(PROJECT_HANDLER, projectService.getProject(projectId));
 
         User user;
         Project project;
@@ -75,7 +73,7 @@ public class ProjectController {
         }
 
         try {
-            project = projectService.getProjectById(Long.parseLong(projectId));
+            project = projectService.getProjectById(projectId);
         } catch (NoResultException e) {
             model.addAttribute(SUCCSES_ADDING_NOTIFICATION, SUCCSES_ADDING_NOTIFICATION_MESSAGE);
             return "addUsersToProject";
@@ -142,10 +140,9 @@ public class ProjectController {
 
 
     @GetMapping("/projectPage")
-    public String getProjectPanel(Authentication authentication, Model model, @RequestParam(required = false) String projectId) {
+    public String getProjectPanel(Authentication authentication, Model model, @RequestParam(required = false) long projectId) {
 
 
-        long parseProjectId = Long.parseLong(projectId);
 
         if (!projectService.isUserHaveAccess(authentication, projectId)) {
             model.addAttribute(ERROR_HANDLER, ERROR_MSG_ACCESS);
@@ -153,28 +150,25 @@ public class ProjectController {
             return "errorPage";
         }
 
-        model.addAttribute(PROJECT_HANDLER, projectService.getProject(parseProjectId));
+        model.addAttribute(PROJECT_HANDLER, projectService.getProject(projectId));
         return "projectPage";
     }
 
     @PostMapping("/projectPage")
     public String addSprint(Model model,
-                            @RequestParam String projectId,
+                            @RequestParam long projectId,
                             @RequestParam String name,
-                            @RequestParam String dateFrom,
-                            @RequestParam String dateTo,
+                            @RequestParam LocalDate dateFrom,
+                            @RequestParam LocalDate dateTo,
                             @RequestParam String storyPoints) {
 
-        LocalDate dateFromParse = LocalDate.parse(dateFrom);
-        LocalDate dateToParse = LocalDate.parse(dateTo);
-        long parseProjectId = Long.parseLong(projectId);
         int storyPointsParse = Integer.parseInt(storyPoints);
 
-        if (!projectService.addSprintToProject(parseProjectId, name, dateFromParse, dateToParse, storyPointsParse)) {
+        if (!projectService.addSprintToProject(projectId, name, dateFrom, dateTo, storyPointsParse)) {
             model.addAttribute(ERROR_ADDING_SPRINT_HANDLER, ERROR_ADDING_SPRINT_MESSAGE);
         }
 
-        model.addAttribute(PROJECT_HANDLER, projectService.getProject(parseProjectId));
+        model.addAttribute(PROJECT_HANDLER, projectService.getProject(projectId));
         return "projectPage";
     }
 }

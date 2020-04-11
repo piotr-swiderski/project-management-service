@@ -24,14 +24,14 @@ public class SprintService {
         return sprintRepository.save(sprint);
     }
 
-    public Sprint getSprintById(Long id) {
-        return sprintRepository.findById(id).orElseThrow(NoResultException::new);
+    public Sprint getSprintById(Long sprintId) {
+        return sprintRepository.findById(sprintId).orElseThrow(NoResultException::new);
     }
 
 
-    public boolean isUserHaveAccess(Authentication authentication, Long id) {
+    public boolean isUserHaveAccess(Authentication authentication, Long sprintId) {
 
-        Sprint sprint = sprintRepository.findById(id).orElseThrow(NoResultException::new);
+        Sprint sprint = sprintRepository.findById(sprintId).orElseThrow(NoResultException::new);
         List<User> projectUserList = sprint.getProject().getUsers();
         User user = userService.getUserByAuthentication(authentication);
         return projectUserList.stream().anyMatch(u -> u.getId() == user.getId());

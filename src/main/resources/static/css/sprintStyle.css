@@ -18,20 +18,21 @@
 }
 
 .task-name {
-    /*display: block;*/
+    /*//display: block; */
     text-align: left;
     text-size-adjust: 15px;
     size: 10px;
     color: #007bff;
     font-size: 18px;
     width: 17.8vw;
+    padding-right: 4px;
 }
 
 .task-creator {
     font-size: 15px;
     text-align: left;
     color: gray;
-    width: 20.3vw;
+    width: 19.3vw;
 }
 
 
@@ -191,7 +192,7 @@ textarea.mod-card-back-title {
     min-height: 24px;
     padding: 4px 8px 0px 8px;
     resize: none;
-    width: 100%;
+    width: 80%;
 }
 
 .window-title h2 {
@@ -222,7 +223,7 @@ textarea.mod-card-back-title {
 
 .window-module-title {
     border-bottom: 1px solid rgba(9, 30, 66, .13);
-    padding: 16px 0px 0px 0px;
+    padding: 12px 0px 0px 0px;
     position: relative;
     margin: 0 0 4px 40px;
 }
@@ -366,11 +367,12 @@ a:active, a:hover {
 }
 
 .task-making-style {
-    padding: 15px 0 9px 0;
+    padding: 15px 0 2px 0;
 }
 
-.taskMakingButtons {
+.buttons-accept-cancel {
     display: inline-flex;
+    margin-top: 4px;
 }
 
 .task-progress-style {
@@ -390,8 +392,8 @@ a:active, a:hover {
 }
 
 .btn-icon {
-    font-size: 36px !important;
-    margin-top: 5px;
+    font-size: 31px !important;
+    margin-top: 9px;
     color: #545b62;
     cursor: pointer;
 }
@@ -413,11 +415,12 @@ a:active, a:hover {
     background-color: limegreen;
     font-size: 64%;
     border-radius: 5px;
-    height: 1.2vw;
+    height: auto;
     width: fit-content;
     padding-left: 0.2vw;
     padding-right: 0.2vw;
     text-align: center;
+    min-height: 24px;
 }
 
 .badge-div {
@@ -436,18 +439,31 @@ a:active, a:hover {
     padding-left: 0.2vw;
     padding-right: 0.2vw;
     display: inline-flex;
-    width: 5.3vw;
+    width: 6.3vw;
     justify-content: flex-end;
 }
 
 .span-validity {
     color: white;
-    /*background-color: #f95d5d;*/
+    /* background-color: #f95d5d; */
     font-size: 64%;
     border-radius: 5px;
-    height: 1.2vw;
+    height: auto;
     width: fit-content;
-    padding-left: 0.2vw;
-    padding-right: 0.2vw;
+    padding-left: 3px;
+    padding-right: 3px;
     text-align: center;
+    max-height: 25px;
+    min-height: 23px;
+    min-width: max-content;
+}
+
+.title-buttons{
+    display: inline;
+}
+
+.btn-icon-title{
+    margin-right: 6px;
+    margin-left: 6px;
+    cursor: pointer;
 }

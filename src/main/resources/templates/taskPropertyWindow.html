@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Task property window</title>
+</head>
+<body>
+
+<div id="task-property" class="window">
+    <div class="card-detail-window u-clearfix">
+        <div class="window-content">
+            <span id="propCloseBtn" class="close">&times;</span>
+
+            <div class="window-header">
+                <span class="window-header-icon icon-lg icon-card js-card-header-icon"></span>
+                <div class="window-title">
+                    <h2 class="card-detail-title-assist js-title-helper" dir="auto"></h2>
+                    <textarea id="propTaskName" class="mod-card-back-title js-card-detail-title-input"
+                              dir="auto"
+                              style="overflow: hidden; overflow-wrap: break-word; height: 33px;"></textarea>
+                    <div class="title-buttons">
+                        <span id="propTitleTaskChangeAccept"
+                              class="material-icons  btn-icon-title" hidden>done</span>
+                        <span id="propTitleTaskChangeCancel"
+                              class="material-icons  btn-icon-title" hidden>cancel</span>
+                    </div>
+                </div>
+                <div class="window-header-inline-content quiet js-current-list">
+                    <p class="u-inline-block u-bottom">na liście
+                        <a id="propTaskColumnName" href="#" class="js-open-move-from-header"></a>
+                    </p>
+                </div>
+            </div>
+            <div class="w3-cell-row">
+                <div class="w3-container w3-white w3-cell w3-mobile">
+                    <div class="window-body">
+                        <div>
+                            <div class="window-main-col"> <!--Opis-->
+                                <div class="div-padding-content">
+                                    <div class="window-module-title window-module-title-no-divider description-title">
+                                        <span class="icon-description icon-lg window-module-title-icon"></span>
+                                        <h3 class="u-inline-block-description">Opis</h3>
+                                    </div>
+                                    <div>
+                                        <div class="u-gutter">
+                                            <div class="description-content js-desc-content">
+                                                <div class="current markeddown hide-on-edit js-desc js-show-with-desc hide"
+                                                     dir="auto">
+                                                                    <textarea id="propTaskDescription"
+                                                                              class="task-description js-get-pups get-pups"
+                                                                              placeholder="Dodaj bardziej szczegółowy opis…">
+                                                                    </textarea>
+                                                </div>
+                                                <div class="buttons-accept-cancel">
+                                                    <a id="propBtnAcceptDescription"
+                                                       class="button-link js-get-pups get-pups btn-in-content btn-styling"
+                                                       href="#" title="Dodaj zadanie" hidden>Accept</a>
+                                                    <span id="propBtnCloseCorrectDesc"
+                                                          class="material-icons btn-styling btn-icon"
+                                                          hidden>cancel</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="div-padding-content"> <!--Lista zadan-->
+                                    <div class="window-module-title window-module-title-no-divider description-title"><span
+                                            class="icon-description icon-lg window-module-title-icon"></span>
+                                        <h3 class="u-inline-block-description">Lista zadań</h3>
+                                    </div>
+                                    <div id="errandProgressBar" class="task-progress-style" hidden>
+                                        <div class="progress">
+                                            <div id="progressBar" class="progress-bar"
+                                                 role="progressbar"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="u-gutter">
+                                        <div class="description-content js-desc-content">
+                                            <div class="current markeddown hide-on-edit js-desc js-show-with-desc hide"
+                                                 dir="auto">
+                                                <div id="check-list" class="check-list">
+                                                </div>
+                                                <div id="taskMakingContent" hidden>
+                                                    <div id="propTaskMaking"
+                                                         class="current markeddown hide-on-edit js-desc js-show-with-desc hide task-making-style"
+                                                         dir="auto">
+                                                                        <textarea id="propTaskAddingText"
+                                                                                  class="task-description js-get-pups get-pups"
+                                                                                  placeholder="Wpisz nazwe zadania"></textarea>                                                                        </textarea>
+                                                    </div>
+                                                    <div class="buttons-accept-cancel">
+                                                        <a id="propBtnCreateAccept"
+                                                           class="button-link js-get-pups get-pups btn-in-content btn-styling"
+                                                           href="#" title="Dodaj zadanie">Create</a>
+                                                        <span id="propTaskMakingCancel"
+                                                              class="material-icons btn-styling btn-icon">cancel</span>
+                                                    </div>
+                                                </div>
+                                                <button id="propBtnCreateTask"
+                                                        class="button-link js-get-pups get-pups btn-in-content"
+                                                        title="Dodaj zadanie">Dodaj zadanie
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-container w3-white w3-cell w3-mobile">
+                    <div class="window-sidebar h3-styling">
+                        <div class="window-module suggested-actions-module js-suggested-actions">
+                            <div class="suggested-actions-settings js-suggested-actions-settings"><span
+                                    class="icon-sm icon-gear"></span></div>
+                            <h3 class="mod-no-top-margin">Sugerowane</h3>
+                            <div class="u-clearfix">
+                                <a class="button-link js-join" href="#" title="Dołącz">
+                                    <span class="icon-sm icon-member"></span>
+                                    <span class="js-sidebar-action-text">Dołącz</span></a>
+                            </div>
+                        </div>
+                        <div class="window-module u-clearfix">
+                            <h3 class="mod-no-top-margin js-sidebar-add-heading">Dodaj do karty</h3>
+                            <div class="u-clearfix">
+                                <a class="button-link js-change-card-members" href="#"
+                                   title="Członkowie">
+                                    <span class="icon-sm icon-member"></span>
+                                    <span class="js-sidebar-action-text">Członkowie</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="js-plugin-buttons">
+                            <div class="window-module u-clearfix">
+                                <h3>Dodatki</h3>
+                                <div class="u-clearfix js-button-list"></div>
+                                <div>
+                                    <a class="button-link js-get-pups get-pups" href="#"
+                                       title="Cos tam">Cos tam</a>
+                                    <div class="js-card-back-pup-prompt"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="window-module u-clearfix">
+                            <h3 class="mod-no-top-margin">Działania</h3>
+                            <div class="u-clearfix">
+
+                                <a class="button-link js-move-card" href="#" title="Przenieś">
+                                    <span class="icon-sm icon-move"></span>
+                                    <span class="js-sidebar-action-text">Przenieś</span>
+                                </a>
+
+                                <a class="button-link js-copy-card" href="#" title="Kopiuj">
+                                    <span class="icon-sm icon-copy"></span>
+                                    <span class="js-sidebar-action-text">Kopiuj</span>
+                                </a>
+                            </div>
+
+                            <a id="share" class="button-link js-more-menu " href="#" title="Udostępnij">
+                                <span class="icon-sm icon-share"></span>
+                                <span class="js-sidebar-action-text">Udostępnij</span>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/js/sprintTasks.js}"></script>
+</body>
+</html>

@@ -1,10 +1,10 @@
-let errandItem = document.getElementById("propErrandItem");
+//let errandItem = document.getElementById("propErrandItem");
 let checkList = document.getElementById("check-list");
 
 
 let tasks = document.getElementsByClassName("task");
 let taskProperty = document.getElementById("task-property");
-let nameOfTask = document.getElementById("propNameOfTask");
+//let nameOfTask = document.getElementById("propNameOfTask");
 let closeButtonTaskDesc = document.getElementById("propCloseBtn");
 let propTaskName = document.getElementById("propTaskName");
 let propTaskDescription = document.getElementById("propTaskDescription");
@@ -19,10 +19,40 @@ let propBtnCreateAccept = document.getElementById("propBtnCreateAccept");
 let errandProgressBar = document.getElementById("errandProgressBar");
 let progressBar = document.getElementById("progressBar");
 
+let propBtnAcceptDescription = document.getElementById("propBtnAcceptDescription");
+let propBtnCloseCorrectDesc = document.getElementById("propBtnCloseCorrectDesc");
+let propTitleTaskChangeAccept = document.getElementById("propTitleTaskChangeAccept");
+let propTitleTaskChangeCancel = document.getElementById("propTitleTaskChangeCancel");
+
+let shareTask = document.getElementById("share");
+
+shareTask.onclick = function(){
+    window.print();
+};
+
 let taskId;
 let projectId;
 let counter = 0;
 
+function showTwoButtons(button1, button2) {
+    return function () {
+        button1.hidden = false;
+        button2.hidden = false;
+    };
+}
+
+function hiddenTwoButtons(button1, button2) {
+    return function () {
+        button1.hidden = true;
+        button2.hidden = true;
+        document.getSelection().empty();
+    }
+}
+
+function setNameTaskInHtml(taskId, taskName){
+    let taskInHtml = document.getElementById(taskId);
+    taskInHtml.children[0].firstChild.nextSibling.innerText = taskName;
+}
 
 propBtnCreateTask.onclick = function () {
     taskMakingContent.hidden = false;
@@ -30,11 +60,9 @@ propBtnCreateTask.onclick = function () {
     propTaskAddingText.select();
 };
 
-
 propTaskMakingCancel.onclick = function () {
     taskMakingContent.hidden = true;
 };
-
 
 propBtnCreateAccept.onclick = function () {
     taskMakingContent.hidden = true;
@@ -42,6 +70,30 @@ propBtnCreateAccept.onclick = function () {
     propTaskAddingText.value = "";
 };
 
+propTaskDescription.onfocus = showTwoButtons(propBtnAcceptDescription, propBtnCloseCorrectDesc);
+
+propBtnCloseCorrectDesc.onclick = hiddenTwoButtons(propBtnAcceptDescription, propBtnCloseCorrectDesc);
+
+propBtnAcceptDescription.onclick = function () {
+    postChangedDescription(taskId, propTaskDescription.value);
+    propBtnAcceptDescription.hidden = true;
+    propBtnCloseCorrectDesc.hidden = true;
+    document.getSelection().empty();
+
+};
+
+
+propTaskName.onfocus = showTwoButtons(propTitleTaskChangeAccept, propTitleTaskChangeCancel);
+
+propTitleTaskChangeCancel.onclick = hiddenTwoButtons(propTitleTaskChangeAccept, propTitleTaskChangeCancel);
+
+propTitleTaskChangeAccept.onclick = function () {
+    postChangedTaskName(taskId, propTaskName.value);
+    setNameTaskInHtml(taskId, propTaskName.value);
+    propTitleTaskChangeAccept.hidden = true;
+    propTitleTaskChangeCancel.hidden = true;
+    document.getSelection().empty();
+};
 
 function getTaskById(id) {
     return tasksList.find(x => x.id.toString() == id);
@@ -117,7 +169,7 @@ function addTaskToChecklist(tasks) {
     function progressBarState(tasks) {
         let sizeOfTask = tasks.length;
         let taskDone = 0;
-        let percentOfDone = 0;
+        let percentOfDone;
         let errandProgressBar = document.getElementById('errandProgressBar');
         let taskProgressBarValue = document.getElementById('taskProgressVal' + projectId);
         let taskBar = document.getElementById('taskProgressBar' + projectId);
@@ -191,7 +243,7 @@ function postTask(tableName, taskId) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "pageChange",
+        url: "tableChange",
         data: data,
         dataType: 'json',
         success: function (dataReq, status) {
@@ -201,6 +253,42 @@ function postTask(tableName, taskId) {
     });
 }
 
+function postChangedDescription(taskId, taskDescription) {
+    let data = {};
+    data["taskId"] = taskId;
+    data["taskDescription"] = taskDescription;
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "setTaskDescription",
+        data: data,
+        dataType: 'json',
+        success: function (dataReq, status) {
+            let task = getTaskById(taskId);
+            task.description = taskDescription;
+        }
+    });
+}
+
+
+function postChangedTaskName(taskId, taskName) {
+    let data = {};
+    data["taskId"] = taskId;
+    data["taskName"] = taskName;
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "setTaskName",
+        data: data,
+        dataType: 'json',
+        success: function (dataReq, status) {
+            let task = getTaskById(taskId);
+            task.name = taskName;
+        }
+    });
+}
 
 function getTaskErrands(taskId) {
     let data = {};

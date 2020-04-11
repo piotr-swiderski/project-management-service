@@ -78,11 +78,9 @@ public class ProjectService {
         return projectRepository.findById(id).orElseThrow(NoResultException::new);
     }
 
-    public boolean isUserHaveAccess(Authentication authentication, String projectId) {
+    public boolean isUserHaveAccess(Authentication authentication, long projectId) {
 
-        long parseProjectId = Long.parseLong(projectId);
-
-        Project project = getProject(parseProjectId);
+        Project project = getProject(projectId);
         User user = userService.getUserByAuthentication(authentication);
         List<User> projectUsers = project.getUsers();
 

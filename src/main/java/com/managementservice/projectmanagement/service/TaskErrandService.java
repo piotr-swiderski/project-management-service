@@ -21,27 +21,29 @@ public class TaskErrandService {
         this.taskService = taskService;
     }
 
-    public List<TaskErrand> createTaskErrand(String text, String taskId) {
-        long parseTaskId = Long.parseLong(taskId);
-        Task taskById = taskService.findTaskById(parseTaskId);
+    public TaskErrand saveErrand(TaskErrand taskErrand) {
+        return taskErrandRepository.save(taskErrand);
+    }
+
+    public List<TaskErrand> createTaskErrand(String text, long taskId) {
+        Task taskById = taskService.findTaskById(taskId);
         TaskErrand taskErrand = new TaskErrand(text, taskById);
         taskById.addTaskErrand(taskErrand);
-        taskErrandRepository.save(taskErrand);
+        saveErrand(taskErrand);
         taskService.update(taskById);
         return getTaskErrandsByTaskId(taskId);
     }
 
-    public List<TaskErrand> getTaskErrandsByTaskId(String taskId) {
-        long parseTaskId = Long.parseLong(taskId);
-        Task taskById = taskService.findTaskById(parseTaskId);
+    public List<TaskErrand> getTaskErrandsByTaskId(long taskId) {
+        Task taskById = taskService.findTaskById(taskId);
         return taskErrandRepository.findAllByTask(taskById);
     }
 
-    public List<TaskErrand> setErrandFinished(String errandId, boolean checked) {
-        long parseErrandId = Long.parseLong(errandId);
-        TaskErrand taskErrand = taskErrandRepository.findById(parseErrandId).orElseThrow(NoResultException::new);
+    public List<TaskErrand> setErrandFinished(long errandId, boolean checked) {
+        TaskErrand taskErrand = taskErrandRepository.findById(errandId).orElseThrow(NoResultException::new);
         taskErrand.setFinished(checked);
-        taskErrandRepository.save(taskErrand);
-        return getTaskErrandsByTaskId((String.valueOf(taskErrand.getTask().getId())));
+        saveErrand(taskErrand);
+        return getTaskErrandsByTaskId(taskErrand.getTask().getId()
+        );
     }
 }

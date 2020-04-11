@@ -32,14 +32,13 @@ public class SprintController {
     }
 
     @GetMapping("/sprint/{sprintId}")
-    public String getSprintPage(Model model, Authentication authentication, @PathVariable String sprintId) {
+    public String getSprintPage(Model model, Authentication authentication, @PathVariable long sprintId) {
 
 
-        Long id = Long.parseLong(sprintId);
-        Sprint sprintById = sprintService.getSprintById(id);
+        Sprint sprintById = sprintService.getSprintById(sprintId);
         Set<Task> tasks = taskService.findTasksBySprint(sprintById);
 
-        boolean userHaveAccess = sprintService.isUserHaveAccess(authentication, id);
+        boolean userHaveAccess = sprintService.isUserHaveAccess(authentication, sprintId);
 
         if (!userHaveAccess) {
             model.addAttribute(ERROR_HANDLER, ERROR_MSG_ACCESS);
@@ -55,7 +54,7 @@ public class SprintController {
 
     @PostMapping("/sprint/{sprintId}")
     public String createTask(Model model,
-                             @PathVariable String sprintId,
+                             @PathVariable long sprintId,
                              @RequestParam String taskName,
                              @RequestParam String taskDescription,
                              @RequestParam String taskProgress,
@@ -63,12 +62,12 @@ public class SprintController {
                              Authentication authentication) {
 
 
-        long parseSprintId = Long.parseLong(sprintId);
         int parseTaskValidity = Integer.parseInt(taskValidity);
-        Sprint sprintById = sprintService.getSprintById(parseSprintId);
-        Set<Task> tasks = taskService.findTasksBySprint(sprintById);
+        Sprint sprintById = sprintService.getSprintById(sprintId);
 
-        taskService.createTask(taskName, taskDescription, parseSprintId, parseTaskValidity, taskProgress, authentication);
+        taskService.createTask(taskName, taskDescription, sprintId, parseTaskValidity, taskProgress, authentication);
+
+        Set<Task> tasks = taskService.findTasksBySprint(sprintById);
 
         model.addAttribute(TASK_LIST, tasks);
         model.addAttribute(SPRINT_HANDLER, sprintById);

@@ -1,6 +1,9 @@
 package com.managementservice.projectmanagement.service;
 
-import com.managementservice.projectmanagement.entity.*;
+import com.managementservice.projectmanagement.entity.Progres;
+import com.managementservice.projectmanagement.entity.Sprint;
+import com.managementservice.projectmanagement.entity.Task;
+import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.repositorie.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,8 +27,13 @@ public class TaskService {
         this.userService = userService;
     }
 
-    public void createTask(String name, String description, Long sprintId, int taskValidation, String progress, Authentication authentication) {
 
+    public Task saveTask(Task task) {
+        return taskRepository.save(task);
+    }
+
+
+    public void createTask(String name, String description, Long sprintId, int taskValidation, String progress, Authentication authentication) {
         Sprint sprint = sprintService.getSprintById(sprintId);
         Progres progres = Progres.valueOf(progress);
         User user = userService.getUserByAuthentication(authentication);
@@ -40,7 +48,7 @@ public class TaskService {
                 .build();
         sprint.addTask(task);
 
-        taskRepository.save(task);
+        saveTask(task);
         sprintService.saveSprint(sprint);
     }
 
@@ -49,26 +57,39 @@ public class TaskService {
     }
 
 
-    public void changeTaskProgress(String taskId, String tableName) {
+    public void changeTaskProgress(long taskId, String tableName) {
 
-        long parseTaskId = Long.parseLong(taskId);
         Progres progress = Progres.valueOf(tableName);
 
-        Task task = taskRepository.findById(parseTaskId).orElseThrow(NoResultException::new);
+        Task task = taskRepository.findById(taskId).orElseThrow(NoResultException::new);
         task.setProgres(progress);
-        taskRepository.save(task);
+        saveTask(task);
     }
 
     public Task findTaskById(long id) {
         return taskRepository.findById(id).orElseThrow(NoResultException::new);
     }
 
-    public Set<Task> findTasksBySprint(Sprint sprint){
+
+    public Set<Task> findTasksBySprint(Sprint sprint) {
         return taskRepository.findAllBySprint(sprint);
     }
 
 
-    public void update(Task task) {
-        taskRepository.save(task);
+    public Task update(Task task) {
+        return taskRepository.save(task);
+    }
+
+
+    public Task setTaskDescription(long taskId, String description) {
+        Task task = findTaskById(taskId);
+        task.setDescription(description);
+        return update(task);
+    }
+
+    public Task setTaskName(long taskId, String taskName) {
+        Task task = findTaskById(taskId);
+        task.setName(taskName);
+        return update(task);
     }
 }

@@ -20,7 +20,7 @@ public class IndexController {
 
     @GetMapping("/")
     public String getIndexPage(Model model) {
-        model.addAttribute("projects", userService.getAllProjectToUser(userService.getUserAuthentication()));
+        model.addAttribute("projects", userService.getAllProjectToUser(userService.getUserByAuthentication()));
         return INDEX_PAGE;
     }
 

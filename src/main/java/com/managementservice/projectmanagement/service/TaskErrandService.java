@@ -26,7 +26,7 @@ public class TaskErrandService {
     }
 
     public List<TaskErrand> createTaskErrand(String text, long taskId) {
-        Task taskById = taskService.findTaskById(taskId);
+        Task taskById = taskService.findTaskById(taskId).orElseThrow(NoResultException::new);
         TaskErrand taskErrand = new TaskErrand(text, taskById);
         taskById.addTaskErrand(taskErrand);
         saveErrand(taskErrand);
@@ -35,7 +35,7 @@ public class TaskErrandService {
     }
 
     public List<TaskErrand> getTaskErrandsByTaskId(long taskId) {
-        Task taskById = taskService.findTaskById(taskId);
+        Task taskById = taskService.findTaskById(taskId).orElseThrow(NoResultException::new);
         return taskErrandRepository.findAllByTask(taskById);
     }
 

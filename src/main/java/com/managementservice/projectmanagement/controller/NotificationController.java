@@ -33,7 +33,7 @@ public class NotificationController {
     public void httpStatus() {
         notificationService.saveAll(
                 notificationService.setTrueNotificationViewed(
-                        notificationService.getListByUserAndVievedNotification(userService.getUserAuthenticationUserName())));
+                        notificationService.getListByUserAndVievedNotification(userService.getUsernameFromAuthentication())));
     }
 
     @GetMapping("/accept")
@@ -43,7 +43,7 @@ public class NotificationController {
 
         Notification notification = notificationService.getNotificationById(Long.parseLong(id));
         Project project = projectService.getProject(notification.getProjectId());
-        User user = userService.getUserAuthentication();
+        User user = userService.getUserByAuthentication();
 
         project.addUser(user);
         projectService.saveProject(project);

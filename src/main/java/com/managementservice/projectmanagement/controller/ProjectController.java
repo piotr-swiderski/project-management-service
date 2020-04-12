@@ -39,7 +39,7 @@ public class ProjectController {
 
     @GetMapping("/myProjectList")
     public String myProjectList(Model model) {
-        model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(userService.getUserAuthentication().getUsername()));
+        model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(userService.getUserByAuthentication().getUsername()));
         return "myProjectList";
     }
 
@@ -80,7 +80,7 @@ public class ProjectController {
         }
 
         Notification notification = new Notification("Project invitation", "User "
-                + userService.getUserAuthentication().getEmail()
+                + userService.getUserByAuthentication().getEmail()
                 + " I want to add you to the project "
                 + project.getName(), user, project.getId());
         notificationService.save(notification);

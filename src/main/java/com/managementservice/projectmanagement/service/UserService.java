@@ -29,7 +29,7 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public void registerUser(String username, String password, String email, AccountTypeEnum accountType) {
+    public User registerUser(String username, String password, String email, AccountTypeEnum accountType) {
         User user = User.UserBuilder.anUser()
                 .withUsername(username)
                 .withPassword(bCryptPasswordEncoder.encode(password))
@@ -40,34 +40,27 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
-    }
-
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username).get();
+        return user;
     }
 
     public Optional<User> getUserByUsernameOrEmail(String value) {
-        return userRepository.findByUsernameOrEmail(value, value);
+        return userRepository.findByUsernameOrEmail(value);
     }
-
-    public Optional<User> getOptionalUserByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
 
     public User getUserById(long id) {
         return userRepository.findById(id).orElseThrow(NoResultException::new);
     }
 
-    public User getUserAuthentication() {
-        Authentication principal = SecurityContextHolder.getContext().getAuthentication();
-        String userName = getUserNameFromPrincipal(principal);
 
-        return userRepository.findByUsername(userName).orElseThrow(NoResultException::new);
+    public User getUserByAuthentication() {
+        Authentication principal = SecurityContextHolder.getContext().getAuthentication();
+        String userName = getUsernameByAuthentication(principal);
+
+        return getUserByUsernameOrEmail(userName).orElseThrow(NoResultException::new);
     }
 
-    public String getUserAuthenticationUserName() {
-        return getUserAuthentication().getUsername();
+    public String getUsernameFromAuthentication() {
+        return getUserByAuthentication().getUsername();
     }
 
     public User getUserByEmail(String email) {
@@ -84,28 +77,28 @@ public class UserService {
     }
 
     public User getUserByAuthentication(Authentication authentication) {
-        String username = getUserNameFromPrincipal(authentication);
+        String username = getUsernameByAuthentication(authentication);
         return getUserByUsernameOrEmail(username).orElseThrow(NoResultException::new);
     }
 
 
-        private String getUserNameFromPrincipal (Authentication authentication){
+    private String getUsernameByAuthentication(Authentication authentication) {
 
-            Object principal = authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
 
-            if (principal instanceof UserDetails) {
-                User user = (User) principal;
-                return user.getUsername();
-            }
-
-            if (principal instanceof DefaultOidcUser) {
-                DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
-                Map<String, Object> attributes = oidcUser.getAttributes();
-                return (String) attributes.get("email");
-            }
-
-            return "";
+        if (principal instanceof UserDetails) {
+            User user = (User) principal;
+            return user.getUsername();
         }
+
+        if (principal instanceof DefaultOidcUser) {
+            DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
+            Map<String, Object> attributes = oidcUser.getAttributes();
+            return (String) attributes.get("email");
+        }
+
+        return "";
+    }
 
 
 }

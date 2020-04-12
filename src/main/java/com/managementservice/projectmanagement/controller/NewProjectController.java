@@ -30,14 +30,14 @@ public class NewProjectController {
 
     @PostMapping("/newProject")
     public String newProjectForm(Model model, @RequestParam String name, @RequestParam String description) {
-        User user = userService.getUserAuthentication();
+        User user = userService.getUserByAuthentication();
         Project project = new Project(name, description, user);
 
         project.addUser(user);
         projectService.saveProject(project);
         userService.save(user);
 
-        model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(userService.getUserAuthentication().getUsername()));
+        model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(userService.getUserByAuthentication().getUsername()));
         return "index";
     }
 

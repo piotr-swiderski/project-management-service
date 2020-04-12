@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -33,7 +34,7 @@ public class TaskService {
     }
 
 
-    public void createTask(String name, String description, Long sprintId, int taskValidation, String progress, Authentication authentication) {
+    public Task createTask(String name, String description, Long sprintId, int taskValidation, String progress, Authentication authentication) {
         Sprint sprint = sprintService.getSprintById(sprintId);
         Progres progres = Progres.valueOf(progress);
         User user = userService.getUserByAuthentication(authentication);
@@ -50,6 +51,7 @@ public class TaskService {
 
         saveTask(task);
         sprintService.saveSprint(sprint);
+        return task;
     }
 
     public List<Task> findAllTaskBySprintId(Long sprintId) {
@@ -57,17 +59,16 @@ public class TaskService {
     }
 
 
-    public void changeTaskProgress(long taskId, String tableName) {
-
+    public Task changeTaskProgress(long taskId, String tableName) {
+        Task task = findTaskById(taskId).orElseThrow(NoResultException::new);
         Progres progress = Progres.valueOf(tableName);
-
-        Task task = taskRepository.findById(taskId).orElseThrow(NoResultException::new);
         task.setProgres(progress);
         saveTask(task);
+        return task;
     }
 
-    public Task findTaskById(long id) {
-        return taskRepository.findById(id).orElseThrow(NoResultException::new);
+    public Optional<Task> findTaskById(long id) {
+        return taskRepository.findById(id);
     }
 
 
@@ -82,13 +83,13 @@ public class TaskService {
 
 
     public Task setTaskDescription(long taskId, String description) {
-        Task task = findTaskById(taskId);
+        Task task = findTaskById(taskId).orElseThrow(NoResultException::new);
         task.setDescription(description);
         return update(task);
     }
 
     public Task setTaskName(long taskId, String taskName) {
-        Task task = findTaskById(taskId);
+        Task task = findTaskById(taskId).orElseThrow(NoResultException::new);
         task.setName(taskName);
         return update(task);
     }

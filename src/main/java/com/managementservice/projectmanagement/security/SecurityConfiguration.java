@@ -41,12 +41,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .failureUrl("/login-error")
                 .loginProcessingUrl("/appLogin")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .and()
                 .oauth2Login()
                 .loginPage("/login")
+                .failureUrl("/login-error-oauth2")
                 .userInfoEndpoint()
                 .oidcUserService(customOidcUserService);
 

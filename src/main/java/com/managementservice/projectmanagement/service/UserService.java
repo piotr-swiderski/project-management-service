@@ -42,9 +42,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username).get();
-    }
 
     public Optional<User> getUserByUsernameOrEmail(String value) {
         return userRepository.findByUsernameOrEmail(value, value);
@@ -89,23 +86,23 @@ public class UserService {
     }
 
 
-        private String getUserNameFromPrincipal (Authentication authentication){
+    private String getUserNameFromPrincipal(Authentication authentication) {
 
-            Object principal = authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
 
-            if (principal instanceof UserDetails) {
-                User user = (User) principal;
-                return user.getUsername();
-            }
-
-            if (principal instanceof DefaultOidcUser) {
-                DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
-                Map<String, Object> attributes = oidcUser.getAttributes();
-                return (String) attributes.get("email");
-            }
-
-            return "";
+        if (principal instanceof UserDetails) {
+            User user = (User) principal;
+            return user.getUsername();
         }
+
+        if (principal instanceof DefaultOidcUser) {
+            DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
+            Map<String, Object> attributes = oidcUser.getAttributes();
+            return (String) attributes.get("email");
+        }
+
+        return "";
+    }
 
 
 }

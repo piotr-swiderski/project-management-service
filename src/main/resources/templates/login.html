@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>LOGIN</title>
@@ -20,6 +20,11 @@
 <form id="facebook_login" action="/oauth2/authorization/facebook"></form>
 
 <div id="logreg-forms">
+
+    <div th:if="${error != null}" class="alert alert-danger" onsubmit="button">
+        <strong>Failure!</strong> <a th:text="${error}"></a>
+    </div>
+
     <form class="form-signin" method="post" th:action="@{/appLogin}">
         <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign in</h1>
         <div class="social-login">
@@ -68,6 +73,8 @@
         <a href="/login" id="cancel_signup"><i class="fas fa-angle-left"></i> Back</a>
     </form>
     <br>
+
+
 
 </div>
 <p style="text-align:center">

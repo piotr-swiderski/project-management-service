@@ -30,7 +30,7 @@ public class UserServiceTest {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Test
-    public void should_register_user() {
+    public void registerUser_shouldRegisterOneUser() {
         //given
         User user = getUser();
         //when
@@ -41,7 +41,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void should_get_user_by_username_or_email() {
+    public void getUserByUsernameOrEmail_shouldReturnUserByUsername() {
         //given
         User user = getUser();
         //when
@@ -50,5 +50,17 @@ public class UserServiceTest {
         Optional<User> userOptional = userService.getUserByUsernameOrEmail(USER_USERNAME);
         assertThat(userOptional.isPresent()).isTrue();
     }
+
+    @Test
+    public void getUserByUsernameOrEmail_shouldReturnUserByEmail() {
+        //given
+        User user = getUser();
+        //when
+        when(userRepository.findByUsernameOrEmail(USER_EMAIL)).thenReturn(Optional.of(user));
+        //then
+        Optional<User> userOptional = userService.getUserByUsernameOrEmail(USER_EMAIL);
+        assertThat(userOptional.isPresent()).isTrue();
+    }
+
 
 }

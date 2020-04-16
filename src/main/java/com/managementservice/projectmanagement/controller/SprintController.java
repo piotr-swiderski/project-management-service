@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Set;
 
 import static com.managementservice.projectmanagement.utils.ControllerUtil.*;
@@ -24,6 +25,8 @@ public class SprintController {
     private TaskService taskService;
     private final String SPRINT_PAGE = "sprintPage";
     private final String ERROR_PAGE = "errorPage";
+    private final String PAGE_404 = "404";
+
 
     @Autowired
     public SprintController(SprintService sprintService, TaskService taskService) {
@@ -33,17 +36,19 @@ public class SprintController {
 
     @GetMapping("/sprint/{sprintId}")
     public String getSprintPage(Model model, Authentication authentication, @PathVariable long sprintId) {
+        Sprint sprintById;
+        try {
+            sprintById = sprintService.getSprintById(sprintId);
+        }catch (EntityNotFoundException e){
+            return PAGE_404;
+        }
 
-
-        Sprint sprintById = sprintService.getSprintById(sprintId);
         Set<Task> tasks = taskService.findTasksBySprint(sprintById);
-
         boolean userHaveAccess = sprintService.isUserHaveAccess(authentication, sprintId);
 
         if (!userHaveAccess) {
             model.addAttribute(ERROR_HANDLER, ERROR_MSG_ACCESS);
             model.addAttribute(ERROR_HELP_HANDLER, ERROR_MSG_HELP_ACCESS);
-
             return ERROR_PAGE;
         }
 

@@ -1,5 +1,5 @@
 //let errandItem = document.getElementById("propErrandItem");
-let checkList = document.getElementById("check-list");
+let checkListOfTask = document.getElementById("check-list");
 
 
 let tasks = document.getElementsByClassName("task");
@@ -26,7 +26,7 @@ let propTitleTaskChangeCancel = document.getElementById("propTitleTaskChangeCanc
 
 let shareTask = document.getElementById("share");
 
-shareTask.onclick = function(){
+shareTask.onclick = function () {
     window.print();
 };
 
@@ -49,7 +49,7 @@ function hiddenTwoButtons(button1, button2) {
     }
 }
 
-function setNameTaskInHtml(taskId, taskName){
+function setNameTaskInHtml(taskId, taskName) {
     let taskInHtml = document.getElementById(taskId);
     taskInHtml.children[0].firstChild.nextSibling.innerText = taskName;
 }
@@ -107,7 +107,7 @@ for (let i = 0; i < tasks.length; i++) {
         getTaskErrands(taskById.id);
         projectId = taskById.id;
 
-        checkList.innerHTML = "";
+        checkListOfTask.innerHTML = "";
         errandProgressBar.ariaValuenow = 0;
         propTaskName.value = taskById.name;
         propTaskDescription.value = taskById.description;
@@ -133,6 +133,7 @@ function generateTask(text) {
 
 function addTaskToChecklist(tasks) {
 
+    checkListOfTask.innerText = "";
     for (let i = 0; i < tasks.length; i++) {
 
         let task = tasks[i];
@@ -141,7 +142,7 @@ function addTaskToChecklist(tasks) {
         let taskChecked = task.finished;
         let taskClass = new ErrandTask(taskId, taskText, taskChecked);
         let errandTask = taskClass.htmlElement;
-        checkList.appendChild(errandTask);
+        checkListOfTask.appendChild(errandTask);
     }
     let checkboxElements = document.getElementsByClassName("errandCheckbox");
     let checkboxList = document.getElementsByClassName("checkboxList");
@@ -212,6 +213,10 @@ function addTaskToChecklist(tasks) {
 }
 
 
+function cleanTaskErrandList() {
+    checkListOfTask.innerText = '';
+}
+
 function createTaskErrand(taskId, taskErrandText) {
     let data = {};
     data["taskId"] = taskId;
@@ -226,7 +231,7 @@ function createTaskErrand(taskId, taskErrandText) {
         data: data,
         dataType: 'json',
         success: function (dataReq, status) {
-            checkList.innerText = '';
+            cleanTaskErrandList();
             addTaskToChecklist(dataReq);
         }
     });
@@ -247,7 +252,7 @@ function postTask(tableName, taskId) {
         data: data,
         dataType: 'json',
         success: function (dataReq, status) {
-            checkList.innerText = '';
+            checkListOfTask.innerText = '';
             addTaskToChecklist(dataReq);
         }
     });
@@ -318,9 +323,8 @@ function setErrandChecked(errandId, checked) {
         url: "setErrandChecked",
         data: data,
         dataType: 'json',
-        success: function (dataReq, status) {
-            checkList.innerText = '';
-            addTaskToChecklist(dataReq);
+        success: function (data, status) {
+            getTaskErrands(taskId);
         }
     });
 }

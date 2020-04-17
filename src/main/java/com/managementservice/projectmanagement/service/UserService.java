@@ -5,6 +5,7 @@ import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.repositorie.UserRepository;
 import com.managementservice.projectmanagement.utils.AccountTypeEnum;
 import com.managementservice.projectmanagement.utils.RoleEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import java.util.Map;
 import java.util.Optional;
@@ -23,13 +25,13 @@ public class UserService {
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
+    @Autowired
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public void registerUser(String username, String password, String email, AccountTypeEnum accountType) {
+    public User registerUser(String username, String password, String email, AccountTypeEnum accountType) {
         User user = User.UserBuilder.anUser()
                 .withUsername(username)
                 .withPassword(bCryptPasswordEncoder.encode(password))
@@ -38,55 +40,50 @@ public class UserService {
                 .withPermissions("write")
                 .withAccountType(accountType)
                 .build();
-
-        userRepository.save(user);
+        save(user);
+        return user;
     }
-
 
     public Optional<User> getUserByUsernameOrEmail(String value) {
-        return userRepository.findByUsernameOrEmail(value, value);
+        return userRepository.findByUsernameOrEmail(value);
     }
-
-    public Optional<User> getOptionalUserByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
 
     public User getUserById(long id) {
-        return userRepository.findById(id).orElseThrow(NoResultException::new);
+        return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    public User getUserAuthentication() {
+
+    public User getUserFromContext() {
         Authentication principal = SecurityContextHolder.getContext().getAuthentication();
-        String userName = getUserNameFromPrincipal(principal);
+        String userName = getUsernameByAuthentication(principal);
 
-        return userRepository.findByUsername(userName).orElseThrow(NoResultException::new);
+        return getUserByUsernameOrEmail(userName).orElseThrow(EntityNotFoundException::new);
     }
 
-    public String getUserAuthenticationUserName() {
-        return getUserAuthentication().getUsername();
+    public String getUsernameFromAuthentication() {
+        return getUserFromContext().getUsername();
     }
 
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(NoResultException::new);
     }
 
-    public void save(User user) {
-        userRepository.save(user);
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
 
-    public Set<Project> getAllProjectToUser(User user) {
+    public Set<Project> getAllProjectByUser(User user) {
         return user.getProjects();
     }
 
     public User getUserByAuthentication(Authentication authentication) {
-        String username = getUserNameFromPrincipal(authentication);
-        return getUserByUsernameOrEmail(username).orElseThrow(NoResultException::new);
+        String username = getUsernameByAuthentication(authentication);
+        return getUserByUsernameOrEmail(username).orElseThrow(EntityNotFoundException::new);
     }
 
 
-    private String getUserNameFromPrincipal(Authentication authentication) {
+    private String getUsernameByAuthentication(Authentication authentication) {
 
         Object principal = authentication.getPrincipal();
 

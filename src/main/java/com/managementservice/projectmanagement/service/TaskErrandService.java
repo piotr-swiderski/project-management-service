@@ -25,25 +25,32 @@ public class TaskErrandService {
         return taskErrandRepository.save(taskErrand);
     }
 
-    public List<TaskErrand> createTaskErrand(String text, long taskId) {
-        Task taskById = taskService.findTaskById(taskId);
+    public TaskErrand createTaskErrand(String text, long taskId) {
+        Task taskById = getTaskById(taskId);
         TaskErrand taskErrand = new TaskErrand(text, taskById);
         taskById.addTaskErrand(taskErrand);
+
         saveErrand(taskErrand);
         taskService.update(taskById);
-        return getTaskErrandsByTaskId(taskId);
+        return taskErrand;
     }
 
     public List<TaskErrand> getTaskErrandsByTaskId(long taskId) {
-        Task taskById = taskService.findTaskById(taskId);
+        Task taskById = taskService.findTaskById(taskId).orElse(null);
         return taskErrandRepository.findAllByTask(taskById);
     }
 
-    public List<TaskErrand> setErrandFinished(long errandId, boolean checked) {
-        TaskErrand taskErrand = taskErrandRepository.findById(errandId).orElseThrow(NoResultException::new);
+    public TaskErrand setErrandFinished(long errandId, boolean checked) {
+        TaskErrand taskErrand = getTaskErrandById(errandId);
         taskErrand.setFinished(checked);
-        saveErrand(taskErrand);
-        return getTaskErrandsByTaskId(taskErrand.getTask().getId()
-        );
+        return saveErrand(taskErrand);
+    }
+
+    private TaskErrand getTaskErrandById(long errandId) {
+        return taskErrandRepository.findById(errandId).orElseThrow(NoResultException::new);
+    }
+
+    private Task getTaskById(long taskId) {
+        return taskService.findTaskById(taskId).orElseThrow(NoResultException::new);
     }
 }

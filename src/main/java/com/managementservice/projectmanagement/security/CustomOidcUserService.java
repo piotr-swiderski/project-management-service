@@ -35,7 +35,7 @@ public class CustomOidcUserService extends OidcUserService {
 
     private OidcUser processOidcUser(OidcUserRequest userRequest, OidcUser oidcUser) {
 
-        Optional<User> optionalUser = userService.getOptionalUserByUsername(oidcUser.getEmail());
+        Optional<User> optionalUser = userService.getUserByUsernameOrEmail(oidcUser.getEmail());
         if (!optionalUser.isPresent()) {
             userService.registerUser(
                     oidcUser.getEmail(),

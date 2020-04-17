@@ -19,7 +19,7 @@ public class TaskErrand {
     @JsonIgnore
     private Task task;
 
-    private boolean finished;
+    private boolean finished; //todo change to status
 
     @CreationTimestamp
     private LocalDate createDate;

@@ -20,13 +20,13 @@ public class IndexController {
 
     @GetMapping("/")
     public String getDashboardPage(Model model) {
-        model.addAttribute("projects", userService.getAllProjectToUser(userService.getUserAuthentication()));
+        model.addAttribute("projects", userService.getAllProjectByUser(userService.getUserFromContext()));
         return INDEX_PAGE;
     }
 
     @GetMapping("/index")
     public String getIndexPage(Model model) {
-        model.addAttribute("projects", userService.getAllProjectToUser(userService.getUserAuthentication()));
+        model.addAttribute("projects", userService.getAllProjectByUser(userService.getUserFromContext()));
         return INDEX_PAGE;
     }
 

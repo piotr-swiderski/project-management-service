@@ -6,8 +6,10 @@ import com.managementservice.projectmanagement.repositorie.SprintRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SprintService {
@@ -20,20 +22,24 @@ public class SprintService {
         this.userService = userService;
     }
 
-    public Sprint saveSprint(Sprint sprint){
+    public Sprint saveSprint(Sprint sprint) {
         return sprintRepository.save(sprint);
     }
 
     public Sprint getSprintById(Long sprintId) {
-        return sprintRepository.findById(sprintId).orElseThrow(NoResultException::new);
+        Optional<Sprint> optionalSprint = sprintRepository.findById(sprintId);
+        return optionalSprint.orElseThrow(EntityNotFoundException::new);
     }
-
 
     public boolean isUserHaveAccess(Authentication authentication, Long sprintId) {
 
-        Sprint sprint = sprintRepository.findById(sprintId).orElseThrow(NoResultException::new);
-        List<User> projectUserList = sprint.getProject().getUsers();
+        Sprint sprint = getSprintById(sprintId);
+        List<User> projectUserList = getUsersFromSprint(sprint);
         User user = userService.getUserByAuthentication(authentication);
         return projectUserList.stream().anyMatch(u -> u.getId() == user.getId());
+    }
+
+    public List<User> getUsersFromSprint(Sprint sprint) {
+        return sprint.getProject().getUsers();
     }
 }

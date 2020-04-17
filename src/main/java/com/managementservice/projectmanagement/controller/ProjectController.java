@@ -75,7 +75,7 @@ public class ProjectController {
         try {
             project = projectService.getProjectById(projectId);
         } catch (NoResultException e) {
-            model.addAttribute(SUCCSES_ADDING_NOTIFICATION, SUCCSES_ADDING_NOTIFICATION_MESSAGE);
+            model.addAttribute(ERROR_ADDING_NOTIFICATION, ERROR_ADDING_NOTIFICATION_MESSAGE);
             return "addUsersToProject";
         }
 
@@ -141,7 +141,6 @@ public class ProjectController {
 
     @GetMapping("/projectPage")
     public String getProjectPanel(Authentication authentication, Model model, @RequestParam(required = false) long projectId) {
-
 
 
         if (!projectService.isUserHaveAccess(authentication, projectId)) {

@@ -32,6 +32,8 @@ public class UserServiceImpl implements UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+
+    @Override
     public User registerUser(String username, String password, String email, AccountTypeEnum accountType) {
         User user = User.UserBuilder.anUser()
                 .withUsername(username)
@@ -45,15 +47,17 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
     public Optional<User> getUserByUsernameOrEmail(String value) {
         return userRepository.findByUsernameOrEmail(value);
     }
 
+    @Override
     public User getUserById(long id) {
         return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-
+    @Override
     public User getUserFromContext() {
         Authentication principal = SecurityContextHolder.getContext().getAuthentication();
         String userName = getUsernameByAuthentication(principal);
@@ -61,28 +65,31 @@ public class UserServiceImpl implements UserService {
         return getUserByUsernameOrEmail(userName).orElseThrow(EntityNotFoundException::new);
     }
 
+    @Override
     public String getUsernameFromAuthentication() {
         return getUserFromContext().getUsername();
     }
 
+    @Override
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(NoResultException::new);
     }
 
+    @Override
     public User save(User user) {
         return userRepository.save(user);
     }
 
-
+    @Override
     public Set<Project> getAllProjectByUser(User user) {
         return user.getProjects();
     }
 
+    @Override
     public User getUserByAuthentication(Authentication authentication) {
         String username = getUsernameByAuthentication(authentication);
         return getUserByUsernameOrEmail(username).orElseThrow(EntityNotFoundException::new);
     }
-
 
     private String getUsernameByAuthentication(Authentication authentication) {
 

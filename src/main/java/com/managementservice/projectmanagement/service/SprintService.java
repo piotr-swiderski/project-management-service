@@ -28,10 +28,8 @@ public class SprintService {
 
     public Sprint getSprintById(Long sprintId) {
         Optional<Sprint> optionalSprint = sprintRepository.findById(sprintId);
-        Sprint sprint = optionalSprint.orElseThrow(EntityNotFoundException::new);
-        return sprint;
+        return optionalSprint.orElseThrow(EntityNotFoundException::new);
     }
-
 
     public boolean isUserHaveAccess(Authentication authentication, Long sprintId) {
 
@@ -42,7 +40,6 @@ public class SprintService {
     }
 
     public List<User> getUsersFromSprint(Sprint sprint) {
-        List<User> users = sprint.getProject().getUsers();
-        return users;
+        return sprint.getProject().getUsers();
     }
 }

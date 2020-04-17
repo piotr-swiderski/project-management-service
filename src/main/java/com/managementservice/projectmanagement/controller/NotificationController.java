@@ -42,8 +42,8 @@ public class NotificationController {
 
 
         Notification notification = notificationService.getNotificationById(Long.parseLong(id));
-        Project project = projectService.getProject(notification.getProjectId());
-        User user = userService.getUserByAuthentication();
+        Project project = projectService.getProjectById(notification.getProjectId());
+        User user = userService.getUserFromContext();
 
         project.addUser(user);
         projectService.saveProject(project);

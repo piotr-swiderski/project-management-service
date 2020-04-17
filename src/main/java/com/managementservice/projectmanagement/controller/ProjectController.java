@@ -39,7 +39,7 @@ public class ProjectController {
 
     @GetMapping("/myProjectList")
     public String myProjectList(Model model) {
-        model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(userService.getUserByAuthentication().getUsername()));
+        model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(userService.getUserFromContext().getUsername()));
         return "myProjectList";
     }
 
@@ -48,7 +48,7 @@ public class ProjectController {
     public String addUserToProject(Model model,
                                    @RequestParam long projectId) {
 
-        model.addAttribute(PROJECT_HANDLER, projectService.getProject(projectId));
+        model.addAttribute(PROJECT_HANDLER, projectService.getProjectById(projectId));
 
         return "addUsersToProject";
 
@@ -60,7 +60,7 @@ public class ProjectController {
                                        @RequestParam String email
     ) {
 
-        model.addAttribute(PROJECT_HANDLER, projectService.getProject(projectId));
+        model.addAttribute(PROJECT_HANDLER, projectService.getProjectById(projectId));
 
         User user;
         Project project;
@@ -80,7 +80,7 @@ public class ProjectController {
         }
 
         Notification notification = new Notification("Project invitation", "User "
-                + userService.getUserByAuthentication().getEmail()
+                + userService.getUserFromContext().getEmail()
                 + " I want to add you to the project "
                 + project.getName(), user, project.getId());
         notificationService.save(notification);
@@ -94,7 +94,7 @@ public class ProjectController {
     public String viewUsersToProject(@RequestParam String projectId, Model model) {
 
         long parseProjectId = Long.parseLong(projectId);
-        Project project = projectService.getProject(parseProjectId);
+        Project project = projectService.getProjectById(parseProjectId);
         List<User> userList = project.getUsers();
         model.addAttribute("users", userList);
         model.addAttribute("project", project);
@@ -150,7 +150,7 @@ public class ProjectController {
             return "errorPage";
         }
 
-        model.addAttribute(PROJECT_HANDLER, projectService.getProject(projectId));
+        model.addAttribute(PROJECT_HANDLER, projectService.getProjectById(projectId));
         return "projectPage";
     }
 
@@ -168,7 +168,7 @@ public class ProjectController {
             model.addAttribute(ERROR_ADDING_SPRINT_HANDLER, ERROR_ADDING_SPRINT_MESSAGE);
         }
 
-        model.addAttribute(PROJECT_HANDLER, projectService.getProject(projectId));
+        model.addAttribute(PROJECT_HANDLER, projectService.getProjectById(projectId));
         return "projectPage";
     }
 }

@@ -31,7 +31,10 @@ public class TestUtil {
     public static final String USER_USERNAME = "Username";
     public static final String USER_PASSWORD = "Password";
     public static final String USER_EMAIL = "email@email.com";
+    public static final String USER_ROLE = "USER";
+    public static final String USER_PERMISSION = "user";
     public static final AccountTypeEnum USER_ACCOUNT_TYPE = AccountTypeEnum.NONE;
+
 
     public static final Long PROJECT_ID = 0L;
     public static final String PROJECT_NAME = "Project Name";
@@ -56,6 +59,8 @@ public class TestUtil {
                 .withUsername(USER_USERNAME)
                 .withPassword(USER_PASSWORD)
                 .withEmail(USER_EMAIL)
+                .withRoles(USER_ROLE)
+                .withPermissions(USER_PERMISSION)
                 .withAccountType(USER_ACCOUNT_TYPE)
                 .build();
     }

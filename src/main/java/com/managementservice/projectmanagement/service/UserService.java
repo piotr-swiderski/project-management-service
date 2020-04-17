@@ -2,105 +2,30 @@ package com.managementservice.projectmanagement.service;
 
 import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.User;
-import com.managementservice.projectmanagement.repositorie.UserRepository;
 import com.managementservice.projectmanagement.utils.AccountTypeEnum;
-import com.managementservice.projectmanagement.utils.RoleEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
-import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.NoResultException;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-@Service
-public class UserService {
+public interface UserService {
 
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    User registerUser(String username, String password, String email, AccountTypeEnum accountType);
 
-    @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
+    Optional<User> getUserByUsernameOrEmail(String value);
 
-    public User registerUser(String username, String password, String email, AccountTypeEnum accountType) {
-        User user = User.UserBuilder.anUser()
-                .withUsername(username)
-                .withPassword(bCryptPasswordEncoder.encode(password))
-                .withEmail(email)
-                .withRoles(RoleEnum.USER.name())
-                .withPermissions("write")
-                .withAccountType(accountType)
-                .build();
-        save(user);
-        return user;
-    }
+    User getUserById(long id);
 
-    public Optional<User> getUserByUsernameOrEmail(String value) {
-        return userRepository.findByUsernameOrEmail(value);
-    }
+    User getUserFromContext();
 
-    public User getUserById(long id) {
-        return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-    }
+    String getUsernameFromAuthentication();
 
+    User getUserByEmail(String email);
 
-    public User getUserFromContext() {
-        Authentication principal = SecurityContextHolder.getContext().getAuthentication();
-        String userName = getUsernameByAuthentication(principal);
+    User save(User user);
 
-        return getUserByUsernameOrEmail(userName).orElseThrow(EntityNotFoundException::new);
-    }
+    Set<Project> getAllProjectByUser(User user);
 
-    public String getUsernameFromAuthentication() {
-        return getUserFromContext().getUsername();
-    }
-
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(NoResultException::new);
-    }
-
-    public User save(User user) {
-        return userRepository.save(user);
-    }
-
-
-    public Set<Project> getAllProjectByUser(User user) {
-        return user.getProjects();
-    }
-
-    public User getUserByAuthentication(Authentication authentication) {
-        String username = getUsernameByAuthentication(authentication);
-        return getUserByUsernameOrEmail(username).orElseThrow(EntityNotFoundException::new);
-    }
-
-
-    private String getUsernameByAuthentication(Authentication authentication) {
-
-        Object principal = authentication.getPrincipal();
-
-        if (principal instanceof UserDetails) {
-            User user = (User) principal;
-            return user.getUsername();
-        }
-
-        if (principal instanceof DefaultOidcUser) {
-            DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
-            Map<String, Object> attributes = oidcUser.getAttributes();
-            return (String) attributes.get("email");
-        }
-
-        return "";
-    }
-
+    User getUserByAuthentication(Authentication authentication);
 
 }
-

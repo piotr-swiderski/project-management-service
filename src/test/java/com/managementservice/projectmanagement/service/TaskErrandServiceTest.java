@@ -3,11 +3,12 @@ package com.managementservice.projectmanagement.service;
 import com.managementservice.projectmanagement.entity.Task;
 import com.managementservice.projectmanagement.entity.TaskErrand;
 import com.managementservice.projectmanagement.repositorie.TaskErrandRepository;
+import com.managementservice.projectmanagement.service.impl.TaskErrandServiceImpl;
+import com.managementservice.projectmanagement.service.impl.TaskServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
@@ -15,7 +16,6 @@ import java.util.Optional;
 
 import static com.managementservice.projectmanagement.utils.TestUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.floatThat;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -24,9 +24,9 @@ public class TaskErrandServiceTest {
     @Mock
     TaskErrandRepository taskErrandRepository;
     @Mock
-    TaskService taskService;
+    TaskServiceImpl taskService;
     @InjectMocks
-    TaskErrandService taskErrandService;
+    TaskErrandServiceImpl taskErrandService;
 
     @Test
     public void saveErrand_shouldSaveErrand() {

@@ -3,9 +3,9 @@ package com.managementservice.projectmanagement.controller;
 import com.managementservice.projectmanagement.entity.Notification;
 import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.User;
-import com.managementservice.projectmanagement.service.NotificationService;
-import com.managementservice.projectmanagement.service.ProjectService;
-import com.managementservice.projectmanagement.service.UserService;
+import com.managementservice.projectmanagement.service.impl.NotificationServiceImpl;
+import com.managementservice.projectmanagement.service.impl.ProjectServiceImpl;
+import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -24,13 +24,13 @@ import static com.managementservice.projectmanagement.utils.ControllerUtil.*;
 public class ProjectController {
 
 
-    private ProjectService projectService;
-    private NotificationService notificationService;
-    private UserService userService;
+    private ProjectServiceImpl projectService;
+    private NotificationServiceImpl notificationService;
+    private UserServiceImpl userService;
 
 
     @Autowired
-    public ProjectController(ProjectService projectService, NotificationService notificationService, UserService userService) {
+    public ProjectController(ProjectServiceImpl projectService, NotificationServiceImpl notificationService, UserServiceImpl userService) {
         this.projectService = projectService;
         this.notificationService = notificationService;
         this.userService = userService;

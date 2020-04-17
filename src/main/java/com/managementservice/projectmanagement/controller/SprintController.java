@@ -2,8 +2,8 @@ package com.managementservice.projectmanagement.controller;
 
 import com.managementservice.projectmanagement.entity.Sprint;
 import com.managementservice.projectmanagement.entity.Task;
-import com.managementservice.projectmanagement.service.SprintService;
-import com.managementservice.projectmanagement.service.TaskService;
+import com.managementservice.projectmanagement.service.impl.SprintServiceImpl;
+import com.managementservice.projectmanagement.service.impl.TaskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -21,15 +21,15 @@ import static com.managementservice.projectmanagement.utils.ControllerUtil.*;
 @Controller
 public class SprintController {
 
-    private SprintService sprintService;
-    private TaskService taskService;
+    private SprintServiceImpl sprintService;
+    private TaskServiceImpl taskService;
     private final String SPRINT_PAGE = "sprintPage";
     private final String ERROR_PAGE = "errorPage";
     private final String PAGE_404 = "404";
 
 
     @Autowired
-    public SprintController(SprintService sprintService, TaskService taskService) {
+    public SprintController(SprintServiceImpl sprintService, TaskServiceImpl taskService) {
         this.sprintService = sprintService;
         this.taskService = taskService;
     }

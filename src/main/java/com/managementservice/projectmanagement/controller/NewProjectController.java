@@ -2,8 +2,8 @@ package com.managementservice.projectmanagement.controller;
 
 import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.User;
-import com.managementservice.projectmanagement.service.ProjectService;
-import com.managementservice.projectmanagement.service.UserService;
+import com.managementservice.projectmanagement.service.impl.ProjectServiceImpl;
+import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class NewProjectController {
 
-    private ProjectService projectService;
-    private UserService userService;
+    private ProjectServiceImpl projectService;
+    private UserServiceImpl userService;
 
 
-    public NewProjectController(ProjectService projectService, UserService userService) {
+    public NewProjectController(ProjectServiceImpl projectService, UserServiceImpl userService) {
         this.projectService = projectService;
         this.userService = userService;
     }

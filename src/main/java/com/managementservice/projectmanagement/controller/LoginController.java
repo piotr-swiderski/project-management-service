@@ -1,6 +1,6 @@
 package com.managementservice.projectmanagement.controller;
 
-import com.managementservice.projectmanagement.service.UserService;
+import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import com.managementservice.projectmanagement.utils.AccountTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,12 +14,12 @@ import static com.managementservice.projectmanagement.utils.ControllerUtil.*;
 @Controller
 public class LoginController {
 
-    private UserService userService;
+    private UserServiceImpl userService;
 
     public static final String LOGIN_PAGE = "login";
 
     @Autowired
-    public LoginController(UserService userService) {
+    public LoginController(UserServiceImpl userService) {
         this.userService = userService;
     }
 

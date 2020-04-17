@@ -1,7 +1,7 @@
 package com.managementservice.projectmanagement.security;
 
 import com.managementservice.projectmanagement.entity.User;
-import com.managementservice.projectmanagement.service.UserService;
+import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import com.managementservice.projectmanagement.utils.AccountTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -16,10 +16,10 @@ import java.util.Optional;
 @Service
 public class CustomOidcUserService extends OidcUserService {
 
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
-    public CustomOidcUserService(UserService userService) {
+    public CustomOidcUserService(UserServiceImpl userService) {
         this.userService = userService;
     }
 

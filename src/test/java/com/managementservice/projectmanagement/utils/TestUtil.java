@@ -1,12 +1,13 @@
 package com.managementservice.projectmanagement.utils;
 
 import com.managementservice.projectmanagement.entity.*;
+import com.mysql.cj.xdevapi.Collection;
 import org.springframework.security.core.Authentication;
 
 import javax.jws.soap.SOAPBinding;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class TestUtil {
 
@@ -122,6 +123,10 @@ public class TestUtil {
 
     public static List<Sprint> getListOfFourSprints() {
         return Arrays.asList(getSprint(), getSprint(), getSprint(), getSprint());
+    }
+
+    public static Set<Task> getListOfFourTasks(){
+        return new HashSet<>(Arrays.asList(getTask(), getTask(), getTask(), getTask()));
     }
 
 }

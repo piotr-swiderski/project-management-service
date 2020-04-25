@@ -42,6 +42,7 @@ public class SprintRestController {
     }
 
     @GetMapping(value = "/sprint/getTaskErrands", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
     public List<TaskErrand> getTaskErrands(@RequestParam long taskId) {
         log.info("Get errands {taskId : " + taskId + " }");
         return taskErrandService.getTaskErrandsByTaskId(taskId);

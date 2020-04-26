@@ -1,12 +1,13 @@
 package com.managementservice.projectmanagement.utils;
 
 import com.managementservice.projectmanagement.entity.*;
+import com.mysql.cj.xdevapi.Collection;
 import org.springframework.security.core.Authentication;
 
 import javax.jws.soap.SOAPBinding;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class TestUtil {
 
@@ -35,6 +36,14 @@ public class TestUtil {
     public static final String USER_PERMISSION = "user";
     public static final AccountTypeEnum USER_ACCOUNT_TYPE = AccountTypeEnum.NONE;
 
+    public static final Long USER2_ID = 1L;
+    public static final String USER2_USERNAME = "Userame2";
+    public static final String USER2_PASSWORD = "Password";
+    public static final String USER2_EMAIL = "email2@email.com";
+    public static final String USER2_ROLE = "USER";
+    public static final String USER2_PERMISSION = "user";
+    public static final AccountTypeEnum USER2_ACCOUNT_TYPE = AccountTypeEnum.NONE;
+
 
     public static final Long PROJECT_ID = 0L;
     public static final String PROJECT_NAME = "Project Name";
@@ -62,6 +71,17 @@ public class TestUtil {
                 .withRoles(USER_ROLE)
                 .withPermissions(USER_PERMISSION)
                 .withAccountType(USER_ACCOUNT_TYPE)
+                .build();
+    }
+    public static User getUser2() {
+        return User.UserBuilder.anUser()
+                .withId(USER2_ID)
+                .withUsername(USER2_USERNAME)
+                .withPassword(USER2_PASSWORD)
+                .withEmail(USER2_EMAIL)
+                .withRoles(USER2_ROLE)
+                .withPermissions(USER2_PERMISSION)
+                .withAccountType(USER2_ACCOUNT_TYPE)
                 .build();
     }
 
@@ -102,14 +122,14 @@ public class TestUtil {
 
     public static User getEmptyUser() {
         return User.UserBuilder.anUser()
-                .withId(1L)
+                .withId(2L)
                 .withUsername("user")
                 .withPassword("pass")
                 .build();
     }
 
     public static List<User> getListOfFourUsers() {
-        return Arrays.asList(getUser(), getUser(), getUser(), getUser());
+        return Arrays.asList(getUser(), getUser(), getUser(), getUser2());
     }
 
     public static List<Project> getListOfFourProjects() {
@@ -122,6 +142,10 @@ public class TestUtil {
 
     public static List<Sprint> getListOfFourSprints() {
         return Arrays.asList(getSprint(), getSprint(), getSprint(), getSprint());
+    }
+
+    public static Set<Task> getListOfFourTasks(){
+        return new HashSet<>(Arrays.asList(getTask(), getTask(), getTask(), getTask()));
     }
 
 }

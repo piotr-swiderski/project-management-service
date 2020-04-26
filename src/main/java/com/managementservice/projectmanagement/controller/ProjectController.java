@@ -7,6 +7,7 @@ import com.managementservice.projectmanagement.service.impl.NotificationServiceI
 import com.managementservice.projectmanagement.service.impl.ProjectServiceImpl;
 import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,11 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.util.List;
 
 import static com.managementservice.projectmanagement.utils.ControllerUtil.*;
+import static org.springframework.format.annotation.DateTimeFormat.*;
 
 @Controller
 public class ProjectController {
@@ -39,17 +42,17 @@ public class ProjectController {
 
     @GetMapping("/myProjectList")
     public String myProjectList(Model model) {
-        model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(userService.getUserFromContext().getUsername()));
+        final User user = userService.getUserFromContext();
+        String username = user.getUsername();
+
+        model.addAttribute("projects", projectService.getAListOfAllUserNameProjects(username));
         return "myProjectList";
     }
 
 
     @GetMapping("/addUsersToProject")
-    public String addUserToProject(Model model,
-                                   @RequestParam long projectId) {
-
+    public String addUserToProject(Model model, @RequestParam long projectId) {
         model.addAttribute(PROJECT_HANDLER, projectService.getProjectById(projectId));
-
         return "addUsersToProject";
 
     }
@@ -66,18 +69,20 @@ public class ProjectController {
         Project project;
 
         try {
+            project = projectService.getProjectById(projectId);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute(ERROR_ADDING_NOTIFICATION, ERROR_ADDING_NOTIFICATION_MESSAGE);
+            return "addUsersToProject";
+        }
+
+        try {
             user = userService.getUserByEmail(email);
         } catch (NoResultException e) {
             model.addAttribute(ERROR_ADDING_NOTIFICATION_USERS, ERROR_ADDING_NOTIFICATION_USERS_MESSAGE);
             return "addUsersToProject";
         }
 
-        try {
-            project = projectService.getProjectById(projectId);
-        } catch (NoResultException e) {
-            model.addAttribute(ERROR_ADDING_NOTIFICATION, ERROR_ADDING_NOTIFICATION_MESSAGE);
-            return "addUsersToProject";
-        }
+
 
         Notification notification = new Notification("Project invitation", "User "
                 + userService.getUserFromContext().getEmail()
@@ -149,7 +154,8 @@ public class ProjectController {
             return "errorPage";
         }
 
-        model.addAttribute(PROJECT_HANDLER, projectService.getProjectById(projectId));
+        Project projectById = projectService.getProjectById(projectId);
+        model.addAttribute(PROJECT_HANDLER, projectById);
         return "projectPage";
     }
 
@@ -157,8 +163,8 @@ public class ProjectController {
     public String addSprint(Model model,
                             @RequestParam long projectId,
                             @RequestParam String name,
-                            @RequestParam LocalDate dateFrom,
-                            @RequestParam LocalDate dateTo,
+                            @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate dateFrom,
+                            @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate dateTo,
                             @RequestParam String storyPoints) {
 
         int storyPointsParse = Integer.parseInt(storyPoints);
@@ -167,7 +173,8 @@ public class ProjectController {
             model.addAttribute(ERROR_ADDING_SPRINT_HANDLER, ERROR_ADDING_SPRINT_MESSAGE);
         }
 
-        model.addAttribute(PROJECT_HANDLER, projectService.getProjectById(projectId));
+        Project projectById = projectService.getProjectById(projectId);
+        model.addAttribute(PROJECT_HANDLER, projectById);
         return "projectPage";
     }
 }

@@ -25,7 +25,7 @@ public class SprintController {
     private TaskServiceImpl taskService;
     private final String SPRINT_PAGE = "sprintPage";
     private final String ERROR_PAGE = "errorPage";
-    private final String PAGE_404 = "404";
+    private final String PAGE_404 = "error-404";
 
 
     @Autowired
@@ -43,7 +43,6 @@ public class SprintController {
             return PAGE_404;
         }
 
-        Set<Task> tasks = taskService.findTasksBySprint(sprintById);
         boolean userHaveAccess = sprintService.isUserHaveAccess(authentication, sprintId);
 
         if (!userHaveAccess) {
@@ -51,6 +50,8 @@ public class SprintController {
             model.addAttribute(ERROR_HELP_HANDLER, ERROR_MSG_HELP_ACCESS);
             return ERROR_PAGE;
         }
+
+        Set<Task> tasks = taskService.findTasksBySprint(sprintById);
 
         model.addAttribute(TASK_LIST, tasks);
         model.addAttribute(SPRINT_HANDLER, sprintById);

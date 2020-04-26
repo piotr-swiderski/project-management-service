@@ -1,21 +1,19 @@
 package com.managementservice.projectmanagement.service;
 
-import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.Sprint;
 import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.repositorie.SprintRepository;
+import com.managementservice.projectmanagement.service.impl.SprintServiceImpl;
+import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
-import org.thymeleaf.engine.IterationStatusVar;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
-import java.util.List;
 import java.util.Optional;
 
 import static com.managementservice.projectmanagement.utils.TestUtil.*;
@@ -23,19 +21,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SprintServiceTest {
 
     @InjectMocks
-    SprintService sprintService;
+    SprintServiceImpl sprintService;
 
     @Mock
     SprintRepository sprintRepository;
 
     @Mock
-    UserService userService;
+    UserServiceImpl userService;
 
     @Mock
     Authentication authentication;

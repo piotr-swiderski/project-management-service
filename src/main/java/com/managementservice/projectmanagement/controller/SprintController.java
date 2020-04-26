@@ -39,7 +39,7 @@ public class SprintController {
         Sprint sprintById;
         try {
             sprintById = sprintService.getSprintById(sprintId);
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             return PAGE_404;
         }
 

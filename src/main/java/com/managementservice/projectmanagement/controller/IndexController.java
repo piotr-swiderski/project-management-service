@@ -1,6 +1,7 @@
 package com.managementservice.projectmanagement.controller;
 
 import com.managementservice.projectmanagement.service.UserService;
+import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

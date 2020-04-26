@@ -4,6 +4,9 @@ import com.managementservice.projectmanagement.entity.Sprint;
 import com.managementservice.projectmanagement.entity.Task;
 import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.repositorie.TaskRepository;
+import com.managementservice.projectmanagement.service.impl.SprintServiceImpl;
+import com.managementservice.projectmanagement.service.impl.TaskServiceImpl;
+import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -22,16 +25,16 @@ import static org.mockito.BDDMockito.given;
 public class TaskServiceTest {
 
     @InjectMocks
-    TaskService taskService;
+    TaskServiceImpl taskService;
 
     @Mock
     TaskRepository taskRepository;
 
     @Mock
-    SprintService sprintService;
+    SprintServiceImpl sprintService;
 
     @Mock
-    UserService userService;
+    UserServiceImpl userService;
 
     @Mock
     Authentication authentication;

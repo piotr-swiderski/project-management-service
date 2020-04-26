@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.managementservice.projectmanagement.utils.ControllerUtil.*;
-import static org.springframework.format.annotation.DateTimeFormat.*;
+import static org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Controller
 public class ProjectController {
@@ -81,7 +81,6 @@ public class ProjectController {
             model.addAttribute(ERROR_ADDING_NOTIFICATION_USERS, ERROR_ADDING_NOTIFICATION_USERS_MESSAGE);
             return "addUsersToProject";
         }
-
 
 
         Notification notification = new Notification("Project invitation", "User "

@@ -2,9 +2,9 @@ package com.managementservice.projectmanagement.controller;
 
 import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.User;
-import com.managementservice.projectmanagement.service.NotificationService;
-import com.managementservice.projectmanagement.service.ProjectService;
-import com.managementservice.projectmanagement.service.UserService;
+import com.managementservice.projectmanagement.service.impl.NotificationServiceImpl;
+import com.managementservice.projectmanagement.service.impl.ProjectServiceImpl;
+import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import com.managementservice.projectmanagement.utils.TestUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -34,11 +34,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProjectControllerTest extends AbstractControllerTest {
 
     @MockBean
-    ProjectService projectService;
+    ProjectServiceImpl projectService;
     @MockBean
-    NotificationService notificationService;
+    NotificationServiceImpl notificationService;
     @MockBean
-    UserService userService;
+    UserServiceImpl userService;
 
     @Test
     void myProjectList_shouldReturnedProjectList() throws Exception {
@@ -110,7 +110,7 @@ class ProjectControllerTest extends AbstractControllerTest {
 
     @Test
     void addUserToProjectPost_shouldNotAddUserToProjectBecauseProjectIsNotExist() throws Exception {
-            //todo
+        //todo
     }
 
     @Test

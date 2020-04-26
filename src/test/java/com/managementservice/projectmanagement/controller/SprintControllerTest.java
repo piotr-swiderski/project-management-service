@@ -2,9 +2,9 @@ package com.managementservice.projectmanagement.controller;
 
 import com.managementservice.projectmanagement.entity.Sprint;
 import com.managementservice.projectmanagement.entity.Task;
-import com.managementservice.projectmanagement.service.SprintService;
-import com.managementservice.projectmanagement.service.TaskService;
-import com.managementservice.projectmanagement.service.UserService;
+import com.managementservice.projectmanagement.service.impl.SprintServiceImpl;
+import com.managementservice.projectmanagement.service.impl.TaskServiceImpl;
+import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
@@ -32,13 +32,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class SprintControllerTest extends AbstractControllerTest {
 
     @MockBean
-    SprintService sprintService;
+    SprintServiceImpl sprintService;
 
     @MockBean
-    TaskService taskService;
+    TaskServiceImpl taskService;
 
     @MockBean
-    UserService userService;
+    UserServiceImpl userService;
 
     @Test
     public void listStudents_shouldReturnedASprintPage() throws Exception {

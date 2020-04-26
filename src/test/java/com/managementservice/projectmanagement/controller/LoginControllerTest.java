@@ -1,6 +1,7 @@
 package com.managementservice.projectmanagement.controller;
 
 import com.managementservice.projectmanagement.service.UserService;
+import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import com.managementservice.projectmanagement.utils.AccountTypeEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class LoginControllerTest extends AbstractControllerTest {
 
     @MockBean
-    UserService userService;
+    UserServiceImpl userService;
 
     @Test
     void getLoginPage_shouldReturnLoginPage() throws Exception {

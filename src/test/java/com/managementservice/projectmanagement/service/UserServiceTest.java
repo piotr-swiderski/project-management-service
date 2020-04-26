@@ -3,6 +3,7 @@ package com.managementservice.projectmanagement.service;
 import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.repositorie.UserRepository;
+import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -12,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Optional;
 import java.util.Set;
@@ -26,7 +26,7 @@ import static org.mockito.BDDMockito.given;
 public class UserServiceTest {
 
     @InjectMocks
-    UserService userService;
+    UserServiceImpl userService;
 
     @Mock
     UserRepository userRepository;

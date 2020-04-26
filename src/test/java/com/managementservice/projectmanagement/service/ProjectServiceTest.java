@@ -4,6 +4,9 @@ import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.Sprint;
 import com.managementservice.projectmanagement.entity.User;
 import com.managementservice.projectmanagement.repositorie.ProjectRepository;
+import com.managementservice.projectmanagement.service.impl.ProjectServiceImpl;
+import com.managementservice.projectmanagement.service.impl.SprintServiceImpl;
+import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import com.managementservice.projectmanagement.utils.TestUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,13 +32,13 @@ public class ProjectServiceTest {
     @Mock
     ProjectRepository projectRepository;
     @Mock
-    SprintService sprintService;
+    SprintServiceImpl sprintService;
     @Mock
-    UserService userService;
+    UserServiceImpl userService;
     @Mock
     Authentication authentication;
     @InjectMocks
-    ProjectService projectService;
+    ProjectServiceImpl projectService;
 
 
     @Test

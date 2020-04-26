@@ -2,8 +2,8 @@ package com.managementservice.projectmanagement.controller;
 
 import com.managementservice.projectmanagement.entity.Task;
 import com.managementservice.projectmanagement.entity.TaskErrand;
-import com.managementservice.projectmanagement.service.impl.TaskErrandServiceImpl;
-import com.managementservice.projectmanagement.service.impl.TaskServiceImpl;
+import com.managementservice.projectmanagement.service.TaskErrandService;
+import com.managementservice.projectmanagement.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +18,11 @@ import java.util.List;
 @Slf4j
 public class SprintRestController {
 
-    private TaskServiceImpl taskService;
-    private TaskErrandServiceImpl taskErrandService;
+    private TaskService taskService;
+    private TaskErrandService taskErrandService;
 
     @Autowired
-    public SprintRestController(TaskServiceImpl taskService, TaskErrandServiceImpl taskErrandService) {
+    public SprintRestController(TaskService taskService, TaskErrandService taskErrandService) {
         this.taskService = taskService;
         this.taskErrandService = taskErrandService;
     }

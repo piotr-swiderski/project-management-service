@@ -1,6 +1,6 @@
 package com.managementservice.projectmanagement.security;
 
-import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
+import com.managementservice.projectmanagement.service.UserService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,9 +12,9 @@ import javax.persistence.NoResultException;
 @Primary
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private UserServiceImpl userService;
+    private UserService userService;
 
-    public UserDetailsServiceImpl(UserServiceImpl userService) {
+    public UserDetailsServiceImpl(UserService userService) {
         this.userService = userService;
     }
 

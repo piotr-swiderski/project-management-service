@@ -1,5 +1,6 @@
 package com.managementservice.projectmanagement.controller;
 
+import com.managementservice.projectmanagement.service.UserService;
 import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,10 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Autowired
-    public IndexController(UserServiceImpl userService) {
+    public IndexController(UserService userService) {
         this.userService = userService;
     }
 

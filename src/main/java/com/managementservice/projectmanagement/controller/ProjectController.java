@@ -3,9 +3,9 @@ package com.managementservice.projectmanagement.controller;
 import com.managementservice.projectmanagement.entity.Notification;
 import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.User;
-import com.managementservice.projectmanagement.service.impl.NotificationServiceImpl;
-import com.managementservice.projectmanagement.service.impl.ProjectServiceImpl;
-import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
+import com.managementservice.projectmanagement.service.NotificationService;
+import com.managementservice.projectmanagement.service.ProjectService;
+import com.managementservice.projectmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
@@ -21,19 +21,19 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.managementservice.projectmanagement.utils.ControllerUtil.*;
-import static org.springframework.format.annotation.DateTimeFormat.*;
+import static org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Controller
 public class ProjectController {
 
 
-    private ProjectServiceImpl projectService;
-    private NotificationServiceImpl notificationService;
-    private UserServiceImpl userService;
+    private ProjectService projectService;
+    private NotificationService notificationService;
+    private UserService userService;
 
 
     @Autowired
-    public ProjectController(ProjectServiceImpl projectService, NotificationServiceImpl notificationService, UserServiceImpl userService) {
+    public ProjectController(ProjectService projectService, NotificationService notificationService, UserService userService) {
         this.projectService = projectService;
         this.notificationService = notificationService;
         this.userService = userService;
@@ -81,7 +81,6 @@ public class ProjectController {
             model.addAttribute(ERROR_ADDING_NOTIFICATION_USERS, ERROR_ADDING_NOTIFICATION_USERS_MESSAGE);
             return "addUsersToProject";
         }
-
 
 
         Notification notification = new Notification("Project invitation", "User "

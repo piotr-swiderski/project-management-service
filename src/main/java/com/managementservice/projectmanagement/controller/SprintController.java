@@ -2,8 +2,8 @@ package com.managementservice.projectmanagement.controller;
 
 import com.managementservice.projectmanagement.entity.Sprint;
 import com.managementservice.projectmanagement.entity.Task;
-import com.managementservice.projectmanagement.service.impl.SprintServiceImpl;
-import com.managementservice.projectmanagement.service.impl.TaskServiceImpl;
+import com.managementservice.projectmanagement.service.SprintService;
+import com.managementservice.projectmanagement.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -21,15 +21,15 @@ import static com.managementservice.projectmanagement.utils.ControllerUtil.*;
 @Controller
 public class SprintController {
 
-    private SprintServiceImpl sprintService;
-    private TaskServiceImpl taskService;
+    private SprintService sprintService;
+    private TaskService taskService;
     private final String SPRINT_PAGE = "sprintPage";
     private final String ERROR_PAGE = "errorPage";
     private final String PAGE_404 = "error-404";
 
 
     @Autowired
-    public SprintController(SprintServiceImpl sprintService, TaskServiceImpl taskService) {
+    public SprintController(SprintService sprintService, TaskService taskService) {
         this.sprintService = sprintService;
         this.taskService = taskService;
     }
@@ -39,7 +39,7 @@ public class SprintController {
         Sprint sprintById;
         try {
             sprintById = sprintService.getSprintById(sprintId);
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             return PAGE_404;
         }
 

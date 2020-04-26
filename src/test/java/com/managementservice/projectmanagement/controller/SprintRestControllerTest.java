@@ -3,8 +3,8 @@ package com.managementservice.projectmanagement.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.managementservice.projectmanagement.entity.Task;
 import com.managementservice.projectmanagement.entity.TaskErrand;
-import com.managementservice.projectmanagement.service.TaskErrandService;
-import com.managementservice.projectmanagement.service.TaskService;
+import com.managementservice.projectmanagement.service.impl.TaskErrandServiceImpl;
+import com.managementservice.projectmanagement.service.impl.TaskServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -29,10 +29,10 @@ class SprintRestControllerTest extends AbstractControllerTest {
     ObjectMapper objectMapper;
 
     @MockBean
-    TaskService taskService;
+    TaskServiceImpl taskService;
 
     @MockBean
-    TaskErrandService taskErrandService;
+    TaskErrandServiceImpl taskErrandService;
 
     @Test
     void changeTaskTable_shouldChangeTaskTableToDone() throws Exception {

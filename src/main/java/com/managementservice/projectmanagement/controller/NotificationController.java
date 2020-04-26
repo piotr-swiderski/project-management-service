@@ -4,9 +4,9 @@ package com.managementservice.projectmanagement.controller;
 import com.managementservice.projectmanagement.entity.Notification;
 import com.managementservice.projectmanagement.entity.Project;
 import com.managementservice.projectmanagement.entity.User;
-import com.managementservice.projectmanagement.service.impl.NotificationServiceImpl;
-import com.managementservice.projectmanagement.service.impl.ProjectServiceImpl;
-import com.managementservice.projectmanagement.service.impl.UserServiceImpl;
+import com.managementservice.projectmanagement.service.NotificationService;
+import com.managementservice.projectmanagement.service.ProjectService;
+import com.managementservice.projectmanagement.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 public class NotificationController {
 
-    private NotificationServiceImpl notificationService;
-    private UserServiceImpl userService;
-    private ProjectServiceImpl projectService;
+    private NotificationService notificationService;
+    private UserService userService;
+    private ProjectService projectService;
 
 
-    public NotificationController(NotificationServiceImpl notificationService, UserServiceImpl userService, ProjectServiceImpl projectService1) {
+    public NotificationController(NotificationService notificationService, UserService userService, ProjectService projectService1) {
         this.notificationService = notificationService;
         this.userService = userService;
         this.projectService = projectService1;
